@@ -1,0 +1,5 @@
+.myeclipse/
+.settings/
+*.bak
+*.class
+bin/
