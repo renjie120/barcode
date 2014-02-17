@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="150dp"
+    android:background="@color/white"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/activity_pic"
+        android:layout_width="@dimen/qiandao_width"
+        android:layout_height="@dimen/qiandao_height"
+        android:background="@drawable/paper" />
+
+    <TextView
+        android:id="@+id/act_name"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/activity_pic"
+        android:textColor="@color/black" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/act_time_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/act_name"
+        android:layout_below="@id/act_name"
+        android:layout_toRightOf="@id/activity_pic"
+        android:text="@string/begintime"
+        android:textColor="@color/black" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/act_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/act_name"
+        android:layout_toRightOf="@id/act_time_title"
+        android:textColor="@color/black" >
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@id/activity_pic"
+        android:layout_below="@id/act_time_title"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp" 
+        android:layout_marginTop="50dp"
+        android:layout_toRightOf="@id/activity_pic"
+        android:background="@drawable/detail_bg"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="45px" 
+            android:text="@string/chakan"
+            android:textColor="@color/white"
+            android:textSize="@dimen/chakan_button" />
+    </LinearLayout>
+
+</RelativeLayout>

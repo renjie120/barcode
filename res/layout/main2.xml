@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sidebar="http://schemas.android.com/apk/res/com.example.android.contactmanager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/btn_bg"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/titile_gre_ym"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center|center_vertical"
+                android:text="@string/title1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/title_textsize" />
+
+            <Button
+                android:id="@+id/log"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_gravity="left"
+                android:background="@drawable/logo" />
+
+            <Button
+                android:id="@+id/savebtn"
+                android:layout_width="@dimen/homepage_btn_wid"
+                android:layout_height="@dimen/homepage_btn_hig"
+                android:layout_gravity="right"
+                android:background="@drawable/button_png"
+                android:text="@string/app_name" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/login_logo" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_corner_gridview"
+            android:padding="2dip" >
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" >
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/name_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/name_title"
+                        android:textSize="@dimen/textsize" />
+
+                    <EditText
+                        android:id="@+id/inputName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" >
+                    </EditText>
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/pass_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/pass_title"
+                        android:textSize="@dimen/textsize" />
+
+                    <EditText
+                        android:id="@+id/inputPass"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:password="true" >
+                    </EditText>
+                </TableRow>
+            </TableLayout>
+        </RelativeLayout>
+
+        <CheckBox
+            android:id="@+id/remember_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="@string/remember_password" />
+
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="@dimen/buttonwidth"
+            android:layout_height="@dimen/buttonheight"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/login_btn_bag"
+            android:text="@string/message_login"
+            android:textColor="@color/white" >
+        </Button>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/background_repeat"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/menu_name"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="@string/bottom"
+            android:textSize="@dimen/login_bottom_textSize" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/logo" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/call" />
+    </FrameLayout>
+
+</FrameLayout>

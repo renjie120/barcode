@@ -1,0 +1,34 @@
+<resources>
+
+    <dimen name="homepage_title_height">48sp</dimen>
+    <dimen name="title_textsize">24sp</dimen>
+    <dimen name="homepage_btn_hig">32sp</dimen>
+    <dimen name="homepage_btn_wid">60sp</dimen>
+    <dimen name="log_hig">32sp</dimen>
+    <dimen name="log_wid">60sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fst_team_name_size">22dp</dimen>
+    <dimen name="login_bottom_textSize">15dp</dimen>
+    <dimen name="text_size1">21dp</dimen>
+    <dimen name="text_size2">18dp</dimen>
+    <dimen name="text_size3">14dp</dimen>
+    <dimen name="titleheight">50dp</dimen>
+    <dimen name="titlebuttonheight">40dp</dimen>
+    <dimen name="buttonwidth">110dp</dimen>
+    <dimen name="buttonheight">40dp</dimen>
+    <dimen name="textsize">20sp</dimen>
+    <dimen name="qiandao_button">25sp</dimen>
+    <dimen name="chakan_button">18sp</dimen>
+    <dimen name="qiandao_title">15sp</dimen>
+    <dimen name="qiandao_width">110dp</dimen>
+    <dimen name="qiandao_height">130dp</dimen>
+
+    <color name="gray">#C5CCD4</color>
+    <color name="orange">#FF6600</color>
+    <color name="titleColor">#B7130B</color>
+    <color name="black">#000000</color>
+    <color name="deppon">#373C64</color>
+    <color name="black2">#363636</color>
+
+</resources>
