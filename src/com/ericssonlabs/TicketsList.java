@@ -38,7 +38,7 @@ import com.ericssonlabs.bean.ServerResult;
  * @author 130126
  * 
  */
-public class ActivitesList extends BaseActivity {
+public class TicketsList extends BaseActivity {
 	private ListView list;
 	private String token;
 	private static final int DIALOG_KEY = 0;
@@ -46,7 +46,7 @@ public class ActivitesList extends BaseActivity {
 
 	public void seeDetail(View arg0) {
 		LinearLayout layout = (LinearLayout) arg0;
-		Intent intent = new Intent(ActivitesList.this, ActivitesInfo.class);
+		Intent intent = new Intent(TicketsList.this, ActivitesInfo.class);
 		intent.putExtra("eventid", layout.getTag().toString());
 		intent.putExtra("token", token);
 		this.startActivity(intent);
@@ -87,7 +87,7 @@ public class ActivitesList extends BaseActivity {
 					}
 				}
 				MyImgAdapter adapter = new MyImgAdapter(listItem,
-						ActivitesList.this);
+						TicketsList.this);
 				list.setAdapter(adapter);
 				break;
 			default:

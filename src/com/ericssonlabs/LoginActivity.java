@@ -21,7 +21,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -31,13 +30,18 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ericssonlabs.bean.AccessToken;
+import com.ericssonlabs.bean.ServerResult;
+
 /**
  * 首页登录界面.
  * 
  * @author 130126
  * 
  */
-public class LoginActivity extends Activity implements OnClickListener {
+public class LoginActivity extends BaseActivity implements OnClickListener {
 	private String name;
 	private String pass;
 	private Button buttonLogin;
@@ -51,9 +55,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.main2);
+		setContentView(R.layout.login);
 		buttonLogin = (Button) findViewById(R.id.buttonLogin);
 		remeberPassword = (CheckBox) findViewById(R.id.remember_password);
+		nameText = (EditText) findViewById(R.id.inputName);
+		passwordText = (EditText) findViewById(R.id.inputPass);
 		remeberPassword
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					public void onCheckedChanged(CompoundButton arg0,
@@ -78,6 +84,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 					}
 
 				});
+		buttonLogin.setOnClickListener(this);
 	}
 
 	private void savePass() {
@@ -116,12 +123,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	private class MyListLoader extends AsyncTask<String, String, String> {
 
-		private boolean showDialog;
-		private TelephonyManager tm;
+		private boolean showDialog; 
 
-		public MyListLoader(boolean showDialog, TelephonyManager tm) {
-			this.showDialog = showDialog;
-			this.tm = tm;
+		public MyListLoader(boolean showDialog ) {
+			this.showDialog = showDialog; 
 		}
 
 		@Override
@@ -154,27 +159,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 			buttonLogin.setEnabled(true);
 		}
-	}
-
-	public void alert(String mess) {
-		new AlertDialog.Builder(LoginActivity.this).setTitle("提示")
-				.setMessage(mess).setPositiveButton("确定", null).show();
-	}
-
-	private void go() {
-		if (!isNetworkConnected(this)) {
-			alert("网络异常，请确认联网后重试");
-		} else {
-			TelephonyManager tm = (TelephonyManager) this
-					.getSystemService(Context.TELEPHONY_SERVICE);
-			savePass();
-			new MyListLoader(true, tm).execute("");
-		}
-	}
-
+	} 
+ 
 	@Override
 	public void onClick(View v) {
-
+		if (v.getId() == R.id.buttonLogin) {
+			new MyListLoader(true).execute("");
+		}
 	}
 
 	public Handler myHandler = new Handler() {
@@ -214,7 +205,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	public void login(final String userName, final String password) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		try {
-			BigInteger md5 = new BigInteger(encryptMD5(password.getBytes())); 
+			BigInteger md5 = new BigInteger(encryptMD5(password.getBytes()));
 			HttpPost httpost = new HttpPost(
 					"http://jb.17miyou.com/api.ashx?do=login&username="
 							+ userName + "&password=" + md5.toString(16));
@@ -223,17 +214,21 @@ public class LoginActivity extends Activity implements OnClickListener {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					entity.getContent(), "UTF-8"));
 			// 如果没有登录成功，就弹出提示信息.
-			String result = br.readLine();
-			if (!"40001".equals(result)) {
-				myHandler.sendEmptyMessage(6);
+			ServerResult result = (ServerResult) JSON.parseObject(
+					br.readLine(), ServerResult.class);
+			if (1 != result.getErrorcode()) {
+				myHandler.sendEmptyMessage(1);
 			}
 			// 否则就进行文件解析处理.
 			else {
 				Intent intent = new Intent(LoginActivity.this,
 						ActivitesList.class);
-				String uid = "";
-				intent.putExtra("name", userName);
-				intent.putExtra("uid ", uid);
+				JSONObject json = result.getData();
+				AccessToken token = (AccessToken) JSON.parseObject(
+						json.toJSONString(), AccessToken.class);
+				intent.putExtra("name", token.getUsername());
+				intent.putExtra("uid", token.getUid());
+				intent.putExtra("token", token.getToken());
 				this.startActivity(intent);
 			}
 		} catch (Exception e) {

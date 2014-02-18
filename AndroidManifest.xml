@@ -28,6 +28,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ActivitesList" >
+        </activity>
+        <activity android:name=".ActivitesStatus" >
+        </activity>
+        <activity android:name=".TicketsList" >
+        </activity>
+        <activity android:name=".CheckFilter" >
+        </activity>
+        <activity android:name=".CheckConfig" >
+        </activity>
+        <activity android:name=".ActivitesInfo" >
+        </activity>
         <activity
             android:name="com.zxing.activity.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sidebar="http://schemas.android.com/apk/res/com.example.android.contactmanager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -11,41 +10,21 @@
         android:layout_height="fill_parent"
         android:orientation="vertical" >
 
-        <FrameLayout
+        <TextView
+            android:id="@+id/titile_gre_ym"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
-            android:layout_gravity="bottom"
+            android:layout_gravity="center_vertical"
             android:background="@drawable/btn_bg"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/titile_gre_ym"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center|center_vertical"
-                android:text="@string/title1"
-                android:textColor="@color/white"
-                android:textSize="@dimen/title_textsize" />
-
-            <Button
-                android:id="@+id/log"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:layout_gravity="left"
-                android:background="@drawable/logo" />
-
-            <Button
-                android:id="@+id/savebtn"
-                android:layout_width="@dimen/homepage_btn_wid"
-                android:layout_height="@dimen/homepage_btn_hig"
-                android:layout_gravity="right"
-                android:background="@drawable/button_png"
-                android:text="@string/app_name" />
-        </FrameLayout>
+            android:gravity="center|center_vertical"
+            android:text="@string/title1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title_textsize" />
 
         <ImageView
             android:id="@+id/login"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -78,7 +57,8 @@
                         android:id="@+id/inputName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" >
+                        android:layout_weight="1"
+                        android:text="test140103114242328" >
                     </EditText>
                 </TableRow>
 
@@ -97,7 +77,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:password="true" >
+                        android:password="true"
+                        android:text="123123" >
                     </EditText>
                 </TableRow>
             </TableLayout>
