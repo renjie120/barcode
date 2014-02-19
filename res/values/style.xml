@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
+    <style name="line">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:background">#545454</item>
+    </style>
+
+    <style name="search_img">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:background">@drawable/search_ico</item>
+    </style>
+
+    <style name="search_edit">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:layout_marginBottom">1dp</item>
+    </style>
+
     <style name="main_tab_bottom">
         <item name="android:button">@null</item>
         <item name="android:layout_marginTop">2.0dip</item>
@@ -10,7 +35,7 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:background">@drawable/tab_btn_bg</item>
         <item name="android:paddingTop">5.0dip</item>
-        <item name="android:layout_width">0dp</item> 
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">45dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:drawablePadding">2.0dip</item>

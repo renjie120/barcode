@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/homepage_title_height"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/log"
+                android:layout_width="@dimen/log_wid"
+                android:layout_height="@dimen/log_hig"
+                android:background="@drawable/logo" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bg"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/titile_gre_ym"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center|center_vertical"
+                android:text="@string/qiandao"
+                android:textColor="@color/white"
+                android:textSize="@dimen/title_textsize" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/savebtn"
+                android:layout_width="@dimen/homepage_btn_wid"
+                android:layout_height="@dimen/homepage_btn_hig"
+                android:background="@drawable/button_png"
+                android:text="@string/app_name" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/totalcount"
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:focusable="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/search_size2" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:cacheColorHint="#00000000"
+        android:orientation="horizontal"
+        android:padding="4dip" >
+
+        <TextView
+            android:id="@+id/text_notuse2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <LinearLayout
+            android:id="@+id/searchText_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape"
+            android:orientation="horizontal"
+            android:padding="1dip" >
+
+            <ImageView style="@style/search_img" />
+
+            <EditText
+                android:id="@+id/searchText"
+                style="@style/search_edit"
+                android:background="@drawable/search_editext_border" >
+            </EditText>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/orange"
+                android:gravity="center_vertical"
+                android:text="@string/search"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="46dp"
+            android:layout_height="38dp" 
+            android:gravity="center_vertical"
+            android:text="@string/cancel"
+            android:textSize="12sp"
+            android:onClick="cancel"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/ListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background" />
+
+</LinearLayout>

@@ -22,6 +22,12 @@
     <dimen name="chakan_button">18sp</dimen>
     <dimen name="qiandao_title">15sp</dimen>
     <dimen name="qiandao_width">110dp</dimen>
+    <dimen name="tick_phone_size">13sp</dimen>
+    <dimen name="tick_name_size">18sp</dimen>
+    <dimen name="tick_stat_size">9sp</dimen> 
+    <dimen name="tick_type_size">8sp</dimen>
+    <dimen name="tick_type_size2">14sp</dimen>
+     <dimen name="search_size2">14sp</dimen>
     <dimen name="qiandao_height">130dp</dimen>
 
     <color name="gray">#C5CCD4</color>

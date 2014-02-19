@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center|center_vertical"
-                    android:text="@string/title1"
+                    android:text="@string/title_huodong"
                     android:textColor="@color/white"
                     android:textSize="@dimen/title_textsize" />
             </LinearLayout>

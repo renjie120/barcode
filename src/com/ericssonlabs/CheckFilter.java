@@ -13,27 +13,28 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.ericssonlabs.bean.EventList;
-import com.ericssonlabs.bean.EventListItem;
-import com.ericssonlabs.bean.ServerResult;
+import com.alibaba.fastjson.JSONArray;
+import com.ericssonlabs.bean.ServerResults;
+import com.ericssonlabs.bean.TicketTypeItem;
 
 /**
- * 活动列表.
+ * 类型过滤器.
  * 
  * @author 130126
  * 
@@ -41,27 +42,47 @@ import com.ericssonlabs.bean.ServerResult;
 public class CheckFilter extends BaseActivity {
 	private ListView list;
 	private String token;
+	private String eventId;
 	private static final int DIALOG_KEY = 0;
- 
+	private ServerResults result;
+	private String xianzhi;
+	private SharedPreferences mSharedPreferences;
+	private ImageView xianzhiImg;
 
-	public void seeDetail(View arg0) {
-		LinearLayout layout = (LinearLayout) arg0;
-		Intent intent = new Intent(CheckFilter.this, ActivitesInfo.class);
-		intent.putExtra("eventid", layout.getTag().toString());
-		intent.putExtra("token", token);
-		this.startActivity(intent);
+	public void changetype(View arg0) {
+		ImageView v = (ImageView) arg0;
+		SharedPreferences.Editor mEditor = mSharedPreferences.edit(); 
+		if ("false".equals(xianzhi)) {
+			mEditor.putString("xianzhi", "true");
+			xianzhi = "true";
+			v.setSelected(true);
+		} else {
+			xianzhi = "false";
+			mEditor.putString("xianzhi", "false");
+			v.setSelected(false);
+		} 
+		mEditor.commit();
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activiteslist);
+		setContentView(R.layout.check_filter);
 		list = (ListView) findViewById(R.id.ListView);
 		Intent intent = getIntent();
 		token = intent.getStringExtra("token");
-		// userActities();
-		new MyListLoader(true).execute("");
+		eventId = intent.getStringExtra("eventid");
+		mSharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		xianzhi = mSharedPreferences.getString("xianzhi", "false");
+		xianzhiImg = (ImageView) findViewById(R.id.xianzhiImg); 
+		if ("false".equals(xianzhi)) {
+			xianzhiImg.setSelected(false);
+		} else {
+			xianzhiImg.setSelected(true);
+		}
+		new MyListLoader(true, eventId).execute("");
 	}
 
 	public Handler myHandler = new Handler() {
@@ -71,18 +92,15 @@ public class CheckFilter extends BaseActivity {
 				alert("对不起，出现异常");
 				break;
 			case 2:
-				JSONObject json = result.getData();
-				EventList t = (EventList) JSON.parseObject(json.toJSONString(),
-						EventList.class);
-				List<EventListItem> items = t.getItems();
+				JSONArray json = result.getData();
+				List<TicketTypeItem> t = (List<TicketTypeItem>) JSON
+						.parseArray(json.toJSONString(), TicketTypeItem.class);
 				ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
-				if (items != null && items.size() >= 1) {
-					for (EventListItem i : items) {
+				if (t != null && t.size() >= 1) {
+					for (TicketTypeItem i : t) {
 						HashMap<String, Object> map = new HashMap<String, Object>();
-						map.put("endtime", i.getEndtime());// 图像资源的ID
-						map.put("eventid", i.getEventid());
-						map.put("name", i.getName());
-						map.put("starttime", i.getStarttime());
+						map.put("typeid", i.getTypeid());// 图像资源的ID
+						map.put("typename", i.getName());
 						listItem.add(map);
 					}
 				}
@@ -97,56 +115,20 @@ public class CheckFilter extends BaseActivity {
 		}
 	};
 
-	private class MyListLoader extends AsyncTask<String, String, String> {
-
-		private boolean showDialog;
-
-		public MyListLoader(boolean showDialog) {
-			this.showDialog = showDialog;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			if (showDialog) {
-				showDialog(DIALOG_KEY);
-			}
-		}
-
-		public String doInBackground(String... p) {
-			userActities();
-			return "";
-		}
-
-		@Override
-		public void onPostExecute(String Re) {
-			if (showDialog) {
-				removeDialog(DIALOG_KEY);
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			if (showDialog) {
-				removeDialog(DIALOG_KEY);
-			}
-		}
-	}
-
-	private ServerResult result;
-
-	private void userActities() {
+	private void typelist(String eventId) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
 		try {
 
 			HttpPost httpost = new HttpPost(
-					"http://jb.17miyou.com/api.ashx?do=myevents&token=" + token);
+					"http://jb.17miyou.com/api.ashx?do=listtype&token=" + token
+							+ "&eventid=" + eventId);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					entity.getContent(), encoding));
-			result = (ServerResult) JSON.parseObject(br.readLine(),
-					ServerResult.class);
+			result = (ServerResults) JSON.parseObject(br.readLine(),
+					ServerResults.class);
 			if (1 != result.getErrorcode()) {
 				myHandler.sendEmptyMessage(1);
 			}
@@ -197,14 +179,12 @@ public class CheckFilter extends BaseActivity {
 			if (null == convertView) {
 				viewHolder = new ViewHolder();
 				LayoutInflater mInflater = LayoutInflater.from(context);
-				convertView = mInflater.inflate(R.layout.activiti_item, null);
+				convertView = mInflater.inflate(R.layout.type_item, null);
 
-				viewHolder.name = (TextView) convertView
-						.findViewById(R.id.act_name);
-				viewHolder.statusbar = (LinearLayout) convertView
-						.findViewById(R.id.status_bar);
-				viewHolder.time = (TextView) convertView
-						.findViewById(R.id.act_time);
+				viewHolder.typename = (TextView) convertView
+						.findViewById(R.id.typename);
+				viewHolder.ischeck = (ImageView) convertView
+						.findViewById(R.id.checkimg);
 
 				convertView.setTag(viewHolder);
 			} else {
@@ -213,18 +193,53 @@ public class CheckFilter extends BaseActivity {
 
 			HashMap<String, Object> markerItem = getItem(position);
 			if (null != markerItem) {
-				viewHolder.statusbar.setTag(markerItem.get("eventid"));
-				viewHolder.time.setText("" + markerItem.get("endtime"));
-				viewHolder.name.setText("" + markerItem.get("name"));
+				viewHolder.typename.setText("" + markerItem.get("typename"));
+				viewHolder.ischeck.setTag(markerItem.get("typeid"));
 			}
 			return convertView;
 		}
 	}
 
 	public final static class ViewHolder {
-		public TextView time;
-		public LinearLayout statusbar;
-		public TextView name;
+		public TextView typename;
+		public ImageView ischeck;
+	}
+
+	private class MyListLoader extends AsyncTask<String, String, String> {
+
+		private boolean showDialog;
+		private String eventId;
+
+		public MyListLoader(boolean showDialog, String eventId) {
+			this.showDialog = showDialog;
+			this.eventId = eventId;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			if (showDialog) {
+				showDialog(DIALOG_KEY);
+			}
+		}
+
+		public String doInBackground(String... p) {
+			typelist(eventId);
+			return "";
+		}
+
+		@Override
+		public void onPostExecute(String Re) {
+			if (showDialog) {
+				removeDialog(DIALOG_KEY);
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			if (showDialog) {
+				removeDialog(DIALOG_KEY);
+			}
+		}
 	}
 
 }

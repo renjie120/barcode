@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:cacheColorHint="#00000000" >
+
+    <LinearLayout
+        android:id="@+id/type"
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:orientation="vertical" >
+
+        <View
+            android:id="@+id/obj1"
+            style="@style/line" />
+
+        <TextView
+            android:id="@+id/first_letter"
+            android:layout_width="fill_parent"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/tick_type_size" />
+
+        <View
+            android:id="@+id/obj4"
+            style="@style/line" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/state_img"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignLeft="@id/type"
+        android:layout_below="@id/type"
+        android:layout_marginLeft="3dp"
+        android:src="@drawable/state1" />
+
+    <TextView
+        android:id="@+id/state_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/state_img"
+        android:textColor="@color/black"
+        android:textSize="@dimen/tick_stat_size" />
+
+    <TextView
+        android:id="@+id/ticket_name"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/type"
+        android:layout_marginLeft="3dp"
+        android:layout_toRightOf="@id/state_img"
+        android:textColor="@color/black"
+        android:textSize="@dimen/tick_name_size" />
+
+    <TextView
+        android:id="@+id/phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/ticket_name"
+        android:layout_below="@id/ticket_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/tick_phone_size" />
+
+    <TextView
+        android:id="@+id/chargeType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/type"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/ticket_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/tick_name_size" />
+
+</RelativeLayout>

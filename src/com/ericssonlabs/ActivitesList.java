@@ -42,9 +42,16 @@ public class ActivitesList extends BaseActivity {
 	private ListView list;
 	private String token;
 	private static final int DIALOG_KEY = 0;
- 
 
 	public void seeDetail(View arg0) {
+		LinearLayout layout = (LinearLayout) arg0;
+		Intent intent = new Intent(ActivitesList.this, ActivitesInfo.class);
+		intent.putExtra("eventid", layout.getTag().toString());
+		intent.putExtra("token", token);
+		this.startActivity(intent);
+	}
+
+	public void cancel(View arg0) {
 		LinearLayout layout = (LinearLayout) arg0;
 		Intent intent = new Intent(ActivitesList.this, ActivitesInfo.class);
 		intent.putExtra("eventid", layout.getTag().toString());

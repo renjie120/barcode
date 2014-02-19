@@ -75,9 +75,9 @@ public class ActivitesInfo extends BaseActivity {
 
 	public void qiandao(View arg0) {
 		LinearLayout layout = (LinearLayout) arg0;
-		Intent intent = new Intent(ActivitesInfo.this, ActivitesInfo.class);
-		intent.putExtra("eventid", layout.getTag().toString());
-		intent.putExtra("token", layout.getTag().toString());
+		Intent intent = new Intent(ActivitesInfo.this, SignInActivity.class);
+		intent.putExtra("eventid", "1");
+		intent.putExtra("token", token);
 		this.startActivity(intent);
 	}
 
@@ -85,6 +85,7 @@ public class ActivitesInfo extends BaseActivity {
 		LinearLayout layout = (LinearLayout) arg0;
 		Intent intent = new Intent(ActivitesInfo.this, ActivitesStatus.class);
 		intent.putExtra("eventid", layout.getTag().toString());
+		intent.putExtra("token", token);
 		this.startActivity(intent);
 	}
 
