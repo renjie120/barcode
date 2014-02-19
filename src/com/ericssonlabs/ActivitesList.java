@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ericssonlabs.bean.EventList;
 import com.ericssonlabs.bean.EventListItem;
 import com.ericssonlabs.bean.ServerResult;
+import com.ericssonlabs.util.LoadImage;
 
 /**
  * 活动列表.
@@ -42,6 +44,7 @@ public class ActivitesList extends BaseActivity {
 	private ListView list;
 	private String token;
 	private static final int DIALOG_KEY = 0;
+	private Handler handler = null;
 
 	public void seeDetail(View arg0) {
 		LinearLayout layout = (LinearLayout) arg0;
@@ -90,6 +93,7 @@ public class ActivitesList extends BaseActivity {
 						map.put("eventid", i.getEventid());
 						map.put("name", i.getName());
 						map.put("starttime", i.getStarttime());
+						map.put("url", i.getImageurl());
 						listItem.add(map);
 					}
 				}
@@ -212,6 +216,8 @@ public class ActivitesList extends BaseActivity {
 						.findViewById(R.id.status_bar);
 				viewHolder.time = (TextView) convertView
 						.findViewById(R.id.act_time);
+				viewHolder.img = (ImageView) convertView
+						.findViewById(R.id.activity_pic);
 
 				convertView.setTag(viewHolder);
 			} else {
@@ -223,13 +229,18 @@ public class ActivitesList extends BaseActivity {
 				viewHolder.statusbar.setTag(markerItem.get("eventid"));
 				viewHolder.time.setText("" + markerItem.get("endtime"));
 				viewHolder.name.setText("" + markerItem.get("name"));
+				new Thread(new LoadImage("" + markerItem.get("url"),
+						viewHolder.img,R.drawable.huodong_paper)).start();
 			}
 			return convertView;
 		}
 	}
 
+	 
+
 	public final static class ViewHolder {
 		public TextView time;
+		public ImageView img;
 		public LinearLayout statusbar;
 		public TextView name;
 	}

@@ -1,7 +1,12 @@
 package com.ericssonlabs;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -9,18 +14,22 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
+import com.ericssonlabs.util.LoadImage;
 
 /**
  * 活动列表详情.
@@ -35,6 +44,7 @@ public class ActivitesInfo extends BaseActivity {
 	private LinearLayout qiandao;
 	private LinearLayout status;
 	private TextView title;
+	private ImageView imge;
 	private String token;
 
 	private EventInfo activitiDetail(String eventId) {
@@ -62,6 +72,7 @@ public class ActivitesInfo extends BaseActivity {
 			b.putString("starttime", t.getStarttime());
 			b.putString("endtime", t.getEndtime());
 			b.putString("name", t.getName());
+			b.putString("url", t.getImageurl());
 			msg.setData(b);
 			myHandler.sendMessage(msg);
 			return t;
@@ -99,6 +110,7 @@ public class ActivitesInfo extends BaseActivity {
 		beginTime = (TextView) findViewById(R.id.act_begin_time);
 		endTime = (TextView) findViewById(R.id.act_end_time);
 		title = (TextView) findViewById(R.id.title);
+		imge = (ImageView) findViewById(R.id.activity_pic);
 		Intent intent = getIntent();
 		eventId = intent.getStringExtra("eventid");
 		qiandao.setTag(eventId);
@@ -119,6 +131,8 @@ public class ActivitesInfo extends BaseActivity {
 				beginTime.setText(info.getString("starttime"));
 				endTime.setText(info.getString("endtime"));
 				title.setText(info.getString("name"));
+				new Thread(new LoadImage(info.getString("url"), imge,
+						R.drawable.huodong_paper)).start();
 				break;
 			default:
 				super.hasMessages(msg.what);

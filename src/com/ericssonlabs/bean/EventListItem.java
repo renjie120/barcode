@@ -5,6 +5,15 @@ public class EventListItem {
 	private String name;// 活动名称
 	private String starttime;// 开始时间
 	private String endtime;// 结束时间
+	public String imageurl;// 活动图片
+
+	public String getImageurl() {
+		return imageurl;
+	}
+
+	public void setImageurl(String imageurl) {
+		this.imageurl = imageurl;
+	}
 
 	public long getEventid() {
 		return eventid;

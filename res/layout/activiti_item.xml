@@ -8,8 +8,7 @@
     <ImageView
         android:id="@+id/activity_pic"
         android:layout_width="@dimen/qiandao_width"
-        android:layout_height="@dimen/qiandao_height"
-        android:background="@drawable/paper" />
+        android:layout_height="@dimen/qiandao_height"  />
 
     <TextView
         android:id="@+id/act_name"

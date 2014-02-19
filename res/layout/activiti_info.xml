@@ -73,8 +73,7 @@
             <ImageView
                 android:id="@+id/activity_pic"
                 android:layout_width="@dimen/qiandao_width"
-                android:layout_height="@dimen/qiandao_height"
-                android:background="@drawable/huodong_paper" />
+                android:layout_height="@dimen/qiandao_height"  />
 
             <RelativeLayout
                 android:layout_width="0dp"

@@ -8,6 +8,15 @@ public class EventInfo {
 	private int totalcount;// 活动计划出售的门票数量
 	private int joincount;// 已售出的门票数量
 	private int checkcount;// 已签到的门票数量
+	public String imageurl;// 活动图片
+
+	public String getImageurl() {
+		return imageurl;
+	}
+
+	public void setImageurl(String imageurl) {
+		this.imageurl = imageurl;
+	}
 
 	public long getEventid() {
 		return eventid;

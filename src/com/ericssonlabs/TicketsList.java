@@ -11,6 +11,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -34,6 +36,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.bean.TicketList;
 import com.ericssonlabs.bean.TicketListItem;
+import com.ericssonlabs.util.PingYinUtil;
 
 /**
  * 订票记录.
@@ -50,6 +53,7 @@ public class TicketsList extends BaseActivity {
 	private static final int DIALOG_KEY = 0;
 	private ServerResult result;
 	private MyImgAdapter adapter;
+	private ProgressDialog dialog;
 
 	public void seeDetail(View arg0) {
 		LinearLayout layout = (LinearLayout) arg0;
@@ -134,6 +138,20 @@ public class TicketsList extends BaseActivity {
 			}
 		}
 	};
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DIALOG_KEY: {
+			dialog = new ProgressDialog(this);
+			dialog.setMessage("正在查询数据...请稍候");
+			dialog.setIndeterminate(true);
+			dialog.setCancelable(true);
+			return dialog;
+		}
+		}
+		return null;
+	}
 
 	private class MyListLoader extends AsyncTask<String, String, String> {
 
