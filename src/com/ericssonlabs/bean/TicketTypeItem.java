@@ -1,5 +1,8 @@
 package com.ericssonlabs.bean;
 
+/**
+ * 门票类型.
+ */
 public class TicketTypeItem {
 	private long typeid;// 门票类型ID
 	private String name;// 门票名称

@@ -1,12 +1,7 @@
 package com.ericssonlabs;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,8 +9,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +22,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
+import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
 
 /**
@@ -52,9 +46,8 @@ public class ActivitesInfo extends BaseActivity {
 		String encoding = "UTF-8";
 		try {
 
-			HttpPost httpost = new HttpPost(
-					"http://jb.17miyou.com/api.ashx?do=eventinfo&eventid="
-							+ eventId + "&token=" + token);
+			HttpPost httpost = new HttpPost(Constant.HOST
+					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -84,14 +77,24 @@ public class ActivitesInfo extends BaseActivity {
 		return null;
 	}
 
+	/**
+	 * 签到.
+	 * 
+	 * @param arg0
+	 */
 	public void qiandao(View arg0) {
 		LinearLayout layout = (LinearLayout) arg0;
 		Intent intent = new Intent(ActivitesInfo.this, SignInActivity.class);
-		intent.putExtra("eventid", "1");
+		intent.putExtra("eventid", layout.getTag().toString());
 		intent.putExtra("token", token);
 		this.startActivity(intent);
 	}
 
+	/**
+	 * 查看状态.
+	 * 
+	 * @param arg0
+	 */
 	public void status(View arg0) {
 		LinearLayout layout = (LinearLayout) arg0;
 		Intent intent = new Intent(ActivitesInfo.this, ActivitesStatus.class);
@@ -116,10 +119,14 @@ public class ActivitesInfo extends BaseActivity {
 		qiandao.setTag(eventId);
 		status.setTag(eventId);
 		token = intent.getStringExtra("token");
+		// 加载列表
 		new MyListLoader(eventId).execute("");
 
 	}
 
+	/**
+	 * 对页面元素的处理类.
+	 */
 	public Handler myHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -141,6 +148,9 @@ public class ActivitesInfo extends BaseActivity {
 		}
 	};
 
+	/**
+	 * 加载全部活动的内部类.
+	 */
 	private class MyListLoader extends AsyncTask<String, String, String> {
 
 		private String eventId;
@@ -149,23 +159,12 @@ public class ActivitesInfo extends BaseActivity {
 			this.eventId = eventId;
 		}
 
-		@Override
-		protected void onPreExecute() {
-		}
-
 		public String doInBackground(String... p) {
+			// 调用方法进行加载.
 			activitiDetail(eventId);
 			return "";
 		}
 
-		@Override
-		public void onPostExecute(String Re) {
-
-		}
-
-		@Override
-		protected void onCancelled() {
-		}
 	}
 
 }

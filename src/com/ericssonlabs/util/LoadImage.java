@@ -19,9 +19,7 @@ import android.os.Message;
 import android.widget.ImageView;
 
 /**
- * 加载网络图片的工具类.
- * 
- * @author 130126
+ * 加载网络图片的工具类. 
  * 
  */
 public class LoadImage implements Runnable {

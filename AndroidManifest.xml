@@ -35,9 +35,7 @@
         <activity android:name=".SignInActivity" >
         </activity>
         <activity android:name=".TicketsList" >
-        </activity>
-        <activity android:name=".CheckFilter" >
-        </activity>
+        </activity> 
         <activity android:name=".CheckConfig" >
         </activity>
         <activity android:name=".ActivitesInfo" >

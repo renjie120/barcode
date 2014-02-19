@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 二维码主界面.
+ */
 public class BarCodeActivity extends Activity {
     /** Called when the activity is first created. */
 	private TextView resultTextView;

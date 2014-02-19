@@ -1,5 +1,8 @@
 package com.ericssonlabs.bean;
 
+/**
+ * 用户认证类。
+ */
 public class AccessToken {
 	private long uid;// 用户ID
 	private String username;// 用户名

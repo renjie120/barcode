@@ -11,6 +11,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,15 +32,12 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.ericssonlabs.CheckFilter.MyImgAdapter;
-import com.ericssonlabs.CheckFilter.ViewHolder;
 import com.ericssonlabs.bean.ServerResults;
 import com.ericssonlabs.bean.TicketTypeItem;
+import com.ericssonlabs.util.Constant;
 
 /**
  * 配置界面
- * 
- * @author 130126
  * 
  */
 public class CheckConfig extends BaseActivity {
@@ -50,13 +49,14 @@ public class CheckConfig extends BaseActivity {
 	private String xianzhi;
 	private SharedPreferences mSharedPreferences;
 	private ImageView xianzhiImg;
+	private ProgressDialog dialog;
 
+	/**
+	 * 跳转到配置的过滤界面.
+	 * 
+	 * @param arg0
+	 */
 	public void gofilter(View arg0) {
-		// Intent intent = new Intent(CheckConfig.this, CheckFilter.class);
-		// intent.putExtra("token", token);
-		// intent.putExtra("eventid", eventid);
-		// this.startActivity(intent);
-
 		setContentView(R.layout.check_filter);
 		list = (ListView) findViewById(R.id.ListView);
 		mSharedPreferences = PreferenceManager
@@ -71,6 +71,9 @@ public class CheckConfig extends BaseActivity {
 		new MyListLoader(true, eventid).execute("");
 	}
 
+	/**
+	 * 页面的处理界面
+	 */
 	public Handler myHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -101,6 +104,9 @@ public class CheckConfig extends BaseActivity {
 		}
 	};
 
+	/**
+	 * 显示票据的类型数据信息.
+	 */
 	class MyImgAdapter extends BaseAdapter {
 		private ArrayList<HashMap<String, Object>> data;// 用于接收传递过来的Context对象
 		private Context context;
@@ -162,15 +168,18 @@ public class CheckConfig extends BaseActivity {
 		public TextView typename;
 		public ImageView ischeck;
 	}
-
+	
+	/**
+	 * 调用远程数据请求数据.
+	 * @param eventId
+	 */
 	private void typelist(String eventId) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
 		try {
 
-			HttpPost httpost = new HttpPost(
-					"http://jb.17miyou.com/api.ashx?do=listtype&token=" + token
-							+ "&eventid=" + eventId);
+			HttpPost httpost = new HttpPost(Constant.HOST
+					+ "?do=listtype&token=" + token + "&eventid=" + eventId);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -191,6 +200,9 @@ public class CheckConfig extends BaseActivity {
 		}
 	}
 
+	/**
+	 * 查询票据的类型数据信息.
+	 */
 	private class MyListLoader extends AsyncTask<String, String, String> {
 
 		private boolean showDialog;
@@ -228,6 +240,25 @@ public class CheckConfig extends BaseActivity {
 		}
 	}
 
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DIALOG_KEY: {
+			dialog = new ProgressDialog(this);
+			dialog.setMessage("正在查询数据...请稍候");
+			dialog.setIndeterminate(true);
+			dialog.setCancelable(true);
+			return dialog;
+		}
+		}
+		return null;
+	}
+
+	/**
+	 * 改变页面的是否过滤类型失效.
+	 * 
+	 * @param arg0
+	 */
 	public void changetype(View arg0) {
 		ImageView v = (ImageView) arg0;
 		SharedPreferences.Editor mEditor = mSharedPreferences.edit();

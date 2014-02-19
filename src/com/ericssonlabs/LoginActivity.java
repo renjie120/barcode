@@ -10,6 +10,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +34,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ericssonlabs.bean.AccessToken;
 import com.ericssonlabs.bean.ServerResult;
+import com.ericssonlabs.util.Constant;
 
 /**
  * 首页登录界面.
@@ -48,6 +51,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private EditText nameText;
 	private EditText passwordText;
 	private SharedPreferences mSharedPreferences;
+	private ProgressDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,35 +62,24 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		remeberPassword = (CheckBox) findViewById(R.id.remember_password);
 		nameText = (EditText) findViewById(R.id.inputName);
 		passwordText = (EditText) findViewById(R.id.inputPass);
+		// 勾选是否记住密码调用.
 		remeberPassword
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					public void onCheckedChanged(CompoundButton arg0,
 							boolean arg1) {
-						if (arg1) {
-							SharedPreferences.Editor mEditor = mSharedPreferences
-									.edit();
-							mEditor.putString("remeber", "true");
-							mEditor.putString("pass", passwordText.getText()
-									.toString());
-							mEditor.putString("userId", nameText.getText()
-									.toString());
-							mEditor.commit();
-						} else {
-							SharedPreferences.Editor mEditor = mSharedPreferences
-									.edit();
-							mEditor.putString("remeber", "false");
-							mEditor.putString("pass", "");
-							mEditor.putString("userId", "");
-							mEditor.commit();
-						}
+						savePass(arg1);
 					}
 
 				});
 		buttonLogin.setOnClickListener(this);
 	}
 
-	private void savePass() {
-		boolean arg1 = remeberPassword.isChecked();
+	/**
+	 * 勾选了记住密码的处理.
+	 * 
+	 * @param arg1
+	 */
+	private void savePass(boolean arg1) {
 		if (arg1) {
 			SharedPreferences.Editor mEditor = mSharedPreferences.edit();
 			mEditor.putString("remeber", "true");
@@ -102,6 +95,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 
+	/**
+	 * 判断网络状况.
+	 * 
+	 * @param context
+	 * @return
+	 */
 	public boolean isNetworkConnected(Context context) {
 		try {
 			if (context != null) {
@@ -121,10 +120,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	private class MyListLoader extends AsyncTask<String, String, String> {
 
-		private boolean showDialog; 
+		private boolean showDialog;
 
-		public MyListLoader(boolean showDialog ) {
-			this.showDialog = showDialog; 
+		public MyListLoader(boolean showDialog) {
+			this.showDialog = showDialog;
 		}
 
 		@Override
@@ -157,8 +156,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			}
 			buttonLogin.setEnabled(true);
 		}
-	} 
- 
+	}
+
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.buttonLogin) {
@@ -166,23 +165,25 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DIALOG_KEY: {
+			dialog = new ProgressDialog(this);
+			dialog.setMessage("正在登陆,请稍候");
+			dialog.setIndeterminate(true);
+			dialog.setCancelable(true);
+			return dialog;
+		}
+		}
+		return null;
+	}
+
 	public Handler myHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:
 				alert("对不起，该用户没有权限");
-				break;
-			case 2:
-				alert("对不起，手机序列号不匹配");
-				break;
-			case 3:
-				alert("对不起，密码错误");
-				break;
-			case 4:
-				alert("对不起，参数错误");
-				break;
-			case 5:
-				alert("没有安装相关软件，请安装软件后重试");
 				break;
 			case 6:
 				alert("对不起，服务端异常或者网络异常，请稍候重试");
@@ -194,19 +195,33 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		}
 	};
 
+	/**
+	 * md5加密方法.
+	 * 
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
 	public static byte[] encryptMD5(byte[] data) throws Exception {
 		MessageDigest md5 = MessageDigest.getInstance("MD5");
 		md5.update(data);
 		return md5.digest();
 	}
 
+	/**
+	 * 登陆请求服务器数据
+	 * @param userName
+	 * @param password
+	 */
 	public void login(final String userName, final String password) {
+		//得到url请求.
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		try {
+			//进行Md5加密数据.
 			BigInteger md5 = new BigInteger(encryptMD5(password.getBytes()));
-			HttpPost httpost = new HttpPost(
-					"http://jb.17miyou.com/api.ashx?do=login&username="
-							+ userName + "&password=" + md5.toString(16));
+			HttpPost httpost = new HttpPost(Constant.HOST
+					+ "?do=login&username=" + userName + "&password="
+					+ md5.toString(16));
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -216,12 +231,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 					br.readLine(), ServerResult.class);
 			if (1 != result.getErrorcode()) {
 				myHandler.sendEmptyMessage(1);
-			}
-			// 否则就进行文件解析处理.
+			} 
+			//成功了就跳转到活动列表页面.
 			else {
 				Intent intent = new Intent(LoginActivity.this,
 						ActivitesList.class);
 				JSONObject json = result.getData();
+				//解析返回的json串信息，传递参数到后面的页面.
 				AccessToken token = (AccessToken) JSON.parseObject(
 						json.toJSONString(), AccessToken.class);
 				intent.putExtra("name", token.getUsername());
@@ -233,6 +249,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			e.printStackTrace();
 			myHandler.sendEmptyMessage(6);
 		} finally {
+			//关闭连接.
 			httpclient.getConnectionManager().shutdown();
 		}
 	}

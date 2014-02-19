@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
+import com.ericssonlabs.util.Constant;
 
 /**
  * 活动列表详情.
@@ -28,21 +29,22 @@ import com.ericssonlabs.bean.ServerResult;
  */
 public class ActivitesStatus extends BaseActivity {
 	private String eventId;
-	private TextView beginTime;
-	private TextView endTime;
 	private TextView yishouchu;
 	private TextView yiqiandao;
-	private TextView title;
 	private String token;
 
+	/**
+	 * 调用远程数据请求数据.
+	 * @param eventId
+	 * @return
+	 */
 	private EventInfo activitiDetail(String eventId) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
 		try {
 
-			HttpPost httpost = new HttpPost(
-					"http://jb.17miyou.com/api.ashx?do=eventinfo&eventid="
-							+ eventId + "&token=" + token);
+			HttpPost httpost = new HttpPost(Constant.HOST
+					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -57,9 +59,9 @@ public class ActivitesStatus extends BaseActivity {
 			Message msg = new Message();
 			msg.what = 2;
 			Bundle b = new Bundle();
-			b.putString("totalcount", t.getTotalcount()+"");
-			b.putString("joincount", t.getJoincount()+"");
-			b.putString("checkcount", t.getCheckcount()+"");
+			b.putString("totalcount", t.getTotalcount() + "");
+			b.putString("joincount", t.getJoincount() + "");
+			b.putString("checkcount", t.getCheckcount() + "");
 			msg.setData(b);
 			myHandler.sendMessage(msg);
 			return t;
@@ -71,6 +73,7 @@ public class ActivitesStatus extends BaseActivity {
 		return null;
 	}
 
+	//页面活动调用.
 	public Handler myHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -79,8 +82,10 @@ public class ActivitesStatus extends BaseActivity {
 				break;
 			case 2:
 				Bundle info = msg.getData();
-				yishouchu.setText(info.getString("joincount")+"/"+info.getString("totalcount"));
-				yiqiandao.setText(info.getString("checkcount")+"/"+info.getString("joincount")); 
+				yishouchu.setText(info.getString("joincount") + "/"
+						+ info.getString("totalcount"));
+				yiqiandao.setText(info.getString("checkcount") + "/"
+						+ info.getString("joincount"));
 				break;
 			default:
 				super.hasMessages(msg.what);
@@ -96,15 +101,15 @@ public class ActivitesStatus extends BaseActivity {
 		setContentView(R.layout.activiti_status);
 		yishouchu = (TextView) findViewById(R.id.yishouchu);
 		yiqiandao = (TextView) findViewById(R.id.yiqiandao);
-		beginTime = (TextView) findViewById(R.id.act_begin_time);
-		endTime = (TextView) findViewById(R.id.act_end_time);
-		title = (TextView) findViewById(R.id.title);
 		Intent intent = getIntent();
 		eventId = intent.getStringExtra("eventid");
 		token = intent.getStringExtra("token");
 		new MyListLoader(eventId).execute("");
 	}
 
+	/**
+	 * 显示活动的详情信息.
+	 */
 	private class MyListLoader extends AsyncTask<String, String, String> {
 
 		private String eventId;
@@ -113,22 +118,9 @@ public class ActivitesStatus extends BaseActivity {
 			this.eventId = eventId;
 		}
 
-		@Override
-		protected void onPreExecute() {
-		}
-
 		public String doInBackground(String... p) {
 			activitiDetail(eventId);
 			return "";
-		}
-
-		@Override
-		public void onPostExecute(String Re) {
-
-		}
-
-		@Override
-		protected void onCancelled() {
 		}
 	}
 

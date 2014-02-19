@@ -1,5 +1,8 @@
 package com.ericssonlabs.bean;
 
+/**
+ * 活动类.
+ */
 public class Event {
 	private long eventid;
 	private String name;

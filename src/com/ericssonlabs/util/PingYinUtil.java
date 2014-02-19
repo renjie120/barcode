@@ -10,11 +10,9 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 /**
- * 拼音的工具类
- * @author 130126
+ * 拼音的工具类 
  *
- */
-
+ */  
 public class PingYinUtil {
 
 	/**
@@ -39,8 +37,7 @@ public class PingYinUtil {
 	}
 
 	/**
-	 * 获取拼音集合
-	 * 
+	 * 获取拼音集合 ,如果是多音字，返回多种情况.
 	 * @author wyh
 	 * @param src
 	 * @return Set<String>
@@ -85,6 +82,11 @@ public class PingYinUtil {
 		return null;
 	}
 
+	/**
+	 * 只返回汉字的一种拼音情况.
+	 * @param src
+	 * @return
+	 */
 	public static String getPinyin2(String src) {
 		Set<String> s = getPinyin(src);
 		if (s != null)

@@ -2,6 +2,9 @@ package com.ericssonlabs.bean;
 
 import java.util.List;
 
+/**
+ * 门票集合类.
+ */
 public class TicketList {
 	private int totalcount;// 门票总数量
 	private int checkcount;// 已签到的门票数量

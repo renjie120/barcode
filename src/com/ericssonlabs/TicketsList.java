@@ -36,12 +36,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.bean.TicketList;
 import com.ericssonlabs.bean.TicketListItem;
+import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.PingYinUtil;
 
 /**
- * 订票记录.
- * 
- * @author 130126
+ * 订票列表界面.  
  * 
  */
 public class TicketsList extends BaseActivity {
@@ -54,19 +53,14 @@ public class TicketsList extends BaseActivity {
 	private ServerResult result;
 	private MyImgAdapter adapter;
 	private ProgressDialog dialog;
-
-	public void seeDetail(View arg0) {
-		LinearLayout layout = (LinearLayout) arg0;
-		Intent intent = new Intent(TicketsList.this, ActivitesInfo.class);
-		intent.putExtra("eventid", layout.getTag().toString());
-		intent.putExtra("token", token);
-		this.startActivity(intent);
-	}
-
+ 
 	public void cancel(View arg0) {
 		search.setText("");
 	}
 
+	/**
+	 * 搜索文本框变化内容之后自动搜索.
+	 */
 	private TextWatcher searchWatcher = new TextWatcher() {
 
 		public void onTextChanged(CharSequence s, int start, int before,
@@ -96,13 +90,18 @@ public class TicketsList extends BaseActivity {
 		totalcountText = (TextView) findViewById(R.id.totalcount);
 		Intent intent = getIntent();
 		search = (TextView) findViewById(R.id.searchText);
+		//设置文本框的搜索事件.
 		search.addTextChangedListener(searchWatcher);
 
 		token = intent.getStringExtra("token");
 		eventId = intent.getStringExtra("eventid");
+		//加载票据列表页面.
 		new MyListLoader(true, eventId).execute("");
 	}
 
+	/**
+	 * 页面元素处理事件.
+	 */
 	public Handler myHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -110,6 +109,7 @@ public class TicketsList extends BaseActivity {
 				alert("对不起，出现异常");
 				break;
 			case 2:
+				//解析返回来的json数据信息.
 				JSONObject json = result.getData();
 				TicketList t = (TicketList) JSON.parseObject(
 						json.toJSONString(), TicketList.class);
@@ -123,12 +123,14 @@ public class TicketsList extends BaseActivity {
 						map.put("name", i.getName());
 						map.put("phone", i.getPhone());
 						map.put("charge", i.getChargetype());
+						//计算得到汉字名称的首字母的第一个拼音.
 						map.put("firstletter",
 								PingYinUtil.getPinyin2(i.getName())
 										.substring(0, 1).toUpperCase());
 						listItem.add(map);
 					}
 				}
+				//显示列表.
 				adapter = new MyImgAdapter(listItem, TicketsList.this);
 				list.setAdapter(adapter);
 				break;
@@ -153,6 +155,9 @@ public class TicketsList extends BaseActivity {
 		return null;
 	}
 
+	/**
+	 * 列表加载操作.
+	 */
 	private class MyListLoader extends AsyncTask<String, String, String> {
 
 		private boolean showDialog;
@@ -190,17 +195,17 @@ public class TicketsList extends BaseActivity {
 		}
 	}
 
+	/**
+	 * 调用请求返回订票的列表信息.
+	 * @param eventId
+	 */
 	private void tickeslist(String eventId) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
 		try {
 
-			HttpPost httpost = new HttpPost(
-					"http://jb.17miyou.com/api.ashx?do=mytickets&eventid="
-							+ eventId + "&token=" + token);
-			System.out
-					.println("http://jb.17miyou.com/api.ashx?do=mytickets&eventid="
-							+ eventId + "&token=" + token);
+			HttpPost httpost = new HttpPost(Constant.HOST
+					+ "?do=mytickets&eventid=" + eventId + "&token=" + token); 
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -221,6 +226,9 @@ public class TicketsList extends BaseActivity {
 		}
 	}
 
+	/**
+	 * 用于票据列表的数据适配器.
+	 */
 	class MyImgAdapter extends BaseAdapter {
 		private ArrayList<HashMap<String, Object>> data, olddata;// 用于接收传递过来的Context对象
 		private Context context;
@@ -236,6 +244,10 @@ public class TicketsList extends BaseActivity {
 			this.context = context;
 		}
 
+		/**
+		 * 根据名字等信息查询方法的具体实现.
+		 * @param searchText
+		 */
 		public void search(String searchText) {
 			try {
 				data.clear();
@@ -332,6 +344,7 @@ public class TicketsList extends BaseActivity {
 			}
 
 			HashMap<String, Object> markerItem = getItem(position);
+			//显示票据列表信息.
 			if (null != markerItem) {
 				viewHolder.phone.setText("手机号码：" + markerItem.get("phone"));
 				viewHolder.status
@@ -348,6 +361,7 @@ public class TicketsList extends BaseActivity {
 				viewHolder.charge
 						.setText("2".equals(markerItem.get("charge")) ? "收费"
 								: "免费");
+				//根据第一个首字母显示对应的分类标题。
 				if (position == 0) {
 					viewHolder.type.setVisibility(View.VISIBLE);
 					viewHolder.first_letter.setText(markerItem

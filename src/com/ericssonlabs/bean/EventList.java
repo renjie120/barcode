@@ -2,6 +2,9 @@ package com.ericssonlabs.bean;
 
 import java.util.List;
 
+/**
+ * 活动总数类.
+ */
 public class EventList {
 	private int totalcount;// 活动总数量
 	private List<EventListItem> items;// 活动信息集合

@@ -32,6 +32,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ericssonlabs.bean.EventList;
 import com.ericssonlabs.bean.EventListItem;
 import com.ericssonlabs.bean.ServerResult;
+import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
 
 /**
@@ -44,8 +45,14 @@ public class ActivitesList extends BaseActivity {
 	private ListView list;
 	private String token;
 	private static final int DIALOG_KEY = 0;
+	private ServerResult result;
 	private Handler handler = null;
 
+	/**
+	 * 查看活动详情.
+	 * 
+	 * @param arg0
+	 */
 	public void seeDetail(View arg0) {
 		LinearLayout layout = (LinearLayout) arg0;
 		Intent intent = new Intent(ActivitesList.this, ActivitesInfo.class);
@@ -54,6 +61,11 @@ public class ActivitesList extends BaseActivity {
 		this.startActivity(intent);
 	}
 
+	/**
+	 * 取消搜索框里面的文字信息.
+	 * 
+	 * @param arg0
+	 */
 	public void cancel(View arg0) {
 		LinearLayout layout = (LinearLayout) arg0;
 		Intent intent = new Intent(ActivitesList.this, ActivitesInfo.class);
@@ -70,10 +82,13 @@ public class ActivitesList extends BaseActivity {
 		list = (ListView) findViewById(R.id.ListView);
 		Intent intent = getIntent();
 		token = intent.getStringExtra("token");
-		// userActities();
+		// 查询全部的订到的票的信息.
 		new MyListLoader(true).execute("");
 	}
 
+	/**
+	 * 对页面的元素进行处理的回调类.
+	 */
 	public Handler myHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -81,6 +96,7 @@ public class ActivitesList extends BaseActivity {
 				alert("对不起，出现异常");
 				break;
 			case 2:
+				// 从url返回的数据进行解析，然后加载到列表中.
 				JSONObject json = result.getData();
 				EventList t = (EventList) JSON.parseObject(json.toJSONString(),
 						EventList.class);
@@ -97,6 +113,7 @@ public class ActivitesList extends BaseActivity {
 						listItem.add(map);
 					}
 				}
+				// 进行订票列表的展示.
 				MyImgAdapter adapter = new MyImgAdapter(listItem,
 						ActivitesList.this);
 				list.setAdapter(adapter);
@@ -108,6 +125,9 @@ public class ActivitesList extends BaseActivity {
 		}
 	};
 
+	/**
+	 * 加载订票的列表.
+	 */
 	private class MyListLoader extends AsyncTask<String, String, String> {
 
 		private boolean showDialog;
@@ -118,6 +138,7 @@ public class ActivitesList extends BaseActivity {
 
 		@Override
 		protected void onPreExecute() {
+			// 执行过程中显示进度栏.
 			if (showDialog) {
 				showDialog(DIALOG_KEY);
 			}
@@ -130,6 +151,9 @@ public class ActivitesList extends BaseActivity {
 
 		@Override
 		public void onPostExecute(String Re) {
+			/**
+			 * 完成的时候就取消进度栏.
+			 */
 			if (showDialog) {
 				removeDialog(DIALOG_KEY);
 			}
@@ -137,27 +161,30 @@ public class ActivitesList extends BaseActivity {
 
 		@Override
 		protected void onCancelled() {
+			// 取消进度栏.
 			if (showDialog) {
 				removeDialog(DIALOG_KEY);
 			}
 		}
 	}
 
-	private ServerResult result;
-
+	/**
+	 * 调用远程请求查询结果数据.
+	 */
 	private void userActities() {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
 		try {
 
-			HttpPost httpost = new HttpPost(
-					"http://jb.17miyou.com/api.ashx?do=myevents&token=" + token);
+			HttpPost httpost = new HttpPost(Constant.HOST
+					+ "?do=myevents&token=" + token);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					entity.getContent(), encoding));
 			result = (ServerResult) JSON.parseObject(br.readLine(),
 					ServerResult.class);
+			//如果返回数据不是1，就说明出现异常.
 			if (1 != result.getErrorcode()) {
 				myHandler.sendEmptyMessage(1);
 			}
@@ -172,6 +199,9 @@ public class ActivitesList extends BaseActivity {
 		}
 	}
 
+	/**
+	 * 加载票据信息列表.
+	 */
 	class MyImgAdapter extends BaseAdapter {
 		private ArrayList<HashMap<String, Object>> data;// 用于接收传递过来的Context对象
 		private Context context;
@@ -230,13 +260,11 @@ public class ActivitesList extends BaseActivity {
 				viewHolder.time.setText("" + markerItem.get("endtime"));
 				viewHolder.name.setText("" + markerItem.get("name"));
 				new Thread(new LoadImage("" + markerItem.get("url"),
-						viewHolder.img,R.drawable.huodong_paper)).start();
+						viewHolder.img, R.drawable.huodong_paper)).start();
 			}
 			return convertView;
 		}
 	}
-
-	 
 
 	public final static class ViewHolder {
 		public TextView time;

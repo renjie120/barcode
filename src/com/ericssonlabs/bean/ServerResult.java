@@ -2,6 +2,11 @@ package com.ericssonlabs.bean;
 
 import com.alibaba.fastjson.JSONObject;
 
+/**
+ * 包装服务器端请求结果的类.
+ *
+ * @param <T>
+ */
 public class ServerResult<T> {
 	public int errorcode; // 错误码，参见下面错误码说明
 	public String errormsg; // 错误说明，调用正确时为空

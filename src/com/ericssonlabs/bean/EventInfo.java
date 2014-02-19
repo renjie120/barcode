@@ -1,5 +1,8 @@
 package com.ericssonlabs.bean;
 
+/**
+ * 活动详情.
+ */
 public class EventInfo {
 	private long eventid;// 活动ID
 	private String name;// 活动名称
