@@ -98,7 +98,7 @@ public class ActivitesInfo extends BaseActivity {
 	 * @param arg0
 	 */
 	public void status(View arg0) {
-		LinearLayout layout = (LinearLayout) arg0;
+		LinearLayout layout = (LinearLayout) arg0; 
 		Intent intent = new Intent(ActivitesInfo.this, ActivitesStatus.class);
 		intent.putExtra("eventid", layout.getTag().toString());
 		intent.putExtra("token", token);

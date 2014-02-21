@@ -29,6 +29,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,10 +55,18 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	private ImageView xianzhiImg;
 	private ProgressDialog dialog;
 	private String temp;
+	private TextView sss;
 
 	protected void onResume() {
-		super.onResume();
+		super.onResume(); 
 		setContentView(R.layout.check_config);
+		sss = (TextView) findViewById(R.id.shaixuanqi);
+		xianzhi = mSharedPreferences.getString("xianzhi", "false"); 
+		if ("false".equals(xianzhi)) {
+			sss.setText("筛选器是关闭的");
+		} else {
+			sss.setText("筛选器是启用的");
+		}
 	}
 
 	/**
@@ -296,12 +305,19 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.check_config);
+		sss = (TextView) findViewById(R.id.shaixuanqi);
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
 				.getApplication());
 		Intent intent = getIntent();
 		token = intent.getStringExtra("token");
 		eventid = intent.getStringExtra("eventid");
 		temp = token + ";" + eventid + ";";
+		xianzhi = mSharedPreferences.getString("xianzhi", "false"); 
+		if ("false".equals(xianzhi)) {
+			sss.setText("筛选器是关闭的");
+		} else {
+			sss.setText("筛选器是启用的");
+		}
 	}
 
 	/**

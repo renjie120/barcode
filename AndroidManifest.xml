@@ -30,16 +30,18 @@
         </activity>
         <activity android:name=".ActivitesList" >
         </activity>
+        <activity android:name=".MainActivity" >
+        </activity>
         <activity android:name=".ActivitesStatus" >
         </activity>
         <activity android:name=".SignInActivity" >
         </activity>
         <activity android:name=".TicketsList" >
-        </activity> 
+        </activity>
         <activity android:name=".CheckConfig" >
         </activity>
         <activity android:name=".ActivitesInfo" >
-        </activity> 
+        </activity>
         <activity
             android:name="com.zxing.activity.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"
