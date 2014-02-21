@@ -57,7 +57,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	// 设置一个最大的数据条数，超过即不再加载
 	private int MaxDateNum;
 	// 每页显示的条数
-	private static int pageSize = 3;
+	private static int pageSize = 20;
 	// 默认开始显示的页码
 	private int currentPage = 1;
 	// 最后可见条目的索引

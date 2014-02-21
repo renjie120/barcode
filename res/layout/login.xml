@@ -79,8 +79,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:password="true"
-                        android:text="123123" >
+                        android:password="true" >
                     </EditText>
                 </TableRow>
             </TableLayout>

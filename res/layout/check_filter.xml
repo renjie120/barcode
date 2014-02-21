@@ -28,27 +28,30 @@
 
             <Button
                 android:id="@+id/log"
-                android:layout_width="@dimen/log_wid"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/log_hig"
                 android:background="@drawable/logo" />
         </LinearLayout>
     </FrameLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
         android:layout_margin="10dp"
         android:background="@drawable/shape_corner_gridview"
+        android:orientation="horizontal"
         android:padding="5dip" >
 
         <TextView
             android:id="@+id/name_title"
-            android:layout_width="250dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="4dp"
+            android:layout_weight="1"
             android:text="@string/xianzhi"
             android:textColor="@color/black"
             android:textSize="@dimen/textsize" />
@@ -57,10 +60,9 @@
             android:id="@+id/xianzhiImg"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_toRightOf="@id/name_title"
             android:background="@drawable/my"
             android:onClick="changetype" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <TextView
         android:layout_width="250dp"
