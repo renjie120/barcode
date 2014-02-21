@@ -5,16 +5,24 @@
     android:background="@color/background"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="@dimen/homepage_title_height"
+        android:background="@drawable/btn_bg"
         android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/titile_gre_ym"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="@string/qiandao"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title_textsize" />
 
         <LinearLayout
             android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:background="@drawable/btn_bg"
+            android:layout_height="50dp" 
             android:gravity="center"
             android:orientation="horizontal" >
 
@@ -24,45 +32,13 @@
                 android:layout_height="@dimen/log_hig"
                 android:background="@drawable/logo" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_bg"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/titile_gre_ym"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center|center_vertical"
-                android:text="@string/qiandao"
-                android:textColor="@color/white"
-                android:textSize="@dimen/title_textsize" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:background="@drawable/btn_bg"
-            android:gravity="center"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/savebtn"
-                android:layout_width="@dimen/homepage_btn_wid"
-                android:layout_height="@dimen/homepage_btn_hig"
-                android:background="@drawable/button_png"
-                android:text="@string/app_name" />
-        </LinearLayout>
-    </LinearLayout>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/totalcount"
         android:layout_width="fill_parent"
         android:layout_height="25dp"
+        android:layout_margin="2dp"
         android:focusable="true"
         android:textColor="@color/black"
         android:textSize="@dimen/search_size2" />
@@ -116,12 +92,12 @@
 
         <Button
             android:layout_width="46dp"
-            android:layout_height="38dp" 
+            android:layout_height="38dp"
             android:gravity="center_vertical"
-            android:text="@string/cancel"
-            android:textSize="12sp"
             android:onClick="cancel"
-            android:textColor="@color/black" />
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <ListView

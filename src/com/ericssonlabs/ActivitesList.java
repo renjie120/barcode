@@ -19,13 +19,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -41,12 +47,37 @@ import com.ericssonlabs.util.LoadImage;
  * @author 130126
  * 
  */
-public class ActivitesList extends BaseActivity {
+public class ActivitesList extends BaseActivity implements OnScrollListener {
 	private ListView list;
 	private String token;
 	private static final int DIALOG_KEY = 0;
 	private ServerResult result;
-	private Handler handler = null;
+	// ListView底部View
+	private View moreView;
+	// 设置一个最大的数据条数，超过即不再加载
+	private int MaxDateNum;
+	// 每页显示的条数
+	private static int pageSize = 3;
+	// 默认开始显示的页码
+	private int currentPage = 1;
+	// 最后可见条目的索引
+	private int lastVisibleIndex;
+	private Button bt;
+	private ProgressBar pg;
+	private ArrayList<HashMap<String, Object>> listItem;
+	private MyImgAdapter adapter;
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		// 计算最后可见条目的索引
+		lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
+		// 所有的条目已经和最大条数相等，则移除底部的View
+		if (totalItemCount == MaxDateNum + 1) {
+			list.removeFooterView(moreView);
+			Toast.makeText(this, "数据全部加载完成，没有更多数据！", Toast.LENGTH_SHORT).show();
+		}
+	}
 
 	/**
 	 * 查看活动详情.
@@ -83,7 +114,22 @@ public class ActivitesList extends BaseActivity {
 		Intent intent = getIntent();
 		token = intent.getStringExtra("token");
 		// 查询全部的订到的票的信息.
+		// 实例化底部布局
+		moreView = getLayoutInflater().inflate(R.drawable.moredata, null);
+		bt = (Button) moreView.findViewById(R.id.bt_load);
+		pg = (ProgressBar) moreView.findViewById(R.id.pg);
 		new MyListLoader(true).execute("");
+		list.setOnScrollListener(this);
+		// 设置点击更多按钮的事件，显示进度条.
+		bt.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				pg.setVisibility(View.VISIBLE);// 将进度条可见
+				bt.setVisibility(View.GONE);// 按钮不可见
+				currentPage++;
+				new MyListLoader(true).execute("");
+			}
+		});
 	}
 
 	/**
@@ -96,12 +142,15 @@ public class ActivitesList extends BaseActivity {
 				alert("对不起，出现异常");
 				break;
 			case 2:
+				System.out.println("myHandler--2");
 				// 从url返回的数据进行解析，然后加载到列表中.
 				JSONObject json = result.getData();
 				EventList t = (EventList) JSON.parseObject(json.toJSONString(),
 						EventList.class);
+				// 设置最大数据条数
+				MaxDateNum = t.getTotalcount();
 				List<EventListItem> items = t.getItems();
-				ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
+				listItem = new ArrayList<HashMap<String, Object>>();
 				if (items != null && items.size() >= 1) {
 					for (EventListItem i : items) {
 						HashMap<String, Object> map = new HashMap<String, Object>();
@@ -114,9 +163,33 @@ public class ActivitesList extends BaseActivity {
 					}
 				}
 				// 进行订票列表的展示.
-				MyImgAdapter adapter = new MyImgAdapter(listItem,
-						ActivitesList.this);
+				adapter = new MyImgAdapter(listItem, ActivitesList.this);
+				// 添加上最后的一个底部视图.
+				list.addFooterView(moreView);
 				list.setAdapter(adapter);
+				break;
+			case 3:
+				System.out.println("myHandler--3");
+				// 追加新的列表数据.
+				JSONObject json2 = result.getData();
+				EventList t2 = (EventList) JSON.parseObject(
+						json2.toJSONString(), EventList.class);
+				List<EventListItem> items2 = t2.getItems();
+				if (items2 != null && items2.size() >= 1) {
+					for (EventListItem i : items2) {
+						HashMap<String, Object> map = new HashMap<String, Object>();
+						map.put("endtime", i.getEndtime());
+						map.put("eventid", i.getEventid());
+						map.put("name", i.getName());
+						map.put("starttime", i.getStarttime());
+						map.put("url", i.getImageurl());
+						listItem.add(map);
+					}
+				}
+				bt.setVisibility(View.VISIBLE);
+				pg.setVisibility(View.GONE);
+				// 通知listView刷新数据
+				adapter.notifyDataSetChanged();
 				break;
 			default:
 				super.hasMessages(msg.what);
@@ -145,7 +218,7 @@ public class ActivitesList extends BaseActivity {
 		}
 
 		public String doInBackground(String... p) {
-			userActities();
+			userActities(currentPage, pageSize);
 			return "";
 		}
 
@@ -171,26 +244,29 @@ public class ActivitesList extends BaseActivity {
 	/**
 	 * 调用远程请求查询结果数据.
 	 */
-	private void userActities() {
+	private void userActities(int page, int size) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
 		try {
-
 			HttpPost httpost = new HttpPost(Constant.HOST
-					+ "?do=myevents&token=" + token);
+					+ "?do=myevents&token=" + token + "&page=" + page
+					+ "&size=" + size);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					entity.getContent(), encoding));
 			result = (ServerResult) JSON.parseObject(br.readLine(),
 					ServerResult.class);
-			//如果返回数据不是1，就说明出现异常.
+			// 如果返回数据不是1，就说明出现异常.
 			if (1 != result.getErrorcode()) {
 				myHandler.sendEmptyMessage(1);
 			}
 			// 否则就进行文件解析处理.
 			else {
-				myHandler.sendEmptyMessage(2);
+				if (page == 1)
+					myHandler.sendEmptyMessage(2);
+				else
+					myHandler.sendEmptyMessage(3);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -244,8 +320,10 @@ public class ActivitesList extends BaseActivity {
 						.findViewById(R.id.act_name);
 				viewHolder.statusbar = (LinearLayout) convertView
 						.findViewById(R.id.status_bar);
-				viewHolder.time = (TextView) convertView
+				viewHolder.start_time = (TextView) convertView
 						.findViewById(R.id.act_time);
+				viewHolder.end_time = (TextView) convertView
+						.findViewById(R.id.end_time);
 				viewHolder.img = (ImageView) convertView
 						.findViewById(R.id.activity_pic);
 
@@ -257,7 +335,8 @@ public class ActivitesList extends BaseActivity {
 			HashMap<String, Object> markerItem = getItem(position);
 			if (null != markerItem) {
 				viewHolder.statusbar.setTag(markerItem.get("eventid"));
-				viewHolder.time.setText("" + markerItem.get("endtime"));
+				viewHolder.start_time.setText("" + markerItem.get("starttime"));
+				viewHolder.end_time.setText("" + markerItem.get("endtime"));
 				viewHolder.name.setText("" + markerItem.get("name"));
 				new Thread(new LoadImage("" + markerItem.get("url"),
 						viewHolder.img, R.drawable.huodong_paper)).start();
@@ -267,10 +346,34 @@ public class ActivitesList extends BaseActivity {
 	}
 
 	public final static class ViewHolder {
-		public TextView time;
+		public TextView start_time;
 		public ImageView img;
 		public LinearLayout statusbar;
+		public TextView end_time;
 		public TextView name;
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// 滑到底部后自动加载，判断listview已经停止滚动并且最后可视的条目等于adapter的条目
+		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
+				&& lastVisibleIndex == adapter.getCount()) {
+			// // 当滑到底部时自动加载
+			// pg.setVisibility(View.VISIBLE);
+			// bt.setVisibility(View.GONE);
+			// handler.postDelayed(new Runnable() {
+			//
+			// @Override
+			// public void run() {
+			// loadMoreDate();
+			// bt.setVisibility(View.VISIBLE);
+			// pg.setVisibility(View.GONE);
+			// adapter.notifyDataSetChanged();
+			// }
+			//
+			// });
+
+		}
 	}
 
 }

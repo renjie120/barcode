@@ -16,6 +16,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -40,7 +43,7 @@ import com.ericssonlabs.util.Constant;
  * 配置界面
  * 
  */
-public class CheckConfig extends BaseActivity {
+public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	private ListView list;
 	private String token;
 	private String eventid;
@@ -50,6 +53,12 @@ public class CheckConfig extends BaseActivity {
 	private SharedPreferences mSharedPreferences;
 	private ImageView xianzhiImg;
 	private ProgressDialog dialog;
+	private String temp;
+
+	protected void onResume() {
+		super.onResume();
+		setContentView(R.layout.check_config);
+	}
 
 	/**
 	 * 跳转到配置的过滤界面.
@@ -59,8 +68,7 @@ public class CheckConfig extends BaseActivity {
 	public void gofilter(View arg0) {
 		setContentView(R.layout.check_filter);
 		list = (ListView) findViewById(R.id.ListView);
-		mSharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		list.setOnItemClickListener(this);
 		xianzhi = mSharedPreferences.getString("xianzhi", "false");
 		xianzhiImg = (ImageView) findViewById(R.id.xianzhiImg);
 		if ("false".equals(xianzhi)) {
@@ -157,8 +165,16 @@ public class CheckConfig extends BaseActivity {
 
 			HashMap<String, Object> markerItem = getItem(position);
 			if (null != markerItem) {
+				String typeId = "" + markerItem.get("typeid");
 				viewHolder.typename.setText("" + markerItem.get("typename"));
-				viewHolder.ischeck.setTag(markerItem.get("typeid"));
+				viewHolder.ischeck.setTag(typeId);
+				String isCheck = mSharedPreferences.getString(temp + typeId,
+						"false");
+				if ("true".equals(isCheck)) {
+					viewHolder.ischeck.setVisibility(View.VISIBLE);
+				} else {
+					viewHolder.ischeck.setVisibility(View.GONE);
+				}
 			}
 			return convertView;
 		}
@@ -168,9 +184,10 @@ public class CheckConfig extends BaseActivity {
 		public TextView typename;
 		public ImageView ischeck;
 	}
-	
+
 	/**
 	 * 调用远程数据请求数据.
+	 * 
 	 * @param eventId
 	 */
 	private void typelist(String eventId) {
@@ -245,7 +262,7 @@ public class CheckConfig extends BaseActivity {
 		switch (id) {
 		case DIALOG_KEY: {
 			dialog = new ProgressDialog(this);
-			dialog.setMessage("正在查询数据...请稍候");
+			dialog.setMessage("正在查询...");
 			dialog.setIndeterminate(true);
 			dialog.setCancelable(true);
 			return dialog;
@@ -279,9 +296,29 @@ public class CheckConfig extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.check_config);
+		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
+				.getApplication());
 		Intent intent = getIntent();
 		token = intent.getStringExtra("token");
 		eventid = intent.getStringExtra("eventid");
+		temp = token + ";" + eventid + ";";
 	}
 
+	/**
+	 * 点击列表的时候设置是否显示对应的门票类型.
+	 */
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		ImageView v = (ImageView) arg1.findViewById(R.id.checkimg);
+		String typeId = "" + v.getTag();
+		String isCheck = mSharedPreferences.getString(temp + typeId, "false");
+		Editor e = mSharedPreferences.edit();
+		if ("true".equals(isCheck)) {
+			v.setVisibility(View.GONE);
+			e.putString(temp + typeId, "false");
+		} else {
+			v.setVisibility(View.VISIBLE);
+			e.putString(temp + typeId, "true");
+		}
+		e.commit();
+	}
 }

@@ -24,8 +24,8 @@
     <string name="message_login">用户登陆</string>
     <string name="registLogin_login">用户注册</string>
     <string name="bottom">您的活动专家</string>
-    <string name="begintime">活动开始时间</string>
-    <string name="endtime">活动结束时间</string>
+    <string name="begintime">开始时间</string>
+    <string name="endtime">结束时间</string>
     <string name="status">状态</string>
     <string name="xianzhi">限制入场票的类型</string>
     <string name="qiandao">入场签到</string>

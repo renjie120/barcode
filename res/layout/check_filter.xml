@@ -28,8 +28,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_bg"
+            android:layout_weight="1" 
             android:orientation="horizontal" >
 
             <TextView
@@ -65,12 +64,14 @@
         android:layout_gravity="top|center_horizontal"
         android:layout_margin="10dp"
         android:background="@drawable/shape_corner_gridview"
-        android:padding="2dip" >
+        android:padding="5dip" >
 
         <TextView
             android:id="@+id/name_title"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="4dp"
             android:layout_marginLeft="20dp"
             android:text="@string/xianzhi"
             android:textColor="@color/black"
@@ -79,8 +80,8 @@
         <ImageView
             android:id="@+id/xianzhiImg"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/name_title" 
+            android:layout_height="30dp"
+            android:layout_toRightOf="@id/name_title"
             android:background="@drawable/my"
             android:onClick="changetype" />
     </RelativeLayout>

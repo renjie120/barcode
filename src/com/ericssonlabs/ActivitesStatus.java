@@ -14,12 +14,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.Constant;
+import com.ericssonlabs.util.LoadImage;
 
 /**
  * 活动列表详情.
@@ -32,9 +34,11 @@ public class ActivitesStatus extends BaseActivity {
 	private TextView yishouchu;
 	private TextView yiqiandao;
 	private String token;
+	private ImageView activity_pic;
 
 	/**
 	 * 调用远程数据请求数据.
+	 * 
 	 * @param eventId
 	 * @return
 	 */
@@ -73,7 +77,7 @@ public class ActivitesStatus extends BaseActivity {
 		return null;
 	}
 
-	//页面活动调用.
+	// 页面活动调用.
 	public Handler myHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -101,9 +105,12 @@ public class ActivitesStatus extends BaseActivity {
 		setContentView(R.layout.activiti_status);
 		yishouchu = (TextView) findViewById(R.id.yishouchu);
 		yiqiandao = (TextView) findViewById(R.id.yiqiandao);
+		activity_pic = (ImageView) findViewById(R.id.activity_pic); 
 		Intent intent = getIntent();
 		eventId = intent.getStringExtra("eventid");
 		token = intent.getStringExtra("token");
+		new Thread(new LoadImage(intent.getStringExtra("url"), activity_pic,
+				R.drawable.huodong_paper)).start();
 		new MyListLoader(eventId).execute("");
 	}
 

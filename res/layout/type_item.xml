@@ -3,16 +3,18 @@
     android:id="@+id/type"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/background"
+    android:background="@color/white"
     android:cacheColorHint="#00000000"
+    android:gravity="center_vertical"
     android:orientation="horizontal" >
 
     <TextView
         android:id="@+id/typename"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_gravity="center_vertical|left"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
         android:textColor="@color/black"
         android:textSize="@dimen/tick_type_size2" />
 
@@ -20,6 +22,7 @@
         android:id="@+id/checkimg"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:src="@drawable/true_ico" />
+        android:src="@drawable/true_ico"
+        android:visibility="gone" />
 
 </LinearLayout>

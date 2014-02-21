@@ -15,10 +15,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -40,7 +42,7 @@ import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.PingYinUtil;
 
 /**
- * 订票列表界面.  
+ * 订票列表界面.
  * 
  */
 public class TicketsList extends BaseActivity {
@@ -53,9 +55,20 @@ public class TicketsList extends BaseActivity {
 	private ServerResult result;
 	private MyImgAdapter adapter;
 	private ProgressDialog dialog;
- 
+	private String temp;
+	private SharedPreferences mSharedPreferences;
+
 	public void cancel(View arg0) {
 		search.setText("");
+	}
+
+	protected void onResume() {
+		super.onResume();
+		// 重新刷新一下列表
+		if (adapter != null) {
+			adapter.searchByType();
+			list.setAdapter(adapter);
+		}
 	}
 
 	/**
@@ -86,16 +99,19 @@ public class TicketsList extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.tickets_list);
+		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
+				.getApplication());
 		list = (ListView) findViewById(R.id.ListView);
 		totalcountText = (TextView) findViewById(R.id.totalcount);
 		Intent intent = getIntent();
 		search = (TextView) findViewById(R.id.searchText);
-		//设置文本框的搜索事件.
+		// 设置文本框的搜索事件.
 		search.addTextChangedListener(searchWatcher);
 
 		token = intent.getStringExtra("token");
 		eventId = intent.getStringExtra("eventid");
-		//加载票据列表页面.
+		temp = token + ";" + eventId + ";";
+		// 加载票据列表页面.
 		new MyListLoader(true, eventId).execute("");
 	}
 
@@ -109,7 +125,7 @@ public class TicketsList extends BaseActivity {
 				alert("对不起，出现异常");
 				break;
 			case 2:
-				//解析返回来的json数据信息.
+				// 解析返回来的json数据信息.
 				JSONObject json = result.getData();
 				TicketList t = (TicketList) JSON.parseObject(
 						json.toJSONString(), TicketList.class);
@@ -121,16 +137,17 @@ public class TicketsList extends BaseActivity {
 						HashMap<String, Object> map = new HashMap<String, Object>();
 						map.put("status", i.getCheckstatus());// 图像资源的ID
 						map.put("name", i.getName());
+						map.put("type", i.getType() + "");
 						map.put("phone", i.getPhone());
 						map.put("charge", i.getChargetype());
-						//计算得到汉字名称的首字母的第一个拼音.
+						// 计算得到汉字名称的首字母的第一个拼音.
 						map.put("firstletter",
 								PingYinUtil.getPinyin2(i.getName())
 										.substring(0, 1).toUpperCase());
 						listItem.add(map);
 					}
 				}
-				//显示列表.
+				// 显示列表.
 				adapter = new MyImgAdapter(listItem, TicketsList.this);
 				list.setAdapter(adapter);
 				break;
@@ -141,12 +158,15 @@ public class TicketsList extends BaseActivity {
 		}
 	};
 
+	/**
+	 * 创建等待条.
+	 */
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DIALOG_KEY: {
 			dialog = new ProgressDialog(this);
-			dialog.setMessage("正在查询数据...请稍候");
+			dialog.setMessage("正在查询...");
 			dialog.setIndeterminate(true);
 			dialog.setCancelable(true);
 			return dialog;
@@ -197,15 +217,15 @@ public class TicketsList extends BaseActivity {
 
 	/**
 	 * 调用请求返回订票的列表信息.
+	 * 
 	 * @param eventId
 	 */
 	private void tickeslist(String eventId) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
 		try {
-
 			HttpPost httpost = new HttpPost(Constant.HOST
-					+ "?do=mytickets&eventid=" + eventId + "&token=" + token); 
+					+ "?do=mytickets&eventid=" + eventId + "&token=" + token);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -246,6 +266,7 @@ public class TicketsList extends BaseActivity {
 
 		/**
 		 * 根据名字等信息查询方法的具体实现.
+		 * 
 		 * @param searchText
 		 */
 		public void search(String searchText) {
@@ -292,6 +313,46 @@ public class TicketsList extends BaseActivity {
 						}
 					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		/**
+		 * 根据设置的类型进行过滤.
+		 */
+		public void searchByType() {
+			try {
+				// 如果设置了要进行类型的过滤就进行下面的筛选.
+				if ("true".equals(mSharedPreferences.getString("xianzhi",
+						"false"))) {
+					data.clear();
+					// 逐行扫描数据，添加满足类型的数据
+					for (HashMap<String, Object> m : olddata) {
+						if (!data.contains(m)) {
+							boolean hit = false;
+							// 按照类型查询对应的结果.
+							if (!hit) {
+								String type = m.get("type") + "";
+								// 判断是否设置了要显示数据.
+								if ("true".equals(mSharedPreferences.getString(
+										temp + type, "false"))) {
+									hit = true;
+								}
+							}
+							if (hit) {
+								data.add(m);
+							}
+						}
+
+					}
+				}
+				// 否则就显示全部的数据.
+				else {
+					data.clear();
+					data.addAll(olddata);
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -344,7 +405,7 @@ public class TicketsList extends BaseActivity {
 			}
 
 			HashMap<String, Object> markerItem = getItem(position);
-			//显示票据列表信息.
+			// 显示票据列表信息.
 			if (null != markerItem) {
 				viewHolder.phone.setText("手机号码：" + markerItem.get("phone"));
 				viewHolder.status
@@ -361,7 +422,7 @@ public class TicketsList extends BaseActivity {
 				viewHolder.charge
 						.setText("2".equals(markerItem.get("charge")) ? "收费"
 								: "免费");
-				//根据第一个首字母显示对应的分类标题。
+				// 根据第一个首字母显示对应的分类标题。
 				if (position == 0) {
 					viewHolder.type.setVisibility(View.VISIBLE);
 					viewHolder.first_letter.setText(markerItem

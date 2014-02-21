@@ -40,6 +40,7 @@ public class ActivitesInfo extends BaseActivity {
 	private TextView title;
 	private ImageView imge;
 	private String token;
+	private String url;
 
 	private EventInfo activitiDetail(String eventId) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -78,20 +79,21 @@ public class ActivitesInfo extends BaseActivity {
 	}
 
 	/**
-	 * 签到.
+	 * 签到按钮触发事件.
 	 * 
 	 * @param arg0
 	 */
 	public void qiandao(View arg0) {
 		LinearLayout layout = (LinearLayout) arg0;
 		Intent intent = new Intent(ActivitesInfo.this, SignInActivity.class);
-		intent.putExtra("eventid", layout.getTag().toString());
+		//intent.putExtra("eventid", layout.getTag().toString());
+		intent.putExtra("eventid", "1");
 		intent.putExtra("token", token);
 		this.startActivity(intent);
 	}
 
 	/**
-	 * 查看状态.
+	 * 查看状态按钮触发事件.
 	 * 
 	 * @param arg0
 	 */
@@ -100,6 +102,7 @@ public class ActivitesInfo extends BaseActivity {
 		Intent intent = new Intent(ActivitesInfo.this, ActivitesStatus.class);
 		intent.putExtra("eventid", layout.getTag().toString());
 		intent.putExtra("token", token);
+		intent.putExtra("url", url);
 		this.startActivity(intent);
 	}
 
@@ -138,8 +141,9 @@ public class ActivitesInfo extends BaseActivity {
 				beginTime.setText(info.getString("starttime"));
 				endTime.setText(info.getString("endtime"));
 				title.setText(info.getString("name"));
-				new Thread(new LoadImage(info.getString("url"), imge,
-						R.drawable.huodong_paper)).start();
+				url = info.getString("url");
+				new Thread(new LoadImage(url, imge, R.drawable.huodong_paper))
+						.start();
 				break;
 			default:
 				super.hasMessages(msg.what);
