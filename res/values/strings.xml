@@ -27,8 +27,10 @@
     <string name="begintime">开始时间</string>
     <string name="endtime">结束时间</string>
     <string name="status">状态</string>
+    <string name="scan">扫描</string>
     <string name="xianzhi">限制入场票的类型</string>
     <string name="qiandao">入场签到</string>
+    <string name="qiandao2">签到</string>
     <string name="title_huodong">我的活动</string>
     <string name="title2_huodongtype">活动门票类型</string>
     <string name="title_filter">门票过滤器</string>
