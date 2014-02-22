@@ -28,7 +28,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +39,8 @@ import com.ericssonlabs.bean.EventListItem;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
+import com.ericssonlabs.util.RefreshableListView;
+import com.ericssonlabs.util.RefreshableListView.OnRefreshListener;
 
 /**
  * 活动列表.
@@ -48,7 +49,7 @@ import com.ericssonlabs.util.LoadImage;
  * 
  */
 public class ActivitesList extends BaseActivity implements OnScrollListener {
-	private ListView list;
+	private RefreshableListView list;
 	private String token;
 	private static final int DIALOG_KEY = 0;
 	private ServerResult result;
@@ -57,7 +58,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	// 设置一个最大的数据条数，超过即不再加载
 	private int MaxDateNum;
 	// 每页显示的条数
-	private static int pageSize = 20;
+	private static int pageSize = 5;
 	// 默认开始显示的页码
 	private int currentPage = 1;
 	// 最后可见条目的索引
@@ -72,8 +73,10 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 			int visibleItemCount, int totalItemCount) {
 		// 计算最后可见条目的索引
 		lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
+		System.out.println("totalItemCount==" + totalItemCount
+				+ ",,MaxDateNum=" + MaxDateNum);
 		// 所有的条目已经和最大条数相等，则移除底部的View
-		if (totalItemCount == MaxDateNum + 1) {
+		if (totalItemCount == MaxDateNum + 2) {
 			list.removeFooterView(moreView);
 			Toast.makeText(this, "数据全部加载完成，没有更多数据！", Toast.LENGTH_SHORT).show();
 		}
@@ -110,7 +113,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activiteslist);
-		list = (ListView) findViewById(R.id.ListView);
+		list = (RefreshableListView) findViewById(R.id.ListView);
 		Intent intent = getIntent();
 		token = intent.getStringExtra("token");
 		// 查询全部的订到的票的信息.
@@ -118,8 +121,17 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		moreView = getLayoutInflater().inflate(R.drawable.moredata, null);
 		bt = (Button) moreView.findViewById(R.id.bt_load);
 		pg = (ProgressBar) moreView.findViewById(R.id.pg);
+		// 加载listview
 		new MyListLoader(true).execute("");
 		list.setOnScrollListener(this);
+		list.setOnRefreshListener(new OnRefreshListener() {
+
+			@Override
+			public void onRefresh(RefreshableListView listView) {
+				System.out.println("mListView--onrefresh---44");
+				new MyListLoader(true).execute("");
+			}
+		});
 		// 设置点击更多按钮的事件，显示进度条.
 		bt.setOnClickListener(new OnClickListener() {
 			@Override

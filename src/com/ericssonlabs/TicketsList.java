@@ -24,13 +24,20 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -46,6 +53,7 @@ import com.ericssonlabs.util.PingYinUtil;
  * 
  */
 public class TicketsList extends BaseActivity {
+	
 	private ListView list;
 	private String token;
 	private TextView search;
@@ -57,6 +65,8 @@ public class TicketsList extends BaseActivity {
 	private ProgressDialog dialog;
 	private String temp;
 	private SharedPreferences mSharedPreferences;
+
+	
 
 	public void cancel(View arg0) {
 		search.setText("");

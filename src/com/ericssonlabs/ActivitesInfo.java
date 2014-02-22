@@ -28,8 +28,6 @@ import com.ericssonlabs.util.LoadImage;
 /**
  * 活动列表详情.
  * 
- * @author 130126
- * 
  */
 public class ActivitesInfo extends BaseActivity {
 	private String eventId;
@@ -86,7 +84,7 @@ public class ActivitesInfo extends BaseActivity {
 	public void qiandao(View arg0) {
 		LinearLayout layout = (LinearLayout) arg0;
 		Intent intent = new Intent(ActivitesInfo.this, SignInActivity.class);
-		//intent.putExtra("eventid", layout.getTag().toString());
+		// intent.putExtra("eventid", layout.getTag().toString());
 		intent.putExtra("eventid", "1");
 		intent.putExtra("token", token);
 		this.startActivity(intent);
@@ -98,7 +96,7 @@ public class ActivitesInfo extends BaseActivity {
 	 * @param arg0
 	 */
 	public void status(View arg0) {
-		LinearLayout layout = (LinearLayout) arg0; 
+		LinearLayout layout = (LinearLayout) arg0;
 		Intent intent = new Intent(ActivitesInfo.this, ActivitesStatus.class);
 		intent.putExtra("eventid", layout.getTag().toString());
 		intent.putExtra("token", token);
@@ -106,9 +104,7 @@ public class ActivitesInfo extends BaseActivity {
 		this.startActivity(intent);
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	private void initLayout() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activiti_info);
 		qiandao = (LinearLayout) findViewById(R.id.qiandao);
@@ -117,11 +113,24 @@ public class ActivitesInfo extends BaseActivity {
 		endTime = (TextView) findViewById(R.id.act_end_time);
 		title = (TextView) findViewById(R.id.title);
 		imge = (ImageView) findViewById(R.id.activity_pic);
+	}
+
+	private void initListeners() {
 		Intent intent = getIntent();
 		eventId = intent.getStringExtra("eventid");
 		qiandao.setTag(eventId);
 		status.setTag(eventId);
 		token = intent.getStringExtra("token");
+
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		initLayout();
+
+		initListeners();
+
 		// 加载列表
 		new MyListLoader(eventId).execute("");
 
