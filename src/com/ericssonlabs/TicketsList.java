@@ -24,20 +24,13 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -53,7 +46,7 @@ import com.ericssonlabs.util.PingYinUtil;
  * 
  */
 public class TicketsList extends BaseActivity {
-	
+
 	private ListView list;
 	private String token;
 	private TextView search;
@@ -66,8 +59,6 @@ public class TicketsList extends BaseActivity {
 	private String temp;
 	private SharedPreferences mSharedPreferences;
 
-	
-
 	public void cancel(View arg0) {
 		search.setText("");
 	}
@@ -76,8 +67,7 @@ public class TicketsList extends BaseActivity {
 		super.onResume();
 		// 重新刷新一下列表
 		if (adapter != null) {
-			adapter.searchByType();
-			list.setAdapter(adapter);
+			search.setText("");
 		}
 	}
 
@@ -282,42 +272,40 @@ public class TicketsList extends BaseActivity {
 		public void search(String searchText) {
 			try {
 				data.clear();
-				if (searchText == null || searchText.trim().equals("")) {
-					if (olddata != null && olddata.size() > 0) {
-						data.addAll(olddata);
+				// 如果没有设置要进行类型的过滤就进行下面的筛选.
+				if (!"true".equals(mSharedPreferences.getString("xianzhi",
+						"false"))) {
+					if (searchText == null || searchText.trim().equals("")) {
+						if (olddata != null && olddata.size() > 0) {
+							data.addAll(olddata);
+						}
+					} else {
+						for (HashMap<String, Object> m : olddata) {
+							if (!data.contains(m)) {
+								if (filterByText(m, searchText)) {
+									data.add(m);
+								}
+							}
+						}
 					}
-				} else {
-					for (HashMap<String, Object> m : olddata) {
-						if (!data.contains(m)) {
-							boolean hit = false;
-							// 按照名字查询
-							if (!hit) {
-								String text = m.get("name") + "";
-								if (text != null && text.contains(searchText)) {
-									hit = true;
+				}
+				//设置了要根据过滤的类型进行查询.
+				else {
+					if (searchText == null || searchText.trim().equals("")) {
+						if (olddata != null && olddata.size() > 0) {
+							// 逐行扫描数据，添加满足类型的数据
+							for (HashMap<String, Object> m : olddata) {
+								if (!data.contains(m) && filterByType(m)) {
+									data.add(m);
 								}
 							}
-
-							// 按照首字母查询
-							if (!hit) {
-								String text = m.get("firstletter") + "";
-								if (text != null
-										&& text.contains(searchText
-												.toUpperCase())) {
-									hit = true;
-								}
-							}
-
-							// 查询电话号码
-							if (!hit) {
-								String text = m.get("phone") + "";
-								if (text != null
-										&& text.toString().startsWith(
-												searchText.toUpperCase())) {
-									hit = true;
-								}
-							}
-							if (hit) {
+							// data.addAll(olddata);
+						}
+					} else {
+						for (HashMap<String, Object> m : olddata) {
+							if (!data.contains(m)
+									&& filterByText(m, searchText)
+									&& filterByType(m)) {
 								data.add(m);
 							}
 						}
@@ -329,45 +317,44 @@ public class TicketsList extends BaseActivity {
 		}
 
 		/**
-		 * 根据设置的类型进行过滤.
+		 * 根据关键字过滤.
+		 * 
+		 * @param m
+		 * @return
 		 */
-		public void searchByType() {
-			try {
-				// 如果设置了要进行类型的过滤就进行下面的筛选.
-				if ("true".equals(mSharedPreferences.getString("xianzhi",
-						"false"))) {
-					data.clear();
-					// 逐行扫描数据，添加满足类型的数据
-					for (HashMap<String, Object> m : olddata) {
-						if (!data.contains(m)) {
-							boolean hit = false;
-							// 按照类型查询对应的结果.
-							if (!hit) {
-								String type = m.get("type") + "";
-								// 判断是否设置了要显示数据.
-								if ("true".equals(mSharedPreferences.getString(
-										temp + type, "false"))) {
-									hit = true;
-								}
-							}
-							if (hit) {
-								data.add(m);
-							}
-						}
-
-					}
-				}
-				// 否则就显示全部的数据.
-				else {
-					data.clear();
-					data.addAll(olddata);
-				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
+		private boolean filterByText(HashMap<String, Object> m,
+				String searchText) {
+			// 根据名字查询
+			String t = m.get("name") + "";
+			if (t != null && t.contains(searchText)) {
+				return true;
 			}
+			// 根据首字母查询
+			t = m.get("firstletter") + "";
+			if (t != null && t.contains(searchText.toUpperCase())) {
+				return true;
+			}
+			// 根据电话号码查询
+			t = m.get("phone") + "";
+			if (t != null && t.startsWith(searchText)) {
+				return true;
+			}
+			return false;
 		}
 
+		/**
+		 * 根据选择的类型过滤 .
+		 * 
+		 * @param m
+		 * @return
+		 */
+		private boolean filterByType(HashMap<String, Object> m) {
+			String type = m.get("type") + "";
+			// 判断是否设置了要显示数据.
+			return "true".equals(mSharedPreferences.getString(temp + type,
+					"false"));
+		} 
+		 
 		@Override
 		public int getCount() {
 			int count = 0;

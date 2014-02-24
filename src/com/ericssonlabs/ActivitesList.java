@@ -153,8 +153,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 			case 1:
 				alert("对不起，出现异常");
 				break;
-			case 2:
-				System.out.println("myHandler--2");
+			case 2: 
 				// 从url返回的数据进行解析，然后加载到列表中.
 				JSONObject json = result.getData();
 				EventList t = (EventList) JSON.parseObject(json.toJSONString(),
@@ -180,8 +179,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 				list.addFooterView(moreView);
 				list.setAdapter(adapter);
 				break;
-			case 3:
-				System.out.println("myHandler--3");
+			case 3: 
 				// 追加新的列表数据.
 				JSONObject json2 = result.getData();
 				EventList t2 = (EventList) JSON.parseObject(
