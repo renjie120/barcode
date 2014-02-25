@@ -10,15 +10,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.Constant;
 import com.zxing.activity.CaptureActivity;
@@ -31,40 +30,35 @@ public class BarCodeActivity extends Activity {
 	private String token;
 	private String eventid;
 
-	private EventInfo qiandao(String tickid) {
+	private boolean qiandao(String tickid) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
 		try {
 
 			HttpPost httpost = new HttpPost(Constant.HOST
-					+ "?do=checkticket&ticketid="+tickid+"&check=true&token="
-					+ token);
+					+ "?do=checkticket&ticketid=" + tickid
+					+ "&check=true&token=" + token);
+			System.out.println("签到："+Constant.HOST
+					+ "?do=checkticket&ticketid=" + tickid
+					+ "&check=true&token=" + token);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					entity.getContent(), encoding));
 			String sss = br.readLine();
+			System.out.println("返回结果"+sss);
 			// 如果没有登录成功，就弹出提示信息.
 			ServerResult result = (ServerResult) JSON.parseObject(sss,
 					ServerResult.class);
 
-			EventInfo t = (EventInfo) JSON.parseObject(result.getData()
-					.toJSONString(), EventInfo.class);
-			Message msg = new Message();
-			msg.what = 2;
-			Bundle b = new Bundle();
-			b.putString("starttime", t.getStarttime());
-			b.putString("endtime", t.getEndtime());
-			b.putString("name", t.getName());
-			b.putString("url", t.getImageurl());
-			msg.setData(b); 
-			return t;
+			System.out.println(tickid + "签到结果：" + result.getData());
+			return "true".equals(result.getData());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			httpclient.getConnectionManager().shutdown();
 		}
-		return null;
+		return false;
 	}
 
 	@Override
@@ -91,6 +85,21 @@ public class BarCodeActivity extends Activity {
 
 	}
 
+	private class QiandaoLoader extends AsyncTask<String, String, String> {
+
+		private String tickId;
+
+		public QiandaoLoader(String tickId) {
+			this.tickId = tickId;
+		}
+
+		public String doInBackground(String... p) {
+			qiandao(tickId);
+			return "";
+		}
+
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -98,7 +107,8 @@ public class BarCodeActivity extends Activity {
 		if (resultCode == RESULT_OK) {
 			Bundle bundle = data.getExtras();
 			String scanResult = bundle.getString("result");
-			resultTextView.setText(scanResult);
+			new QiandaoLoader(scanResult).execute("");
+			// resultTextView.setText("票号：" + scanResult + "签到结果：" + ans);
 		}
 	}
 }

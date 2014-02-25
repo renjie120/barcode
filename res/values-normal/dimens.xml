@@ -18,4 +18,5 @@
     <dimen name="login_textsize2">13sp</dimen>
     <dimen name="login_textsize1">11sp</dimen>
     <dimen name="title_textsize">21sp</dimen>
-</resources>
+
+</resources>
