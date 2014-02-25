@@ -47,6 +47,8 @@ public class ActivitesInfo extends BaseActivity {
 
 			HttpPost httpost = new HttpPost(Constant.HOST
 					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token);
+			System.out.println("查看活动详情："+Constant.HOST
+					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(

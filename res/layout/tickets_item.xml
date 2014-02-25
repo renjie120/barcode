@@ -33,8 +33,8 @@
 
     <ImageView
         android:id="@+id/state_img"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="@dimen/tick_img_size"
+        android:layout_height="@dimen/tick_img_size"
         android:layout_alignLeft="@id/type"
         android:layout_below="@id/type"
         android:layout_marginLeft="3dp"
@@ -53,7 +53,7 @@
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/type"
-        android:layout_marginLeft="3dp"
+        android:layout_marginLeft="@dimen/tick_name_margin_l"
         android:layout_toRightOf="@id/state_img"
         android:textColor="@color/black"
         android:textSize="@dimen/tick_name_size" />
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/ticket_name"
-        android:layout_below="@id/ticket_name"
+        android:layout_below="@id/ticket_name" 
         android:textColor="@color/black"
         android:textSize="@dimen/tick_phone_size" />
 

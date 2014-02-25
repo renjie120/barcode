@@ -52,14 +52,16 @@
                         android:layout_marginLeft="5dp"
                         android:text="@string/name_title"
                         android:textColor="@color/gray2"
-                        android:textSize="@dimen/textsize" />
+                        android:textSize="@dimen/login_textsize3" />
 
                     <EditText
                         android:id="@+id/inputName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="test140103114242328" >
+                        android:singleLine="true"
+                        android:text="test140103114242328"
+                        android:textSize="@dimen/login_textsize2" >
                     </EditText>
                 </TableRow>
 
@@ -72,14 +74,16 @@
                         android:layout_marginLeft="5dp"
                         android:text="@string/pass_title"
                         android:textColor="@color/gray2"
-                        android:textSize="@dimen/textsize" />
+                        android:textSize="@dimen/login_textsize3" />
 
                     <EditText
                         android:id="@+id/inputPass"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:password="true" >
+                        android:inputType="textPassword"
+                        android:text="123123"
+                        android:textSize="@dimen/login_textsize2" >
                     </EditText>
                 </TableRow>
             </TableLayout>
@@ -94,18 +98,18 @@
                 android:id="@+id/remember_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/login_check_mrg_l"
                 android:text="@string/remember_password"
                 android:textColor="@color/gray2"
-                android:textSize="@dimen/login_textsize" />
+                android:textSize="@dimen/login_textsize1" />
 
             <TextView
                 android:id="@+id/mess_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/login_check_mrg_l"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/login_textsize"
+                android:textSize="@dimen/login_textsize1"
                 android:visibility="gone" />
         </LinearLayout>
 
@@ -116,7 +120,8 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/shape_corner_btn"
             android:text="@string/message_login"
-            android:textColor="@color/white" >
+            android:textColor="@color/white"
+            android:textSize="@dimen/login_textsize3" >
         </Button>
     </LinearLayout>
 

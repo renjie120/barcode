@@ -48,7 +48,7 @@ public class ActivitesStatus extends BaseActivity {
 		try {
 
 			HttpPost httpost = new HttpPost(Constant.HOST
-					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token);
+					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token); 
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(

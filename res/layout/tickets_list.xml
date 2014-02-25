@@ -22,7 +22,7 @@
 
         <LinearLayout
             android:layout_width="100dp"
-            android:layout_height="50dp" 
+            android:layout_height="50dp"
             android:gravity="center"
             android:orientation="horizontal" >
 
@@ -87,17 +87,18 @@
                 android:background="@color/orange"
                 android:gravity="center_vertical"
                 android:text="@string/search"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/tick_search_btn" />
         </LinearLayout>
 
         <Button
-            android:layout_width="46dp"
+            android:layout_width="@dimen/tick_search_width"
             android:layout_height="38dp"
             android:gravity="center_vertical"
             android:onClick="cancel"
             android:text="@string/cancel"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/tick_search_btn" />
     </LinearLayout>
 
     <ListView

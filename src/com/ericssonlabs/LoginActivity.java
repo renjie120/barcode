@@ -262,6 +262,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			HttpPost httpost = new HttpPost(Constant.HOST
 					+ "?do=login&username=" + userName + "&password="
 					+ md5.toString(16));
+			System.out.println("登陆："+Constant.HOST
+					+ "?do=login&username=" + userName + "&password="
+					+ md5.toString(16));
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(

@@ -105,8 +105,8 @@ public class SignInActivity extends TabActivity {
 		ImageView iv = new ImageView(this);
 		iv.setImageResource(i);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.FILL_PARENT, 80);
-		lp.setMargins(0, 30, 0, 0);
+				LinearLayout.LayoutParams.FILL_PARENT, 50);
+		lp.setMargins(0, 45, 0, 0);
 		iv.setLayoutParams(lp);
 		layout.addView(iv);
 
@@ -114,6 +114,7 @@ public class SignInActivity extends TabActivity {
 		tv.setGravity(Gravity.CENTER);
 		tv.setSingleLine(true);
 		tv.setText(s);
+		tv.setTextSize(12);
 		tv.setTextColor(Color.WHITE);
 		LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT, 0, 1);

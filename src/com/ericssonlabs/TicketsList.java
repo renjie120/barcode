@@ -226,6 +226,8 @@ public class TicketsList extends BaseActivity {
 		try {
 			HttpPost httpost = new HttpPost(Constant.HOST
 					+ "?do=mytickets&eventid=" + eventId + "&token=" + token);
+			System.out.println("查看全部的订票信息:"+Constant.HOST
+					+ "?do=mytickets&eventid=" + eventId + "&token=" + token);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(

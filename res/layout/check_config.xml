@@ -51,7 +51,7 @@
             android:layout_marginLeft="20dp"
             android:text="@string/xianzhi"
             android:textColor="@color/black"
-            android:textSize="@dimen/textsize" />
+            android:textSize="@dimen/login_textsize2" />
 
         <TextView
             android:id="@+id/shaixuanqi"

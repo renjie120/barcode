@@ -41,7 +41,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/login_bottom_textSize" >
+                    android:textSize="@dimen/activity_infosize_2" >
                 </TextView>
 
                 <TableLayout
@@ -58,7 +58,7 @@
                             android:layout_marginTop="2dp"
                             android:text="@string/begintime"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/qiandao_title" >
+                            android:textSize="@dimen/activity_infosize_2" >
                         </TextView>
 
                         <TextView
@@ -69,7 +69,7 @@
                             android:layout_marginTop="2dp"
                             android:singleLine="false"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/qiandao_title" >
+                            android:textSize="@dimen/activity_infosize_1" >
                         </TextView>
                     </TableRow>
 
@@ -82,7 +82,7 @@
                             android:layout_marginTop="2dp"
                             android:text="@string/endtime"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/qiandao_title" >
+                            android:textSize="@dimen/activity_infosize_2" >
                         </TextView>
 
                         <TextView
@@ -93,7 +93,7 @@
                             android:layout_marginTop="2dp"
                             android:singleLine="false"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/qiandao_title" >
+                            android:textSize="@dimen/activity_infosize_1" >
                         </TextView>
                     </TableRow>
                 </TableLayout>
@@ -133,8 +133,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="45px"
-                android:layout_marginTop="5px"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/qiandao"
                 android:textColor="@color/white"
                 android:textSize="@dimen/qiandao_button" />

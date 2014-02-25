@@ -1,0 +1,21 @@
+<resources>
+
+    <dimen name="chakan_button">15sp</dimen>
+    <dimen name="activity_infosize_1">11sp</dimen>
+    <dimen name="activity_infosize_2">12sp</dimen>
+    <dimen name="act_item_lft">40dp</dimen>
+    <dimen name="act_item_top">10dp</dimen>
+    <dimen name="act_item_botm">10dp</dimen>
+    <dimen name="act_item_lftimg">20dp</dimen>
+    <dimen name="qiandao_button">18sp</dimen>
+    <dimen name="tick_search_btn">10sp</dimen>
+    <dimen name="tick_name_size">14sp</dimen>
+    <dimen name="tick_stat_size">9sp</dimen>
+    <dimen name="tick_type_size">15sp</dimen>
+    <dimen name="tick_phone_size">11sp</dimen>
+    <dimen name="tick_name_margin_l">13dp</dimen>
+    <dimen name="login_textsize3">16sp</dimen>
+    <dimen name="login_textsize2">13sp</dimen>
+    <dimen name="login_textsize1">11sp</dimen>
+    <dimen name="title_textsize">21sp</dimen>
+</resources>

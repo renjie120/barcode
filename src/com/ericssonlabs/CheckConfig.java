@@ -29,7 +29,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -58,10 +57,10 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	private TextView sss;
 
 	protected void onResume() {
-		super.onResume(); 
+		super.onResume();
 		setContentView(R.layout.check_config);
 		sss = (TextView) findViewById(R.id.shaixuanqi);
-		xianzhi = mSharedPreferences.getString("xianzhi", "false"); 
+		xianzhi = mSharedPreferences.getString("xianzhi", "false");
 		if ("false".equals(xianzhi)) {
 			sss.setText("筛选器是关闭的");
 		} else {
@@ -206,6 +205,8 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 
 			HttpPost httpost = new HttpPost(Constant.HOST
 					+ "?do=listtype&token=" + token + "&eventid=" + eventId);
+			System.out.println("查看全部票的类型：" + Constant.HOST
+					+ "?do=listtype&token=" + token + "&eventid=" + eventId);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -312,7 +313,7 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		token = intent.getStringExtra("token");
 		eventid = intent.getStringExtra("eventid");
 		temp = token + ";" + eventid + ";";
-		xianzhi = mSharedPreferences.getString("xianzhi", "false"); 
+		xianzhi = mSharedPreferences.getString("xianzhi", "false");
 		if ("false".equals(xianzhi)) {
 			sss.setText("筛选器是关闭的");
 		} else {

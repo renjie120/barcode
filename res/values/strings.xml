@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">我的活动</string>
-    <string name="title1">账号登陆 </string>
+    <string name="title1">账号登陆-common</string>
     <string name="yiqiandao">已签到人数</string>
     <string name="yishouchu">已售出门票</string>
     <string name="search">搜索</string>

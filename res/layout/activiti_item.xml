@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_toRightOf="@id/activity_pic"
-        android:textColor="@color/black" >
+        android:textColor="@color/black"
+        android:textSize="@dimen/activity_infosize_2" >
     </TextView>
 
     <TextView
@@ -29,7 +30,8 @@
         android:layout_below="@id/act_name"
         android:layout_toRightOf="@id/activity_pic"
         android:text="@string/begintime"
-        android:textColor="@color/black" >
+        android:textColor="@color/black"
+        android:textSize="@dimen/activity_infosize_2" >
     </TextView>
 
     <TextView
@@ -38,7 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/act_name"
         android:layout_toRightOf="@id/act_time_title"
-        android:textColor="@color/black" >
+        android:textColor="@color/black"
+        android:textSize="@dimen/activity_infosize_1" >
     </TextView>
 
     <TextView
@@ -49,7 +52,8 @@
         android:layout_below="@id/act_time_title"
         android:layout_toRightOf="@id/activity_pic"
         android:text="@string/endtime"
-        android:textColor="@color/black" >
+        android:textColor="@color/black"
+        android:textSize="@dimen/activity_infosize_2" >
     </TextView>
 
     <TextView
@@ -58,7 +62,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/act_time"
         android:layout_toRightOf="@id/end_time_title"
-        android:textColor="@color/black" >
+        android:textColor="@color/black"
+        android:textSize="@dimen/activity_infosize_1" >
     </TextView>
 
     <LinearLayout
@@ -68,10 +73,10 @@
         android:layout_alignBottom="@id/activity_pic"
         android:layout_alignParentRight="true"
         android:layout_below="@id/end_time_title"
-        android:layout_gravity="right" 
-        android:layout_marginBottom="25dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_gravity="right"
+        android:layout_marginBottom="@dimen/act_item_botm"
+        android:layout_marginLeft="@dimen/act_item_lft"
+        android:layout_marginTop="@dimen/act_item_top"
         android:layout_toRightOf="@id/activity_pic"
         android:background="@drawable/detail_bg"
         android:gravity="center_vertical"
@@ -83,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="@dimen/act_item_lftimg"
             android:text="@string/chakan"
             android:textColor="@color/white"
             android:textSize="@dimen/chakan_button" />

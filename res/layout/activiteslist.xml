@@ -10,8 +10,9 @@
         android:layout_height="@dimen/bottom_height"
         android:layout_gravity="bottom"
         layout="@layout/activity_title" />
+    <!-- <com.ericssonlabs.util.RefreshableListView -->
 
-    <com.ericssonlabs.util.RefreshableListView
+    <ListView
         android:id="@+id/ListView"
         android:layout_width="fill_parent"
         android:layout_height="0dp"

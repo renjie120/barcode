@@ -28,6 +28,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +50,7 @@ import com.ericssonlabs.util.RefreshableListView.OnRefreshListener;
  * 
  */
 public class ActivitesList extends BaseActivity implements OnScrollListener {
-	private RefreshableListView list;
+	private ListView list;
 	private String token;
 	private static final int DIALOG_KEY = 0;
 	private ServerResult result;
@@ -113,7 +114,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activiteslist);
-		list = (RefreshableListView) findViewById(R.id.ListView);
+		list = (ListView) findViewById(R.id.ListView);
 		Intent intent = getIntent();
 		token = intent.getStringExtra("token");
 		// 查询全部的订到的票的信息.
@@ -124,14 +125,14 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		// 加载listview
 		new MyListLoader(true).execute("");
 		list.setOnScrollListener(this);
-		list.setOnRefreshListener(new OnRefreshListener() {
-
-			@Override
-			public void onRefresh(RefreshableListView listView) {
-				System.out.println("mListView--onrefresh---44");
-				new MyListLoader(true).execute("");
-			}
-		});
+//		list.setOnRefreshListener(new OnRefreshListener() {
+//
+//			@Override
+//			public void onRefresh(RefreshableListView listView) {
+//				System.out.println("mListView--onrefresh---44");
+//				new MyListLoader(true).execute("");
+//			}
+//		});
 		// 设置点击更多按钮的事件，显示进度条.
 		bt.setOnClickListener(new OnClickListener() {
 			@Override
@@ -259,6 +260,9 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		String encoding = "UTF-8";
 		try {
 			HttpPost httpost = new HttpPost(Constant.HOST
+					+ "?do=myevents&token=" + token + "&page=" + page
+					+ "&size=" + size);
+			System.out.println("查看全部的活动："+Constant.HOST
 					+ "?do=myevents&token=" + token + "&page=" + page
 					+ "&size=" + size);
 			HttpResponse response = httpclient.execute(httpost);

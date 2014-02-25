@@ -6,8 +6,16 @@
     <dimen name="homepage_btn_wid">60sp</dimen>
     <dimen name="log_hig">30sp</dimen>
     <dimen name="log_wid">60sp</dimen>
+    <dimen name="login_check_mrg_l">5dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_infosize_1">15sp</dimen>
+    <dimen name="login_check">28dp</dimen>
+    <dimen name="activity_infosize_2">15sp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="act_item_lft">50dp</dimen>
+    <dimen name="act_item_lftimg">25dp</dimen>
+    <dimen name="act_item_top">20dp</dimen>
+    <dimen name="act_item_botm">25dp</dimen>
     <dimen name="fst_team_name_size">22dp</dimen>
     <dimen name="login_bottom_textSize">18dp</dimen>
     <dimen name="text_size1">21dp</dimen>
@@ -17,8 +25,9 @@
     <dimen name="titlebuttonheight">40dp</dimen>
     <dimen name="buttonwidth">110dp</dimen>
     <dimen name="buttonheight">40dp</dimen>
-    <dimen name="textsize">20sp</dimen>
-    <dimen name="login_textsize">16sp</dimen>
+    <dimen name="login_textsize3">20sp</dimen>
+    <dimen name="login_textsize2">18sp</dimen>
+    <dimen name="login_textsize1">16sp</dimen>
     <dimen name="qiandao_button">25sp</dimen>
     <dimen name="chakan_button">18sp</dimen>
     <dimen name="qiandao_title">15sp</dimen>
@@ -27,10 +36,14 @@
     <dimen name="tick_name_size">18sp</dimen>
     <dimen name="tick_stat_size">9sp</dimen>
     <dimen name="tick_type_size">15sp</dimen>
+    <dimen name="tick_search_btn">12sp</dimen>
     <dimen name="tick_type_size2">18sp</dimen>
+    <dimen name="tick_img_size">26dp</dimen>
+    <dimen name="tick_name_margin_l">9dp</dimen>
     <dimen name="search_size2">14sp</dimen>
     <dimen name="qiandao_height">130dp</dimen>
     <dimen name="bottom_height">45dp</dimen>
+    <dimen name="tick_search_width">50dp</dimen>
 
     <color name="gray">#C5CCD4</color>
     <color name="orange">#FF6600</color>
