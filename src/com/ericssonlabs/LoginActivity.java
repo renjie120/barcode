@@ -30,12 +30,17 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ericssonlabs.bean.AccessToken;
 import com.ericssonlabs.bean.ServerResult;
+import com.ericssonlabs.util.ActionBar;
+import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 
 /**
@@ -55,31 +60,115 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private SharedPreferences mSharedPreferences;
 	private ProgressDialog dialog;
 	private TextView mess_title;
+	private float screenHeight = 0;
+	private float screenWidth = 0;
+	// private LinearLayout titile_gre_ym;
+	private ActionBar head;
+	private BottomBar login_bottom;
+	// 登陆框的高度
+	private float tabH = 0.38f;
+	// 登陆框的宽度
+	private float tabW = 0.86f;
+	// 图标的上下空白
+	private float imgMrg = 0.05f;
+	private TextView name_title;
+	private TextView pass_title;
+	// 中间table的左边框距离.
+	// private float tabMrgL = 17 / 257f;
+	private LinearLayout center_table;
+	private TableLayout table;
+	private ImageView logo_img;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.login);
+	/**
+	 * 设置登录文本框前字体大小.
+	 * 
+	 * @param screenWidth
+	 * @return
+	 */
+	public int adjusLoginTextFontSize(int screenWidth) {
+		if (screenWidth <= 240) { // 240X320 屏幕
+			return 10;
+		} else if (screenWidth <= 320) { // 320X480 屏幕
+			return 14;
+		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
+			return 24;
+		} else if (screenWidth <= 540) { // 540X960 屏幕
+			return 26;
+		} else if (screenWidth <= 800) { // 800X1280 屏幕
+			return 30;
+		} else { // 大于 800X1280
+			return 30;
+		}
+	}
+
+	/**
+	 * 屏幕适配.
+	 */
+	private void adjustScreen() {
+		// 得到屏幕大小.
+		float[] screen2 = getScreen2();
+		screenHeight = screen2[1];
+		screenWidth = screen2[0];
+
+		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+				(int) (screenWidth * tabW), (int) (screenHeight * tabH));
+		// 设置table的高度和宽度.
+		table.setLayoutParams(p);
+
+		head.init(getText(R.string.title1).toString(), false, false,
+				LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
+		login_bottom.init(null, true, true,
+				LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
+		name_title.setTextSize(adjusLoginTextFontSize((int) screenWidth));
+		nameText.setTextSize(adjusLoginTextFontSize((int) screenWidth) - 1);
+		passwordText.setTextSize(adjusLoginTextFontSize((int) screenWidth) - 1);
+		pass_title.setTextSize(adjusLoginTextFontSize((int) screenWidth));
+		mess_title.setTextSize(adjusLoginTextFontSize((int) screenWidth) - 2);
+		buttonLogin.setTextSize(adjusLoginTextFontSize((int) screenWidth));
+		remeberPassword.setTextSize(adjusLoginTextFontSize((int) screenWidth) - 2);
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		System.out.println("图片的宽度：" + logo_img.getWidth() + ",,屏幕的宽度"
+				+ screenWidth);
+		System.out.println("表格布局的宽度：" + table.getWidth() + ",,屏幕的宽度"
+				+ screenWidth);
+		lp.setMargins(0, (int) (screenHeight * imgMrg), 0,
+				(int) (screenHeight * imgMrg));
+		// 设置logo的位置布局.
+		logo_img.setLayoutParams(lp);
+	}
+
+	/**
+	 * 初始化控件.
+	 */
+	private void init() {
+		name_title = (TextView) findViewById(R.id.name_title);
+		pass_title = (TextView) findViewById(R.id.pass_title);
+		logo_img = (ImageView) findViewById(R.id.logo_img);
+		center_table = (LinearLayout) findViewById(R.id.center_table);
 		buttonLogin = (Button) findViewById(R.id.buttonLogin);
+		head = (ActionBar) findViewById(R.id.login_head);
+		table = (TableLayout) findViewById(R.id.login_table);
 		mess_title = (TextView) findViewById(R.id.mess_title);
 		remeberPassword = (CheckBox) findViewById(R.id.remember_password);
 		nameText = (EditText) findViewById(R.id.inputName);
 		passwordText = (EditText) findViewById(R.id.inputPass);
 		mSharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		if (!isNetworkConnected(this)) {
-			myHandler.sendEmptyMessage(2);
-		}else{
-			//如果选择了记住密码，就自动登陆.
-			if("true".equals(mSharedPreferences.getString("remeber", "false"))){
-				nameText.setText(mSharedPreferences.getString("userId", ""));
-				passwordText.setText(mSharedPreferences.getString("pass", ""));
-				remeberPassword.setChecked(true);
-				new MyListLoader(true).execute("");				
-			}
-		}
-		// 勾选是否记住密码调用.
+		login_bottom = (BottomBar) findViewById(R.id.login_bottom);
+
+		adjustScreen();
+	}
+
+	/**
+	 * 绑定事件.
+	 */
+	private void prepareListener() {// 勾选是否记住密码调用.
 		remeberPassword
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					public void onCheckedChanged(CompoundButton arg0,
@@ -89,6 +178,35 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 				});
 		buttonLogin.setOnClickListener(this);
+	}
+
+	/**
+	 * 登陆控制.
+	 */
+	private void autoLogin() {
+		if (!isNetworkConnected(this)) {
+			myHandler.sendEmptyMessage(2);
+		} else {
+			// 如果选择了记住密码，就自动登陆.
+			if ("true".equals(mSharedPreferences.getString("remeber", "false"))) {
+				nameText.setText(mSharedPreferences.getString("userId", ""));
+				passwordText.setText(mSharedPreferences.getString("pass", ""));
+				remeberPassword.setChecked(true);
+				new MyListLoader(true).execute("");
+			}
+		}
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.login);
+		init();
+
+		prepareListener();
+
+		autoLogin();
 	}
 
 	/**
@@ -262,9 +380,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			HttpPost httpost = new HttpPost(Constant.HOST
 					+ "?do=login&username=" + userName + "&password="
 					+ md5.toString(16));
-			System.out.println("登陆："+Constant.HOST
-					+ "?do=login&username=" + userName + "&password="
-					+ md5.toString(16));
+			System.out.println("登陆：" + Constant.HOST + "?do=login&username="
+					+ userName + "&password=" + md5.toString(16));
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(

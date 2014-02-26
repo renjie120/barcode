@@ -15,11 +15,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
+import com.ericssonlabs.util.ActionBar;
+import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
 
@@ -35,6 +38,10 @@ public class ActivitesStatus extends BaseActivity {
 	private TextView yiqiandao;
 	private String token;
 	private ImageView activity_pic;
+	private ActionBar head;
+	private BottomBar bottom;
+	private float screenHeight = 0;
+	private float screenWidth = 0;
 
 	/**
 	 * 调用远程数据请求数据.
@@ -48,7 +55,7 @@ public class ActivitesStatus extends BaseActivity {
 		try {
 
 			HttpPost httpost = new HttpPost(Constant.HOST
-					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token); 
+					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -98,20 +105,38 @@ public class ActivitesStatus extends BaseActivity {
 		}
 	};
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activiti_status);
+	private void initLayout() {
 		yishouchu = (TextView) findViewById(R.id.yishouchu);
 		yiqiandao = (TextView) findViewById(R.id.yiqiandao);
-		activity_pic = (ImageView) findViewById(R.id.activity_pic); 
+		activity_pic = (ImageView) findViewById(R.id.activity_pic);
+		float[] screen2 = getScreen2();
+		screenHeight = screen2[1];
+		screenWidth = screen2[0];
+		head = (ActionBar) findViewById(R.id.status_head);
+		bottom = (BottomBar) findViewById(R.id.status_bottom);
+
+		head.init(getText(R.string.title_huodong).toString(), false, false,
+				LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
+		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
 		Intent intent = getIntent();
 		eventId = intent.getStringExtra("eventid");
 		token = intent.getStringExtra("token");
 		new Thread(new LoadImage(intent.getStringExtra("url"), activity_pic,
 				R.drawable.huodong_paper)).start();
 		new MyListLoader(eventId).execute("");
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activiti_status);
+		initLayout();
+
 	}
 
 	/**

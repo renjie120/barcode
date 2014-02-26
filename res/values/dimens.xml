@@ -19,6 +19,8 @@
     <dimen name="fst_team_name_size">22dp</dimen>
     <dimen name="login_bottom_textSize">18dp</dimen>
     <dimen name="text_size1">21dp</dimen>
+    <dimen name="qiandaoHeight">40dp</dimen>
+    <dimen name="statusBarHeight">40dp</dimen>
     <dimen name="text_size2">18dp</dimen>
     <dimen name="text_size3">14dp</dimen>
     <dimen name="titleheight">50dp</dimen>

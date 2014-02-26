@@ -5,35 +5,11 @@
     android:background="@color/background"
     android:orientation="vertical" >
 
-    <FrameLayout
+    <com.ericssonlabs.util.ActionBar
+        android:id="@+id/ticket_list_head"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/homepage_title_height"
-        android:background="@drawable/btn_bg"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/titile_gre_ym"
-            android:layout_width="fill_parent"
-            android:layout_height="45dp"
-            android:gravity="center"
-            android:text="@string/qiandao"
-            android:textColor="@color/white"
-            android:textSize="@dimen/title_textsize" />
-
-        <LinearLayout
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/log"
-                android:layout_width="@dimen/log_wid"
-                android:layout_height="@dimen/log_hig"
-                android:background="@drawable/logo" />
-        </LinearLayout>
-    </FrameLayout>
-
+        android:layout_height="wrap_content" /> 
+  
     <TextView
         android:id="@+id/totalcount"
         android:layout_width="fill_parent"

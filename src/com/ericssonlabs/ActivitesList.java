@@ -38,10 +38,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.ericssonlabs.bean.EventList;
 import com.ericssonlabs.bean.EventListItem;
 import com.ericssonlabs.bean.ServerResult;
+import com.ericssonlabs.util.ActionBar;
+import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
-import com.ericssonlabs.util.RefreshableListView;
-import com.ericssonlabs.util.RefreshableListView.OnRefreshListener;
 
 /**
  * 活动列表.
@@ -67,7 +67,36 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	private Button bt;
 	private ProgressBar pg;
 	private ArrayList<HashMap<String, Object>> listItem;
-	private MyImgAdapter adapter;
+	private ActivitesListAdapter adapter;
+	private ActionBar head;
+	private BottomBar bottom;
+	private float screenHeight = 0;
+	private float screenWidth = 0;
+	// 查看详情按钮的高度比例.
+	private final static float statusBtnH = 24 / 321f;
+	private final static float statusBtnW = 121 / 321f;
+	private LinearLayout.LayoutParams p;
+
+	/**
+	 * 设置活动详情显示文本字体大小. 
+	 * @param screenWidth
+	 * @return
+	 */
+	public int adjusDescTextFontSize(int screenWidth) {
+		if (screenWidth <= 240) { // 240X320 屏幕
+			return 7;
+		} else if (screenWidth <= 320) { // 320X480 屏幕
+			return 12;
+		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
+			return 17;
+		} else if (screenWidth <= 540) { // 540X960 屏幕
+			return 20;
+		} else if (screenWidth <= 800) { // 800X1280 屏幕
+			return 23;
+		} else { // 大于 800X1280
+			return 23;
+		}
+	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
@@ -109,12 +138,9 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		this.startActivity(intent);
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activiteslist);
+	private void init() {
 		list = (ListView) findViewById(R.id.ListView);
+		list.setOnScrollListener(this);
 		Intent intent = getIntent();
 		token = intent.getStringExtra("token");
 		// 查询全部的订到的票的信息.
@@ -122,17 +148,11 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		moreView = getLayoutInflater().inflate(R.drawable.moredata, null);
 		bt = (Button) moreView.findViewById(R.id.bt_load);
 		pg = (ProgressBar) moreView.findViewById(R.id.pg);
+		head = (ActionBar) findViewById(R.id.list_head);
+		bottom = (BottomBar) findViewById(R.id.list_bottom);
+
 		// 加载listview
 		new MyListLoader(true).execute("");
-		list.setOnScrollListener(this);
-//		list.setOnRefreshListener(new OnRefreshListener() {
-//
-//			@Override
-//			public void onRefresh(RefreshableListView listView) {
-//				System.out.println("mListView--onrefresh---44");
-//				new MyListLoader(true).execute("");
-//			}
-//		});
 		// 设置点击更多按钮的事件，显示进度条.
 		bt.setOnClickListener(new OnClickListener() {
 			@Override
@@ -143,6 +163,27 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 				new MyListLoader(true).execute("");
 			}
 		});
+
+		float[] screen2 = getScreen2();
+		screenHeight = screen2[1];
+		screenWidth = screen2[0];
+		head.init(getText(R.string.title_huodong).toString(), false, false,
+				LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
+		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
+		p = new LinearLayout.LayoutParams((int) (screenWidth * statusBtnW),
+				(int) (screenHeight * statusBtnH));
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.activiteslist);
+		init();
 	}
 
 	/**
@@ -154,7 +195,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 			case 1:
 				alert("对不起，出现异常");
 				break;
-			case 2: 
+			case 2:
 				// 从url返回的数据进行解析，然后加载到列表中.
 				JSONObject json = result.getData();
 				EventList t = (EventList) JSON.parseObject(json.toJSONString(),
@@ -175,12 +216,12 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 					}
 				}
 				// 进行订票列表的展示.
-				adapter = new MyImgAdapter(listItem, ActivitesList.this);
+				adapter = new ActivitesListAdapter(listItem, ActivitesList.this);
 				// 添加上最后的一个底部视图.
 				list.addFooterView(moreView);
 				list.setAdapter(adapter);
 				break;
-			case 3: 
+			case 3:
 				// 追加新的列表数据.
 				JSONObject json2 = result.getData();
 				EventList t2 = (EventList) JSON.parseObject(
@@ -262,7 +303,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 			HttpPost httpost = new HttpPost(Constant.HOST
 					+ "?do=myevents&token=" + token + "&page=" + page
 					+ "&size=" + size);
-			System.out.println("查看全部的活动："+Constant.HOST
+			System.out.println("查看全部的活动：" + Constant.HOST
 					+ "?do=myevents&token=" + token + "&page=" + page
 					+ "&size=" + size);
 			HttpResponse response = httpclient.execute(httpost);
@@ -292,11 +333,11 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	/**
 	 * 加载票据信息列表.
 	 */
-	class MyImgAdapter extends BaseAdapter {
+	class ActivitesListAdapter extends BaseAdapter {
 		private ArrayList<HashMap<String, Object>> data;// 用于接收传递过来的Context对象
 		private Context context;
 
-		public MyImgAdapter(ArrayList<HashMap<String, Object>> data,
+		public ActivitesListAdapter(ArrayList<HashMap<String, Object>> data,
 				Context context) {
 			super();
 			this.data = data;
@@ -332,15 +373,33 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 
 				viewHolder.name = (TextView) convertView
 						.findViewById(R.id.act_name);
+				viewHolder.act_time_title = (TextView) convertView
+						.findViewById(R.id.act_time_title);
+				viewHolder.end_time_title = (TextView) convertView
+						.findViewById(R.id.end_time_title);
 				viewHolder.statusbar = (LinearLayout) convertView
 						.findViewById(R.id.status_bar);
+				viewHolder.status = (TextView) convertView
+						.findViewById(R.id.status);
+				// viewHolder.statusbar.setLayoutParams(p);
 				viewHolder.start_time = (TextView) convertView
 						.findViewById(R.id.act_time);
 				viewHolder.end_time = (TextView) convertView
 						.findViewById(R.id.end_time);
 				viewHolder.img = (ImageView) convertView
 						.findViewById(R.id.activity_pic);
-
+				viewHolder.status
+						.setTextSize(adjusDescTextFontSize((int) screenWidth));
+				viewHolder.name
+						.setTextSize(adjusDescTextFontSize((int) screenWidth));
+				viewHolder.end_time
+						.setTextSize(adjusDescTextFontSize((int) screenWidth) - 3);
+				viewHolder.start_time
+						.setTextSize(adjusDescTextFontSize((int) screenWidth) - 3);
+				viewHolder.end_time_title
+						.setTextSize(adjusDescTextFontSize((int) screenWidth) - 2);
+				viewHolder.act_time_title
+						.setTextSize(adjusDescTextFontSize((int) screenWidth) - 2);
 				convertView.setTag(viewHolder);
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
@@ -364,6 +423,9 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		public ImageView img;
 		public LinearLayout statusbar;
 		public TextView end_time;
+		public TextView status;
+		public TextView act_time_title;
+		public TextView end_time_title;
 		public TextView name;
 	}
 

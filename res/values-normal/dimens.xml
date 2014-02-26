@@ -1,5 +1,6 @@
 <resources>
 
+    <!--
     <dimen name="chakan_button">15sp</dimen>
     <dimen name="activity_infosize_1">11sp</dimen>
     <dimen name="activity_infosize_2">12sp</dimen>
@@ -17,6 +18,7 @@
     <dimen name="login_textsize3">16sp</dimen>
     <dimen name="login_textsize2">13sp</dimen>
     <dimen name="login_textsize1">11sp</dimen>
-    <dimen name="title_textsize">21sp</dimen>
+    <dimen name="title_textsize">21sp</dimen>
+    -->
 
 </resources>

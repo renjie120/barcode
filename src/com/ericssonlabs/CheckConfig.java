@@ -30,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.ericssonlabs.bean.ServerResults;
 import com.ericssonlabs.bean.TicketTypeItem;
+import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.Constant;
 
 /**
@@ -55,17 +57,14 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	private ProgressDialog dialog;
 	private String temp;
 	private TextView sss;
+	private ActionBar head;
+	private ActionBar head2;
+	private float screenHeight = 0;
+	private float screenWidth = 0;
 
 	protected void onResume() {
 		super.onResume();
-		setContentView(R.layout.check_config);
-		sss = (TextView) findViewById(R.id.shaixuanqi);
-		xianzhi = mSharedPreferences.getString("xianzhi", "false");
-		if ("false".equals(xianzhi)) {
-			sss.setText("筛选器是关闭的");
-		} else {
-			sss.setText("筛选器是启用的");
-		}
+		initConfig();
 	}
 
 	/**
@@ -77,6 +76,7 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		setContentView(R.layout.check_filter);
 		list = (ListView) findViewById(R.id.ListView);
 		list.setOnItemClickListener(this);
+		head2 = (ActionBar) findViewById(R.id.ticket_filter_head);
 		xianzhi = mSharedPreferences.getString("xianzhi", "false");
 		xianzhiImg = (ImageView) findViewById(R.id.xianzhiImg);
 		if ("false".equals(xianzhi)) {
@@ -84,6 +84,10 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		} else {
 			xianzhiImg.setSelected(true);
 		}
+		head2.init(getText(R.string.title_filter).toString(), true, true,
+				LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
 		new MyListLoader(true, eventid).execute("");
 	}
 
@@ -301,24 +305,43 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		mEditor.commit();
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+	/**
+	 * 初始化配置界面.
+	 */
+	private void initConfig() {
 		setContentView(R.layout.check_config);
 		sss = (TextView) findViewById(R.id.shaixuanqi);
+		float[] screen2 = getScreen2();
+		screenHeight = screen2[1];
+		screenWidth = screen2[0];
+		head = (ActionBar) findViewById(R.id.ticket_config_head); 
+		head.init(getText(R.string.title_config).toString(), true, true,
+				LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
 				.getApplication());
-		Intent intent = getIntent();
-		token = intent.getStringExtra("token");
-		eventid = intent.getStringExtra("eventid");
-		temp = token + ";" + eventid + ";";
+		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
+				.getApplication());
 		xianzhi = mSharedPreferences.getString("xianzhi", "false");
 		if ("false".equals(xianzhi)) {
 			sss.setText("筛选器是关闭的");
 		} else {
 			sss.setText("筛选器是启用的");
 		}
+		Intent intent = getIntent();
+		token = intent.getStringExtra("token");
+		eventid = intent.getStringExtra("eventid");
+		temp = token + ";" + eventid + ";";
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		initConfig();
+
 	}
 
 	/**

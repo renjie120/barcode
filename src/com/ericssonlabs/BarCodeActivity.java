@@ -8,27 +8,31 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.ericssonlabs.bean.ServerResult;
+import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.Constant;
 import com.zxing.activity.CaptureActivity;
 
 /**
  * 二维码签到.
  */
-public class BarCodeActivity extends Activity {
+public class BarCodeActivity extends BaseActivity {
 	private TextView resultTextView;
 	private String token;
 	private String eventid;
+	private ActionBar head;
+	private float screenHeight = 0;
+	private float screenWidth = 0;
 
 	private boolean qiandao(String tickid) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -38,7 +42,7 @@ public class BarCodeActivity extends Activity {
 			HttpPost httpost = new HttpPost(Constant.HOST
 					+ "?do=checkticket&ticketid=" + tickid
 					+ "&check=true&token=" + token);
-			System.out.println("签到："+Constant.HOST
+			System.out.println("签到：" + Constant.HOST
 					+ "?do=checkticket&ticketid=" + tickid
 					+ "&check=true&token=" + token);
 			HttpResponse response = httpclient.execute(httpost);
@@ -46,7 +50,7 @@ public class BarCodeActivity extends Activity {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					entity.getContent(), encoding));
 			String sss = br.readLine();
-			System.out.println("返回结果"+sss);
+			System.out.println("返回结果" + sss);
 			// 如果没有登录成功，就弹出提示信息.
 			ServerResult result = (ServerResult) JSON.parseObject(sss,
 					ServerResult.class);
@@ -68,6 +72,15 @@ public class BarCodeActivity extends Activity {
 
 		resultTextView = (TextView) this.findViewById(R.id.result);
 		Intent intent = getIntent();
+		head = (ActionBar) findViewById(R.id.barcode_head); 
+		float[] screen2 = getScreen2();
+		screenHeight = screen2[1];
+		screenWidth = screen2[0]; 
+		head.init(getText(R.string.title_huodong).toString(), true, true,
+				LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
+		
 		token = intent.getStringExtra("token");
 		eventid = intent.getStringExtra("eventid");
 		Button scanBarCodeButton = (Button) this

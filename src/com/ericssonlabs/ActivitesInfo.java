@@ -22,6 +22,8 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
+import com.ericssonlabs.util.ActionBar;
+import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
 
@@ -36,9 +38,37 @@ public class ActivitesInfo extends BaseActivity {
 	private LinearLayout qiandao;
 	private LinearLayout status;
 	private TextView title;
+	private TextView end_time, qiandao_btn, status_btn;
+	private TextView begin_time;
 	private ImageView imge;
 	private String token;
 	private String url;
+	private ActionBar head;
+	private BottomBar bottom;
+	private float screenHeight = 0;
+	private float screenWidth = 0;
+
+	/**
+	 * 设置活动详情文本框字体大小.
+	 * 
+	 * @param screenWidth
+	 * @return
+	 */
+	public int adjusActivityTextFontSize(int screenWidth) {
+		if (screenWidth <= 240) { // 240X320 屏幕
+			return 7;
+		} else if (screenWidth <= 320) { // 320X480 屏幕
+			return 12;
+		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
+			return 17;
+		} else if (screenWidth <= 540) { // 540X960 屏幕
+			return 20;
+		} else if (screenWidth <= 800) { // 800X1280 屏幕
+			return 23;
+		} else { // 大于 800X1280
+			return 23;
+		}
+	}
 
 	private EventInfo activitiDetail(String eventId) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -47,7 +77,7 @@ public class ActivitesInfo extends BaseActivity {
 
 			HttpPost httpost = new HttpPost(Constant.HOST
 					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token);
-			System.out.println("查看活动详情："+Constant.HOST
+			System.out.println("查看活动详情：" + Constant.HOST
 					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
@@ -106,6 +136,33 @@ public class ActivitesInfo extends BaseActivity {
 		this.startActivity(intent);
 	}
 
+	/**
+	 * 根据屏幕适配文本大小.
+	 */
+	private void adjustScreen() {
+		float[] screen2 = getScreen2();
+		screenHeight = screen2[1];
+		screenWidth = screen2[0];
+		head.init(getText(R.string.title_huodong).toString(), false, false,
+				LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
+		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
+
+		title.setTextSize(adjusActivityTextFontSize((int) screenWidth));
+		beginTime.setTextSize(adjusActivityTextFontSize((int) screenWidth) - 2);
+		endTime.setTextSize(adjusActivityTextFontSize((int) screenWidth) - 2);
+		begin_time.setTextSize(adjusActivityTextFontSize((int) screenWidth) - 1);
+		end_time.setTextSize(adjusActivityTextFontSize((int) screenWidth) - 1);
+		status_btn.setTextSize(adjusActivityTextFontSize((int) screenWidth) + 1);
+		qiandao_btn.setTextSize(adjusActivityTextFontSize((int) screenWidth) + 1);
+	}
+
+	/**
+	 * 得到控件.
+	 */
 	private void initLayout() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activiti_info);
@@ -115,8 +172,18 @@ public class ActivitesInfo extends BaseActivity {
 		endTime = (TextView) findViewById(R.id.act_end_time);
 		title = (TextView) findViewById(R.id.title);
 		imge = (ImageView) findViewById(R.id.activity_pic);
+		head = (ActionBar) findViewById(R.id.info_head);
+		bottom = (BottomBar) findViewById(R.id.info_bottom);
+		begin_time = (TextView) findViewById(R.id.begin_time);
+		end_time = (TextView) findViewById(R.id.end_time);
+		status_btn = (TextView) findViewById(R.id.status_btn);
+		qiandao_btn = (TextView) findViewById(R.id.qiandao_btn);
+		adjustScreen();
 	}
 
+	/**
+	 * 绑定事件.
+	 */
 	private void initListeners() {
 		Intent intent = getIntent();
 		eventId = intent.getStringExtra("eventid");
@@ -134,8 +201,7 @@ public class ActivitesInfo extends BaseActivity {
 		initListeners();
 
 		// 加载列表
-		new MyListLoader(eventId).execute("");
-
+		new MyListLoader(eventId).execute(""); 
 	}
 
 	/**

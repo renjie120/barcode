@@ -38,6 +38,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.bean.TicketList;
 import com.ericssonlabs.bean.TicketListItem;
+import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.PingYinUtil;
 
@@ -58,6 +59,9 @@ public class TicketsList extends BaseActivity {
 	private ProgressDialog dialog;
 	private String temp;
 	private SharedPreferences mSharedPreferences;
+	private ActionBar head;
+	private float screenHeight = 0;
+	private float screenWidth = 0;
 
 	public void cancel(View arg0) {
 		search.setText("");
@@ -99,6 +103,14 @@ public class TicketsList extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.tickets_list);
+		float[] screen2 = getScreen2();
+		screenHeight = screen2[1];
+		screenWidth = screen2[0];
+		head = (ActionBar) findViewById(R.id.ticket_list_head);
+		head.init(getText(R.string.qiandao).toString(), true, true,
+				LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
 				.getApplication());
 		list = (ListView) findViewById(R.id.ListView);
@@ -226,7 +238,7 @@ public class TicketsList extends BaseActivity {
 		try {
 			HttpPost httpost = new HttpPost(Constant.HOST
 					+ "?do=mytickets&eventid=" + eventId + "&token=" + token);
-			System.out.println("查看全部的订票信息:"+Constant.HOST
+			System.out.println("查看全部的订票信息:" + Constant.HOST
 					+ "?do=mytickets&eventid=" + eventId + "&token=" + token);
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
@@ -291,7 +303,7 @@ public class TicketsList extends BaseActivity {
 						}
 					}
 				}
-				//设置了要根据过滤的类型进行查询.
+				// 设置了要根据过滤的类型进行查询.
 				else {
 					if (searchText == null || searchText.trim().equals("")) {
 						if (olddata != null && olddata.size() > 0) {
@@ -355,8 +367,8 @@ public class TicketsList extends BaseActivity {
 			// 判断是否设置了要显示数据.
 			return "true".equals(mSharedPreferences.getString(temp + type,
 					"false"));
-		} 
-		 
+		}
+
 		@Override
 		public int getCount() {
 			int count = 0;
