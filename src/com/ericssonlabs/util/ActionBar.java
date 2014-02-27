@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -73,7 +74,6 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 	private ImageView mLeftButton;
 	private LinearLayout left;
 	private LinearLayout right;
-	
 
 	private ImageView mRightButton;// 右边的动作图标
 
@@ -181,14 +181,13 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 				null);
 
 		addView(this.mActionBar);
-		this.left = (LinearLayout) this.mActionBar
-				.findViewById(R.id.left_line);
+		this.left = (LinearLayout) this.mActionBar.findViewById(R.id.left_line);
 		this.right = (LinearLayout) this.mActionBar
 				.findViewById(R.id.right_line);
 		this.mLeftButton = (ImageView) this.mActionBar
-				.findViewById(R.id.left_btn);
+				.findViewById(R.id.left_btn1);
 		this.mRightButton = (ImageView) this.mActionBar
-				.findViewById(R.id.right_btn);
+				.findViewById(R.id.right_btn1);
 		this.mTitle = (TextView) this.mActionBar
 				.findViewById(R.id.titile_gre_ym);
 
@@ -210,11 +209,12 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 	}
 
 	public void setWidthHeight(int width, int height) {
-		LinearLayout l = (LinearLayout) this.mActionBar;
+		// 这里设置布局的参数，因为ActionBar是继承自LinearLayout，所以使用线性的布局.
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width,
 				height);
-		l.setLayoutParams(lp);
+		this.mActionBar.setLayoutParams(lp);
 	}
+	 
 
 	public void removeRightIcon() {
 		this.mRightButton.setVisibility(View.GONE);
@@ -239,8 +239,9 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 	public void setRightVisible(final boolean visible) {
 		if (visible)
 			this.right.setVisibility(View.VISIBLE);
-		else
+		else {
 			this.right.setVisibility(View.GONE);
+		}
 	}
 
 	public void setLeftIcon(final int resId) {

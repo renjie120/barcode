@@ -32,7 +32,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -40,6 +39,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ericssonlabs.bean.AccessToken;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
+import com.ericssonlabs.util.AdjustScreenUtil;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 
@@ -76,30 +76,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	// 中间table的左边框距离.
 	// private float tabMrgL = 17 / 257f;
 	private LinearLayout center_table;
-	private TableLayout table;
+	private LinearLayout table;
 	private ImageView logo_img;
-
-	/**
-	 * 设置登录文本框前字体大小.
-	 * 
-	 * @param screenWidth
-	 * @return
-	 */
-	public int adjusLoginTextFontSize(int screenWidth) {
-		if (screenWidth <= 240) { // 240X320 屏幕
-			return 10;
-		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 14;
-		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
-			return 24;
-		} else if (screenWidth <= 540) { // 540X960 屏幕
-			return 26;
-		} else if (screenWidth <= 800) { // 800X1280 屏幕
-			return 30;
-		} else { // 大于 800X1280
-			return 30;
-		}
-	}
+	// 登陆框提示文本的宽度.
+	private float textViewW = 45 / 200f;
 
 	/**
 	 * 屏幕适配.
@@ -109,34 +89,40 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-
 		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
 				(int) (screenWidth * tabW), (int) (screenHeight * tabH));
 		// 设置table的高度和宽度.
 		table.setLayoutParams(p);
-
+		alert(screenHeight + ",," + screenWidth);
 		head.init(getText(R.string.title1).toString(), false, false,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
+				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
 		login_bottom.init(null, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
-		name_title.setTextSize(adjusLoginTextFontSize((int) screenWidth));
-		nameText.setTextSize(adjusLoginTextFontSize((int) screenWidth) - 1);
-		passwordText.setTextSize(adjusLoginTextFontSize((int) screenWidth) - 1);
-		pass_title.setTextSize(adjusLoginTextFontSize((int) screenWidth));
-		mess_title.setTextSize(adjusLoginTextFontSize((int) screenWidth) - 2);
-		buttonLogin.setTextSize(adjusLoginTextFontSize((int) screenWidth));
-		remeberPassword.setTextSize(adjusLoginTextFontSize((int) screenWidth) - 2);
+				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+		login_bottom.setRightAction(new BottomBar.CallAction(this));
+		name_title.setTextSize(AdjustScreenUtil
+				.adjusLoginTextFontSize((int) screenWidth));
+		name_title.setWidth((int) (textViewW * screenWidth));
+		pass_title.setWidth((int) (textViewW * screenWidth));
+		nameText.setTextSize(AdjustScreenUtil
+				.adjusLoginTextFontSize((int) screenWidth) - 1);
+		passwordText.setTextSize(AdjustScreenUtil
+				.adjusLoginTextFontSize((int) screenWidth) - 1);
+		pass_title.setTextSize(AdjustScreenUtil
+				.adjusLoginTextFontSize((int) screenWidth));
+		mess_title.setTextSize(AdjustScreenUtil
+				.adjusLoginTextFontSize((int) screenWidth) - 4);
+		mess_title.setHeight((int) (screenHeight * 30 / 323));
+		buttonLogin.setTextSize(AdjustScreenUtil
+				.adjusLoginTextFontSize((int) screenWidth));
+		remeberPassword.setTextSize(AdjustScreenUtil
+				.adjusLoginTextFontSize((int) screenWidth) - 3);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
-		System.out.println("图片的宽度：" + logo_img.getWidth() + ",,屏幕的宽度"
-				+ screenWidth);
-		System.out.println("表格布局的宽度：" + table.getWidth() + ",,屏幕的宽度"
-				+ screenWidth);
 		lp.setMargins(0, (int) (screenHeight * imgMrg), 0,
 				(int) (screenHeight * imgMrg));
 		// 设置logo的位置布局.
@@ -153,7 +139,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		center_table = (LinearLayout) findViewById(R.id.center_table);
 		buttonLogin = (Button) findViewById(R.id.buttonLogin);
 		head = (ActionBar) findViewById(R.id.login_head);
-		table = (TableLayout) findViewById(R.id.login_table);
+		table = (LinearLayout) findViewById(R.id.login_table);
 		mess_title = (TextView) findViewById(R.id.mess_title);
 		remeberPassword = (CheckBox) findViewById(R.id.remember_password);
 		nameText = (EditText) findViewById(R.id.inputName);

@@ -8,8 +8,8 @@
     <com.ericssonlabs.util.ActionBar
         android:id="@+id/ticket_list_head"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" /> 
-  
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/totalcount"
         android:layout_width="fill_parent"
@@ -35,46 +35,50 @@
             android:focusableInTouchMode="true" />
 
         <LinearLayout
-            android:id="@+id/searchText_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="1dp"
             android:layout_weight="1"
-            android:background="@drawable/shape"
-            android:orientation="horizontal"
-            android:padding="1dip" >
+            android:orientation="horizontal" >
 
-            <ImageView style="@style/search_img" />
+            <LinearLayout
+                android:id="@+id/searchText_btn"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape"
+                android:orientation="horizontal"
+                android:padding="1dip" >
 
-            <EditText
-                android:id="@+id/searchText"
-                style="@style/search_edit"
-                android:background="@drawable/search_editext_border" >
-            </EditText>
+                <ImageView style="@style/search_img" />
+
+                <EditText
+                    android:id="@+id/searchText"
+                    style="@style/search_edit"
+                    android:background="@drawable/search_editext_border" >
+                </EditText>
+            </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="30dp"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_marginTop="1dp"
                 android:background="@color/orange"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:text="@string/search"
                 android:textColor="@color/white"
                 android:textSize="@dimen/tick_search_btn" />
         </LinearLayout>
 
         <Button
-            android:layout_width="@dimen/tick_search_width"
-            android:layout_height="38dp"
-            android:gravity="center_vertical"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:background="@color/white"
+            android:gravity="center"
             android:onClick="cancel"
             android:text="@string/cancel"
             android:textColor="@color/black"
-            android:textSize="@dimen/tick_search_btn" />
+            android:textSize="@dimen/tick_search_btn" /> 
     </LinearLayout>
 
     <ListView

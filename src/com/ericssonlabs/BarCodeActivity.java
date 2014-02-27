@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
+import com.ericssonlabs.util.AdjustScreenUtil;
 import com.ericssonlabs.util.Constant;
 import com.zxing.activity.CaptureActivity;
 
@@ -35,27 +36,7 @@ public class BarCodeActivity extends BaseActivity {
 	private float screenWidth = 0;
 	private Button scanBarCodeButton;
 
-	/**
-	 * 字体适配.
-	 * 
-	 * @param screenWidth
-	 * @return
-	 */
-	public int adjustBarcodeTextFontSize(int screenWidth) {
-		if (screenWidth <= 240) { // 240X320 屏幕
-			return 13;
-		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 18;
-		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
-			return 24;
-		} else if (screenWidth <= 540) { // 540X960 屏幕
-			return 28;
-		} else if (screenWidth <= 800) { // 800X1280 屏幕
-			return 32;
-		} else { // 大于 800X1280
-			return 32;
-		}
-	}
+	
 
 	private boolean qiandao(String tickid) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -98,8 +79,10 @@ public class BarCodeActivity extends BaseActivity {
 		head.init(getText(R.string.title_huodong).toString(), true, false,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
-		scanBarCodeButton.setTextSize(adjustBarcodeTextFontSize((int)screenWidth));
+				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+//		head.setLeftWidthHeight((int) (screenHeight * AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
+	 
+		scanBarCodeButton.setTextSize(AdjustScreenUtil.adjustBarcodeTextFontSize((int)screenWidth));
 	}
 
 	/**

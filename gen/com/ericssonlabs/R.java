@@ -194,7 +194,7 @@ public final class R {
         public static final int btn_cancel_scan=0x7f08002e;
         public static final int btn_scan_barcode=0x7f080027;
         public static final int buttonLogin=0x7f08003f;
-        public static final int center_line=0x7f080055;
+        public static final int center_line=0x7f080053;
         public static final int center_table=0x7f080038;
         public static final int chargeType=0x7f08004d;
         public static final int checkimg=0x7f08005a;
@@ -213,8 +213,8 @@ public final class R {
         public static final int inputName=0x7f080032;
         public static final int inputPass=0x7f08003c;
         public static final int launch_product_query=0x7f080006;
-        public static final int left_btn=0x7f080054;
-        public static final int left_line=0x7f080053;
+        public static final int left_btn1=0x7f080056;
+        public static final int left_line=0x7f080055;
         public static final int list_bottom=0x7f08000e;
         public static final int list_head=0x7f08000c;
         public static final int login_bottom=0x7f080040;
@@ -241,7 +241,7 @@ public final class R {
         public static final int restart_preview=0x7f080008;
         public static final int result=0x7f080028;
         public static final int return_scan_result=0x7f080009;
-        public static final int right_btn=0x7f080058;
+        public static final int right_btn1=0x7f080058;
         public static final int right_line=0x7f080057;
         public static final int searchText=0x7f080052;
         public static final int searchText_btn=0x7f080051;
@@ -260,7 +260,7 @@ public final class R {
         public static final int ticket_filter_head=0x7f080033;
         public static final int ticket_list_head=0x7f08004e;
         public static final int ticket_name=0x7f08004b;
-        public static final int titile_gre_ym=0x7f080056;
+        public static final int titile_gre_ym=0x7f080054;
         public static final int title=0x7f080011;
         public static final int totalcount=0x7f08004f;
         public static final int type=0x7f080045;

@@ -40,6 +40,7 @@ import com.ericssonlabs.bean.TicketList;
 import com.ericssonlabs.bean.TicketListItem;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
+import com.ericssonlabs.util.AdjustScreenUtil;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.PingYinUtil;
 
@@ -111,7 +112,10 @@ public class TicketsList extends BaseActivity {
 		head.init(getText(R.string.qiandao).toString(), true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
+				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+//		head.setLeftWidthHeight((int) (screenHeight * AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
+//		head.setRightWidthHeight((int) (screenHeight * AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
+	
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));
 		head.setRefreshEnabled(new OnRefreshClickListener() {
@@ -124,7 +128,7 @@ public class TicketsList extends BaseActivity {
 		list = (ListView) findViewById(R.id.ListView);
 		totalcountText = (TextView) findViewById(R.id.totalcount);
 		Intent intent = getIntent();
-		search = (TextView) findViewById(R.id.searchText);
+		search = (TextView) findViewById(R.id.searchText); 
 		// 设置文本框的搜索事件.
 		search.addTextChangedListener(searchWatcher);
 

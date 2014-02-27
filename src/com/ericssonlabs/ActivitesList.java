@@ -42,6 +42,7 @@ import com.ericssonlabs.bean.EventListItem;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
+import com.ericssonlabs.util.AdjustScreenUtil;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
@@ -81,35 +82,11 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	private final static float statusBtnW = 121 / 321f;
 	private LinearLayout.LayoutParams p;
 
-	/**
-	 * 设置活动详情显示文本字体大小.
-	 * 
-	 * @param screenWidth
-	 * @return
-	 */
-	public int adjusDescTextFontSize(int screenWidth) {
-		if (screenWidth <= 240) { // 240X320 屏幕
-			return 9;
-		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 14;
-		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
-			return 17;
-		} else if (screenWidth <= 540) { // 540X960 屏幕
-			return 20;
-		} else if (screenWidth <= 800) { // 800X1280 屏幕
-			return 23;
-		} else { // 大于 800X1280
-			return 23;
-		}
-	}
-
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		// 计算最后可见条目的索引
 		lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
-		System.out.println("totalItemCount==" + totalItemCount
-				+ ",,MaxDateNum=" + MaxDateNum);
 		// 所有的条目已经和最大条数相等，则移除底部的View
 		if (totalItemCount == MaxDateNum + 1) {
 			list.removeFooterView(moreView);
@@ -153,10 +130,15 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		head.init(getText(R.string.title_huodong).toString(), true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
+				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+		// head.setLeftWidthHeight((int) (screenHeight *
+		// AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
+		// head.setRightWidthHeight((int) (screenHeight *
+		// AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
+
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
+				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
 		p = new LinearLayout.LayoutParams((int) (screenWidth * statusBtnW),
 				(int) (screenHeight * statusBtnH));
 	}
@@ -184,7 +166,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		});
 
 		bottom = (BottomBar) findViewById(R.id.list_bottom);
-
+		bottom.setRightAction(new BottomBar.CallAction(this));
 		// 加载listview
 		new MyListLoader(true).execute("");
 		// 设置点击更多按钮的事件，显示进度条.
@@ -238,7 +220,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 					}
 				}
 				// 进行订票列表的展示.
-				adapter = new ActivitesListAdapter(listItem, ActivitesList.this); 
+				adapter = new ActivitesListAdapter(listItem, ActivitesList.this);
 				// 添加上最后的一个底部视图.
 				list.addFooterView(moreView);
 				list.setAdapter(adapter);
@@ -424,18 +406,18 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 						.findViewById(R.id.end_time);
 				viewHolder.img = (ImageView) convertView
 						.findViewById(R.id.activity_pic);
-				viewHolder.status
-						.setTextSize(adjusDescTextFontSize((int) screenWidth));
-				viewHolder.name
-						.setTextSize(adjusDescTextFontSize((int) screenWidth));
-				viewHolder.end_time
-						.setTextSize(adjusDescTextFontSize((int) screenWidth) - 3);
-				viewHolder.start_time
-						.setTextSize(adjusDescTextFontSize((int) screenWidth) - 3);
-				viewHolder.end_time_title
-						.setTextSize(adjusDescTextFontSize((int) screenWidth) - 2);
-				viewHolder.act_time_title
-						.setTextSize(adjusDescTextFontSize((int) screenWidth) - 2);
+				viewHolder.status.setTextSize(AdjustScreenUtil
+						.adjusDescTextFontSize((int) screenWidth));
+				viewHolder.name.setTextSize(AdjustScreenUtil
+						.adjusDescTextFontSize((int) screenWidth));
+				viewHolder.end_time.setTextSize(AdjustScreenUtil
+						.adjusDescTextFontSize((int) screenWidth) - 3);
+				viewHolder.start_time.setTextSize(AdjustScreenUtil
+						.adjusDescTextFontSize((int) screenWidth) - 3);
+				viewHolder.end_time_title.setTextSize(AdjustScreenUtil
+						.adjusDescTextFontSize((int) screenWidth) - 3);
+				viewHolder.act_time_title.setTextSize(AdjustScreenUtil
+						.adjusDescTextFontSize((int) screenWidth) - 3);
 				convertView.setTag(viewHolder);
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
@@ -443,9 +425,11 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 
 			HashMap<String, Object> markerItem = getItem(position);
 			if (null != markerItem) {
+				String[] str = ("" + markerItem.get("starttime")).split(" ");
+				String[] str2 = ("" + markerItem.get("endtime")).split(" ");
 				viewHolder.statusbar.setTag(markerItem.get("eventid"));
-				viewHolder.start_time.setText("" + markerItem.get("starttime"));
-				viewHolder.end_time.setText("" + markerItem.get("endtime"));
+				viewHolder.start_time.setText(str[0]);
+				viewHolder.end_time.setText(str2[0]);
 				viewHolder.name.setText("" + markerItem.get("name"));
 				new Thread(new LoadImage("" + markerItem.get("url"),
 						viewHolder.img, R.drawable.huodong_paper)).start();

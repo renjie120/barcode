@@ -24,6 +24,7 @@ import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
+import com.ericssonlabs.util.AdjustScreenUtil;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
@@ -49,27 +50,7 @@ public class ActivitesInfo extends BaseActivity {
 	private float screenHeight = 0;
 	private float screenWidth = 0;
 
-	/**
-	 * 设置活动详情文本框字体大小.
-	 * 
-	 * @param screenWidth
-	 * @return
-	 */
-	public int adjusActivityTextFontSize(int screenWidth) {
-		if (screenWidth <= 240) { // 240X320 屏幕
-			return 9;
-		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 15;
-		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
-			return 17;
-		} else if (screenWidth <= 540) { // 540X960 屏幕
-			return 20;
-		} else if (screenWidth <= 800) { // 800X1280 屏幕
-			return 25;
-		} else { // 大于 800X1280
-			return 25;
-		}
-	}
+	
 
 	private EventInfo activitiDetail(String eventId) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -147,9 +128,12 @@ public class ActivitesInfo extends BaseActivity {
 		head.init(getText(R.string.title_huodong).toString(), true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
+				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));
+//		head.setLeftWidthHeight((int) (screenHeight * AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
+//		head.setRightWidthHeight((int) (screenHeight * AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
+	
 		head.setRefreshEnabled(new OnRefreshClickListener() {
 			public void onRefreshClick() {
 				new ActivityInfoLoader(eventId).execute(""); 
@@ -157,15 +141,16 @@ public class ActivitesInfo extends BaseActivity {
 		});
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
-
-		title.setTextSize(adjusActivityTextFontSize((int) screenWidth));
-		beginTime.setTextSize(adjusActivityTextFontSize((int) screenWidth) - 2);
-		endTime.setTextSize(adjusActivityTextFontSize((int) screenWidth) - 2);
-		begin_time.setTextSize(adjusActivityTextFontSize((int) screenWidth) - 1);
-		end_time.setTextSize(adjusActivityTextFontSize((int) screenWidth) - 1);
-		status_btn.setTextSize(adjusActivityTextFontSize((int) screenWidth) + 1);
-		qiandao_btn.setTextSize(adjusActivityTextFontSize((int) screenWidth) + 1);
+				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+		bottom.setRightAction(new BottomBar.CallAction(this));
+		title.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth));
+		beginTime.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) - 2);
+		endTime.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) - 2);
+		begin_time.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) - 1);
+		end_time.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) - 1);
+		status_btn.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) + 1);
+		qiandao_btn.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) + 1);
+		
 	}
 
 	/**

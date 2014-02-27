@@ -23,6 +23,7 @@ import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
+import com.ericssonlabs.util.AdjustScreenUtil;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
@@ -46,27 +47,7 @@ public class ActivitesStatus extends BaseActivity {
 	private float screenHeight = 0;
 	private float screenWidth = 0;
 
-	/**
-	 * 适配字体大小.
-	 * 
-	 * @param screenWidth
-	 * @return
-	 */
-	public int adjusStatusFontSize(int screenWidth) {
-		if (screenWidth <= 240) { // 240X320 屏幕
-			return 9;
-		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 15;
-		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
-			return 17;
-		} else if (screenWidth <= 540) { // 540X960 屏幕
-			return 20;
-		} else if (screenWidth <= 800) { // 800X1280 屏幕
-			return 25;
-		} else { // 大于 800X1280
-			return 25;
-		}
-	}
+	
 
 	/**
 	 * 调用远程数据请求数据.
@@ -140,14 +121,18 @@ public class ActivitesStatus extends BaseActivity {
 		head.init(getText(R.string.title_huodong).toString(), true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
+				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+//		head.setLeftWidthHeight((int) (screenHeight * AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
+//		head.setRightWidthHeight((int) (screenHeight * AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
+	
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
-		yishouchu.setTextSize(adjusStatusFontSize((int) screenWidth));
-		yiqiandao.setTextSize(adjusStatusFontSize((int) screenWidth));
-		yishouchuLabel.setTextSize(adjusStatusFontSize((int) screenWidth));
-		yiqiandaoLabel.setTextSize(adjusStatusFontSize((int) screenWidth));
+				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+		bottom.setRightAction(new BottomBar.CallAction(this));
+		yishouchu.setTextSize(AdjustScreenUtil.adjusStatusFontSize((int) screenWidth));
+		yiqiandao.setTextSize(AdjustScreenUtil.adjusStatusFontSize((int) screenWidth));
+		yishouchuLabel.setTextSize(AdjustScreenUtil.adjusStatusFontSize((int) screenWidth));
+		yiqiandaoLabel.setTextSize(AdjustScreenUtil.adjusStatusFontSize((int) screenWidth));
 	}
 
 	/**

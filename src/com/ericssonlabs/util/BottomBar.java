@@ -15,7 +15,10 @@
  *******************************************************************************/
 package com.ericssonlabs.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,8 +48,26 @@ public class BottomBar extends LinearLayout implements OnClickListener {
 		}
 	}
 
+	public static class CallAction extends AbstractAction {
+
+		private final Activity context;
+
+		public CallAction(final Activity mContext) {
+			super(R.drawable.call);
+			this.context = mContext;
+		}
+
+		@Override
+		public void performAction(final View view) {
+			Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:15000516416"));
+			this.context.startActivity(intent);
+		}
+
+	}
+
 	/**
 	 * 使用常用属性初始化底部栏.
+	 * 
 	 * @param title
 	 * @param left
 	 * @param right

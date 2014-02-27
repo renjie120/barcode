@@ -38,21 +38,25 @@
             android:gravity="center"
             android:orientation="horizontal" >
 
-            <TableLayout
+            <LinearLayout
                 android:id="@+id/login_table"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:background="@color/white"
-                android:padding="10dp" >
+                android:gravity="center"
+                android:orientation="vertical" >
 
-                <TableRow>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
 
                     <TextView
                         android:id="@+id/name_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_height="wrap_content" 
+                        android:gravity="center"
                         android:text="@string/name_title"
                         android:textColor="@color/gray2"
                         android:textSize="@dimen/login_textsize3" />
@@ -66,15 +70,19 @@
                         android:text="test140103114242328"
                         android:textSize="@dimen/login_textsize2" >
                     </EditText>
-                </TableRow>
+                </LinearLayout>
 
-                <TableRow>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
 
                     <TextView
                         android:id="@+id/pass_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_height="wrap_content" 
+                        android:gravity="center"
                         android:text="@string/pass_title"
                         android:textColor="@color/gray2"
                         android:textSize="@dimen/login_textsize3" />
@@ -88,9 +96,13 @@
                         android:text="123123"
                         android:textSize="@dimen/login_textsize2" >
                     </EditText>
-                </TableRow>
+                </LinearLayout>
 
-                <TableRow>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal" >
 
                     <CheckBox
                         android:id="@+id/remember_password"
@@ -103,16 +115,20 @@
 
                     <TextView
                         android:id="@+id/mess_title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/login_check_mrg_l"
-                        android:textColor="@color/orange"
+                        android:layout_weight="1"
                         android:singleLine="false"
-                        android:textSize="@dimen/login_textsize1"
+                        android:textColor="@color/orange" 
                         android:visibility="gone" />
-                </TableRow>
+                </LinearLayout>
 
-                <TableRow android:gravity="center_horizontal" >
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
 
                     <Button
                         android:id="@+id/buttonLogin"
@@ -128,8 +144,8 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/login_textsize3" >
                     </Button>
-                </TableRow>
-            </TableLayout>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
