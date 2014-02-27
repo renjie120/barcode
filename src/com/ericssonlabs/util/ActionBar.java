@@ -15,13 +15,13 @@
  *******************************************************************************/
 package com.ericssonlabs.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -71,6 +71,9 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 	private ViewGroup mActionBar;// 标题栏
 
 	private ImageView mLeftButton;
+	private LinearLayout left;
+	private LinearLayout right;
+	
 
 	private ImageView mRightButton;// 右边的动作图标
 
@@ -86,6 +89,61 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 	public ActionBar(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		initViews(context);
+	}
+
+	/**
+	 * 返回按钮的操作.
+	 */
+	public static class BackAction extends AbstractAction {
+		private final Activity context;
+
+		public BackAction(final Activity mContext) {
+			super(R.drawable.logo);
+			this.context = mContext;
+		}
+
+		@Override
+		public void performAction(final View view) {
+			this.context.finish();
+		}
+
+	}
+
+	/**
+	 * 刷新按钮的操作.
+	 */
+	public static class RefreshAction extends AbstractAction {
+		private final ActionBar ab;
+
+		public RefreshAction(final ActionBar ab) {
+			super(R.drawable.refresh);
+			this.ab = ab;
+		}
+
+		@Override
+		public void performAction(final View view) {
+			this.ab.onRefreshClick();
+		}
+
+	}
+
+	private void onRefreshClick() {
+		if (this.mOnRefreshClickListener != null) {
+			this.mOnRefreshClickListener.onRefreshClick();
+		}
+	}
+
+	public void setRefreshEnabled(
+			final OnRefreshClickListener onRefreshClickListener) {
+		if (onRefreshClickListener != null) {
+			this.mOnRefreshClickListener = onRefreshClickListener;
+			setRefreshAction(new RefreshAction(this));
+		}
+	}
+
+	private void setRefreshAction(final Action action) {
+		this.mRightButton.setImageResource(action.getDrawable());
+		this.mRightButton.setTag(action);
 	}
 
 	/**
@@ -119,10 +177,14 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 		this.mContext = context;
 		this.mInflater = LayoutInflater.from(this.mContext);
 
-		this.mActionBar = (ViewGroup) this.mInflater.inflate(
-				R.layout.activity_title, null);
+		this.mActionBar = (ViewGroup) this.mInflater.inflate(R.layout.title,
+				null);
 
 		addView(this.mActionBar);
+		this.left = (LinearLayout) this.mActionBar
+				.findViewById(R.id.left_line);
+		this.right = (LinearLayout) this.mActionBar
+				.findViewById(R.id.right_line);
 		this.mLeftButton = (ImageView) this.mActionBar
 				.findViewById(R.id.left_btn);
 		this.mRightButton = (ImageView) this.mActionBar
@@ -169,16 +231,16 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 
 	public void setLeftVisible(final boolean visible) {
 		if (visible)
-			this.mLeftButton.setVisibility(View.VISIBLE);
+			this.left.setVisibility(View.VISIBLE);
 		else
-			this.mLeftButton.setVisibility(View.GONE);
+			this.left.setVisibility(View.GONE);
 	}
 
 	public void setRightVisible(final boolean visible) {
 		if (visible)
-			this.mRightButton.setVisibility(View.VISIBLE);
+			this.right.setVisibility(View.VISIBLE);
 		else
-			this.mRightButton.setVisibility(View.GONE);
+			this.right.setVisibility(View.GONE);
 	}
 
 	public void setLeftIcon(final int resId) {

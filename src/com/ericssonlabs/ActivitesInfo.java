@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
+import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
@@ -56,17 +57,17 @@ public class ActivitesInfo extends BaseActivity {
 	 */
 	public int adjusActivityTextFontSize(int screenWidth) {
 		if (screenWidth <= 240) { // 240X320 屏幕
-			return 7;
+			return 9;
 		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 12;
+			return 15;
 		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
 			return 17;
 		} else if (screenWidth <= 540) { // 540X960 屏幕
 			return 20;
 		} else if (screenWidth <= 800) { // 800X1280 屏幕
-			return 23;
+			return 25;
 		} else { // 大于 800X1280
-			return 23;
+			return 25;
 		}
 	}
 
@@ -143,10 +144,17 @@ public class ActivitesInfo extends BaseActivity {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-		head.init(getText(R.string.title_huodong).toString(), false, false,
+		head.init(getText(R.string.title_huodong).toString(), true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				adjustTitleFontSize((int) screenWidth));
+		head.setLeftAction(new ActionBar.BackAction(this));
+		head.setRightAction(new ActionBar.RefreshAction(head));
+		head.setRefreshEnabled(new OnRefreshClickListener() {
+			public void onRefreshClick() {
+				new ActivityInfoLoader(eventId).execute(""); 
+			}
+		});
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				adjustTitleFontSize((int) screenWidth));
@@ -201,7 +209,7 @@ public class ActivitesInfo extends BaseActivity {
 		initListeners();
 
 		// 加载列表
-		new MyListLoader(eventId).execute(""); 
+		new ActivityInfoLoader(eventId).execute(""); 
 	}
 
 	/**
@@ -232,11 +240,11 @@ public class ActivitesInfo extends BaseActivity {
 	/**
 	 * 加载全部活动的内部类.
 	 */
-	private class MyListLoader extends AsyncTask<String, String, String> {
+	private class ActivityInfoLoader extends AsyncTask<String, String, String> {
 
 		private String eventId;
 
-		public MyListLoader(String eventId) {
+		public ActivityInfoLoader(String eventId) {
 			this.eventId = eventId;
 		}
 

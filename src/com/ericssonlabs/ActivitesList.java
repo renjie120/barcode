@@ -11,6 +11,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -39,6 +41,7 @@ import com.ericssonlabs.bean.EventList;
 import com.ericssonlabs.bean.EventListItem;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
+import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
@@ -53,6 +56,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	private ListView list;
 	private String token;
 	private static final int DIALOG_KEY = 0;
+	private ProgressDialog dialog;
 	private ServerResult result;
 	// ListView底部View
 	private View moreView;
@@ -78,15 +82,16 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	private LinearLayout.LayoutParams p;
 
 	/**
-	 * 设置活动详情显示文本字体大小. 
+	 * 设置活动详情显示文本字体大小.
+	 * 
 	 * @param screenWidth
 	 * @return
 	 */
 	public int adjusDescTextFontSize(int screenWidth) {
 		if (screenWidth <= 240) { // 240X320 屏幕
-			return 7;
+			return 9;
 		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 12;
+			return 14;
 		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
 			return 17;
 		} else if (screenWidth <= 540) { // 540X960 屏幕
@@ -106,7 +111,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		System.out.println("totalItemCount==" + totalItemCount
 				+ ",,MaxDateNum=" + MaxDateNum);
 		// 所有的条目已经和最大条数相等，则移除底部的View
-		if (totalItemCount == MaxDateNum + 2) {
+		if (totalItemCount == MaxDateNum + 1) {
 			list.removeFooterView(moreView);
 			Toast.makeText(this, "数据全部加载完成，没有更多数据！", Toast.LENGTH_SHORT).show();
 		}
@@ -138,6 +143,27 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		this.startActivity(intent);
 	}
 
+	/**
+	 * 进行屏幕适配.
+	 */
+	private void adjustScreen() {
+		float[] screen2 = getScreen2();
+		screenHeight = screen2[1];
+		screenWidth = screen2[0];
+		head.init(getText(R.string.title_huodong).toString(), true, true,
+				LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
+		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
+		p = new LinearLayout.LayoutParams((int) (screenWidth * statusBtnW),
+				(int) (screenHeight * statusBtnH));
+	}
+
+	/**
+	 * 设置初始化界面.
+	 */
 	private void init() {
 		list = (ListView) findViewById(R.id.ListView);
 		list.setOnScrollListener(this);
@@ -149,6 +175,14 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		bt = (Button) moreView.findViewById(R.id.bt_load);
 		pg = (ProgressBar) moreView.findViewById(R.id.pg);
 		head = (ActionBar) findViewById(R.id.list_head);
+		head.setLeftAction(new ActionBar.BackAction(this));
+		head.setRightAction(new ActionBar.RefreshAction(head));
+		head.setRefreshEnabled(new OnRefreshClickListener() {
+			public void onRefreshClick() {
+				new MyListLoader(true).execute("");
+			}
+		});
+
 		bottom = (BottomBar) findViewById(R.id.list_bottom);
 
 		// 加载listview
@@ -163,19 +197,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 				new MyListLoader(true).execute("");
 			}
 		});
-
-		float[] screen2 = getScreen2();
-		screenHeight = screen2[1];
-		screenWidth = screen2[0];
-		head.init(getText(R.string.title_huodong).toString(), false, false,
-				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
-		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
-		p = new LinearLayout.LayoutParams((int) (screenWidth * statusBtnW),
-				(int) (screenHeight * statusBtnH));
+		adjustScreen();
 	}
 
 	@Override
@@ -216,7 +238,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 					}
 				}
 				// 进行订票列表的展示.
-				adapter = new ActivitesListAdapter(listItem, ActivitesList.this);
+				adapter = new ActivitesListAdapter(listItem, ActivitesList.this); 
 				// 添加上最后的一个底部视图.
 				list.addFooterView(moreView);
 				list.setAdapter(adapter);
@@ -249,6 +271,20 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 			}
 		}
 	};
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DIALOG_KEY: {
+			dialog = new ProgressDialog(this);
+			dialog.setMessage("正在查询...");
+			dialog.setIndeterminate(true);
+			dialog.setCancelable(true);
+			return dialog;
+		}
+		}
+		return null;
+	}
 
 	/**
 	 * 加载订票的列表.

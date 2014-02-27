@@ -20,9 +20,9 @@ public class BaseActivity extends Activity {
 	 */
 	public static int adjustTitleFontSize(int screenWidth) {
 		if (screenWidth <= 240) { // 240X320 屏幕
-			return 10;
+			return 13;
 		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 14;
+			return 18;
 		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
 			return 24;
 		} else if (screenWidth <= 540) { // 540X960 屏幕

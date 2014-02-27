@@ -39,6 +39,7 @@ import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.bean.TicketList;
 import com.ericssonlabs.bean.TicketListItem;
 import com.ericssonlabs.util.ActionBar;
+import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.PingYinUtil;
 
@@ -55,7 +56,7 @@ public class TicketsList extends BaseActivity {
 	private String eventId;
 	private static final int DIALOG_KEY = 0;
 	private ServerResult result;
-	private MyImgAdapter adapter;
+	private TicketListAdapter adapter;
 	private ProgressDialog dialog;
 	private String temp;
 	private SharedPreferences mSharedPreferences;
@@ -111,6 +112,13 @@ public class TicketsList extends BaseActivity {
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				adjustTitleFontSize((int) screenWidth));
+		head.setLeftAction(new ActionBar.BackAction(this));
+		head.setRightAction(new ActionBar.RefreshAction(head));
+		head.setRefreshEnabled(new OnRefreshClickListener() {
+			public void onRefreshClick() {
+				new TicketsLoader(true, eventId).execute("");
+			}
+		});
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
 				.getApplication());
 		list = (ListView) findViewById(R.id.ListView);
@@ -124,7 +132,7 @@ public class TicketsList extends BaseActivity {
 		eventId = intent.getStringExtra("eventid");
 		temp = token + ";" + eventId + ";";
 		// 加载票据列表页面.
-		new MyListLoader(true, eventId).execute("");
+		new TicketsLoader(true, eventId).execute("");
 	}
 
 	/**
@@ -160,7 +168,7 @@ public class TicketsList extends BaseActivity {
 					}
 				}
 				// 显示列表.
-				adapter = new MyImgAdapter(listItem, TicketsList.this);
+				adapter = new TicketListAdapter(listItem, TicketsList.this);
 				list.setAdapter(adapter);
 				break;
 			default:
@@ -190,12 +198,12 @@ public class TicketsList extends BaseActivity {
 	/**
 	 * 列表加载操作.
 	 */
-	private class MyListLoader extends AsyncTask<String, String, String> {
+	private class TicketsLoader extends AsyncTask<String, String, String> {
 
 		private boolean showDialog;
 		private String eventId;
 
-		public MyListLoader(boolean showDialog, String eventId) {
+		public TicketsLoader(boolean showDialog, String eventId) {
 			this.showDialog = showDialog;
 			this.eventId = eventId;
 		}
@@ -263,11 +271,11 @@ public class TicketsList extends BaseActivity {
 	/**
 	 * 用于票据列表的数据适配器.
 	 */
-	class MyImgAdapter extends BaseAdapter {
+	class TicketListAdapter extends BaseAdapter {
 		private ArrayList<HashMap<String, Object>> data, olddata;// 用于接收传递过来的Context对象
 		private Context context;
 
-		public MyImgAdapter(ArrayList<HashMap<String, Object>> data,
+		public TicketListAdapter(ArrayList<HashMap<String, Object>> data,
 				Context context) {
 			super();
 			this.data = data;

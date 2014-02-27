@@ -33,6 +33,29 @@ public class BarCodeActivity extends BaseActivity {
 	private ActionBar head;
 	private float screenHeight = 0;
 	private float screenWidth = 0;
+	private Button scanBarCodeButton;
+
+	/**
+	 * 字体适配.
+	 * 
+	 * @param screenWidth
+	 * @return
+	 */
+	public int adjustBarcodeTextFontSize(int screenWidth) {
+		if (screenWidth <= 240) { // 240X320 屏幕
+			return 13;
+		} else if (screenWidth <= 320) { // 320X480 屏幕
+			return 18;
+		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
+			return 24;
+		} else if (screenWidth <= 540) { // 540X960 屏幕
+			return 28;
+		} else if (screenWidth <= 800) { // 800X1280 屏幕
+			return 32;
+		} else { // 大于 800X1280
+			return 32;
+		}
+	}
 
 	private boolean qiandao(String tickid) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -65,26 +88,31 @@ public class BarCodeActivity extends BaseActivity {
 		return false;
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.barcode);
-
-		resultTextView = (TextView) this.findViewById(R.id.result);
-		Intent intent = getIntent();
-		head = (ActionBar) findViewById(R.id.barcode_head); 
+	/**
+	 * 屏幕适配.
+	 */
+	private void adjustScreen() {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
-		screenWidth = screen2[0]; 
-		head.init(getText(R.string.title_huodong).toString(), true, true,
+		screenWidth = screen2[0];
+		head.init(getText(R.string.title_huodong).toString(), true, false,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				adjustTitleFontSize((int) screenWidth));
-		
+		scanBarCodeButton.setTextSize(adjustBarcodeTextFontSize((int)screenWidth));
+	}
+
+	/**
+	 * 初始化页面.
+	 */
+	private void initLayout() {
+		resultTextView = (TextView) this.findViewById(R.id.result);
+		scanBarCodeButton = (Button) this.findViewById(R.id.btn_scan_barcode);
+		Intent intent = getIntent();
+		head = (ActionBar) findViewById(R.id.barcode_head);
+
 		token = intent.getStringExtra("token");
 		eventid = intent.getStringExtra("eventid");
-		Button scanBarCodeButton = (Button) this
-				.findViewById(R.id.btn_scan_barcode);
 		scanBarCodeButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -96,6 +124,15 @@ public class BarCodeActivity extends BaseActivity {
 			}
 		});
 
+		adjustScreen();
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.barcode);
+
+		initLayout();
 	}
 
 	private class QiandaoLoader extends AsyncTask<String, String, String> {

@@ -20,7 +20,7 @@
         android:padding="5dip" >
 
         <TextView
-            android:id="@+id/name_title"
+            android:id="@+id/filter_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -29,8 +29,7 @@
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:text="@string/xianzhi"
-            android:textColor="@color/black"
-            android:textSize="@dimen/tick_type_size2" />
+            android:textColor="@color/black"  />
 
         <ImageView
             android:id="@+id/xianzhiImg"
@@ -41,11 +40,11 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/filter_msg"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:text="@string/title2_huodongtype"
-        android:textSize="@dimen/tick_type_size2" />
+        android:text="@string/title2_huodongtype"  />
 
     <RelativeLayout
         android:layout_width="fill_parent"

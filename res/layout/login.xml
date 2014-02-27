@@ -107,6 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/login_check_mrg_l"
                         android:textColor="@color/orange"
+                        android:singleLine="false"
                         android:textSize="@dimen/login_textsize1"
                         android:visibility="gone" />
                 </TableRow>

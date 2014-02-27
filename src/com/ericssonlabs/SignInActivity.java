@@ -31,6 +31,28 @@ public class SignInActivity extends TabActivity {
 	public static float barH = 0.1f;
 
 	/**
+	 * 设置下面的tab的适配情况
+	 * 
+	 * @param screenWidth
+	 * @return
+	 */
+	public int adjustTabitem(int screenWidth) {
+		if (screenWidth <= 240) { // 240X320 屏幕
+			return -10;
+		} else if (screenWidth <= 320) { // 320X480 屏幕
+			return -8;
+		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
+			return -5;
+		} else if (screenWidth <= 540) { // 540X960 屏幕
+			return -2;
+		} else if (screenWidth <= 800) { // 800X1280 屏幕
+			return 1;
+		} else { // 大于 800X1280
+			return 1;
+		}
+	}
+
+	/**
 	 * 得到屏幕的高宽.
 	 * 
 	 * @return
@@ -126,7 +148,7 @@ public class SignInActivity extends TabActivity {
 		iv.setImageResource(i);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT, 50);
-		lp.setMargins(0, -5, 0, 0);
+		lp.setMargins(0, adjustTabitem((int) screenWidth), 0, 0);
 		iv.setLayoutParams(lp);
 		layout.addView(iv);
 
@@ -138,7 +160,7 @@ public class SignInActivity extends TabActivity {
 		tv.setTextColor(Color.WHITE);
 		LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.FILL_PARENT, 0, 1);
-		lp2.setMargins(0, -5, 0, 0);
+		lp2.setMargins(0, adjustTabitem((int) screenWidth), 0, 0);
 		tv.setLayoutParams(lp2);
 		layout.addView(tv);
 		return layout;

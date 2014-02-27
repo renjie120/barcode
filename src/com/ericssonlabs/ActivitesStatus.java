@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
+import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
@@ -36,12 +37,36 @@ public class ActivitesStatus extends BaseActivity {
 	private String eventId;
 	private TextView yishouchu;
 	private TextView yiqiandao;
+	private TextView yishouchuLabel;
+	private TextView yiqiandaoLabel;
 	private String token;
 	private ImageView activity_pic;
 	private ActionBar head;
 	private BottomBar bottom;
 	private float screenHeight = 0;
 	private float screenWidth = 0;
+
+	/**
+	 * 适配字体大小.
+	 * 
+	 * @param screenWidth
+	 * @return
+	 */
+	public int adjusStatusFontSize(int screenWidth) {
+		if (screenWidth <= 240) { // 240X320 屏幕
+			return 9;
+		} else if (screenWidth <= 320) { // 320X480 屏幕
+			return 15;
+		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
+			return 17;
+		} else if (screenWidth <= 540) { // 540X960 屏幕
+			return 20;
+		} else if (screenWidth <= 800) { // 800X1280 屏幕
+			return 25;
+		} else { // 大于 800X1280
+			return 25;
+		}
+	}
 
 	/**
 	 * 调用远程数据请求数据.
@@ -105,29 +130,52 @@ public class ActivitesStatus extends BaseActivity {
 		}
 	};
 
-	private void initLayout() {
-		yishouchu = (TextView) findViewById(R.id.yishouchu);
-		yiqiandao = (TextView) findViewById(R.id.yiqiandao);
-		activity_pic = (ImageView) findViewById(R.id.activity_pic);
+	/**
+	 * 页面字体适配.
+	 */
+	private void adjustScreen() {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-		head = (ActionBar) findViewById(R.id.status_head);
-		bottom = (BottomBar) findViewById(R.id.status_bottom);
-
-		head.init(getText(R.string.title_huodong).toString(), false, false,
+		head.init(getText(R.string.title_huodong).toString(), true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				adjustTitleFontSize((int) screenWidth));
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				adjustTitleFontSize((int) screenWidth));
+		yishouchu.setTextSize(adjusStatusFontSize((int) screenWidth));
+		yiqiandao.setTextSize(adjusStatusFontSize((int) screenWidth));
+		yishouchuLabel.setTextSize(adjusStatusFontSize((int) screenWidth));
+		yiqiandaoLabel.setTextSize(adjusStatusFontSize((int) screenWidth));
+	}
+
+	/**
+	 * 得到页面元素.
+	 */
+	private void initLayout() {
+		yishouchu = (TextView) findViewById(R.id.yishouchu);
+		yiqiandao = (TextView) findViewById(R.id.yiqiandao);
+		yishouchuLabel = (TextView) findViewById(R.id.yishouchuLabel);
+		yiqiandaoLabel = (TextView) findViewById(R.id.yiqiandaoLabel);
+		activity_pic = (ImageView) findViewById(R.id.activity_pic);
+		head = (ActionBar) findViewById(R.id.status_head);
+		head.setLeftAction(new ActionBar.BackAction(this));
+		head.setRightAction(new ActionBar.RefreshAction(head));
+		head.setRefreshEnabled(new OnRefreshClickListener() {
+			public void onRefreshClick() {
+				new ActivityStatusLoader(eventId).execute("");
+			}
+		});
+		bottom = (BottomBar) findViewById(R.id.status_bottom);
+		adjustScreen();
+
 		Intent intent = getIntent();
 		eventId = intent.getStringExtra("eventid");
 		token = intent.getStringExtra("token");
 		new Thread(new LoadImage(intent.getStringExtra("url"), activity_pic,
 				R.drawable.huodong_paper)).start();
-		new MyListLoader(eventId).execute("");
+		new ActivityStatusLoader(eventId).execute("");
 	}
 
 	@Override
@@ -142,11 +190,11 @@ public class ActivitesStatus extends BaseActivity {
 	/**
 	 * 显示活动的详情信息.
 	 */
-	private class MyListLoader extends AsyncTask<String, String, String> {
+	private class ActivityStatusLoader extends AsyncTask<String, String, String> {
 
 		private String eventId;
 
-		public MyListLoader(String eventId) {
+		public ActivityStatusLoader(String eventId) {
 			this.eventId = eventId;
 		}
 

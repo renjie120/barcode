@@ -39,6 +39,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.ericssonlabs.bean.ServerResults;
 import com.ericssonlabs.bean.TicketTypeItem;
 import com.ericssonlabs.util.ActionBar;
+import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
 import com.ericssonlabs.util.Constant;
 
 /**
@@ -56,11 +57,32 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	private ImageView xianzhiImg;
 	private ProgressDialog dialog;
 	private String temp;
-	private TextView sss;
+	private TextView shaixuanqi, name_title, filter_msg, filter_title;
 	private ActionBar head;
 	private ActionBar head2;
 	private float screenHeight = 0;
 	private float screenWidth = 0;
+
+	/**
+	 * 设置参数配置的字体大小.
+	 * @param screenWidth
+	 * @return
+	 */
+	public int adjusCheckconfigFontSize(int screenWidth) {
+		if (screenWidth <= 240) { // 240X320 屏幕
+			return 12;
+		} else if (screenWidth <= 320) { // 320X480 屏幕
+			return 16;
+		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
+			return 18;
+		} else if (screenWidth <= 540) { // 540X960 屏幕
+			return 22;
+		} else if (screenWidth <= 800) { // 800X1280 屏幕
+			return 26;
+		} else { // 大于 800X1280
+			return 26;
+		}
+	}
 
 	protected void onResume() {
 		super.onResume();
@@ -77,18 +99,25 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		list = (ListView) findViewById(R.id.ListView);
 		list.setOnItemClickListener(this);
 		head2 = (ActionBar) findViewById(R.id.ticket_filter_head);
+		head2.setLeftAction(new ActionBar.BackAction(this));
+		head2.setRightAction(new ActionBar.RefreshAction(head2));
+		head2.setRefreshEnabled(new OnRefreshClickListener() {
+			public void onRefreshClick() {
+				new ActivityTypeLoader(true, eventid).execute("");
+			}
+		});
 		xianzhi = mSharedPreferences.getString("xianzhi", "false");
 		xianzhiImg = (ImageView) findViewById(R.id.xianzhiImg);
+		filter_title = (TextView) findViewById(R.id.filter_title);
+		filter_msg = (TextView) findViewById(R.id.filter_msg);
 		if ("false".equals(xianzhi)) {
 			xianzhiImg.setSelected(false);
 		} else {
 			xianzhiImg.setSelected(true);
 		}
-		head2.init(getText(R.string.title_filter).toString(), true, true,
-				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				adjustTitleFontSize((int) screenWidth));
-		new MyListLoader(true, eventid).execute("");
+		new ActivityTypeLoader(true, eventid).execute("");
+
+		adjustScreen2();
 	}
 
 	/**
@@ -113,7 +142,7 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 						listItem.add(map);
 					}
 				}
-				MyImgAdapter adapter = new MyImgAdapter(listItem,
+				TicketTypeAdapter adapter = new TicketTypeAdapter(listItem,
 						CheckConfig.this);
 				list.setAdapter(adapter);
 				break;
@@ -127,11 +156,11 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	/**
 	 * 显示票据的类型数据信息.
 	 */
-	class MyImgAdapter extends BaseAdapter {
+	class TicketTypeAdapter extends BaseAdapter {
 		private ArrayList<HashMap<String, Object>> data;// 用于接收传递过来的Context对象
 		private Context context;
 
-		public MyImgAdapter(ArrayList<HashMap<String, Object>> data,
+		public TicketTypeAdapter(ArrayList<HashMap<String, Object>> data,
 				Context context) {
 			super();
 			this.data = data;
@@ -167,6 +196,7 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 
 				viewHolder.typename = (TextView) convertView
 						.findViewById(R.id.typename);
+				viewHolder.typename.setTextSize(adjusCheckconfigFontSize((int)screenWidth));
 				viewHolder.ischeck = (ImageView) convertView
 						.findViewById(R.id.checkimg);
 
@@ -234,12 +264,12 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	/**
 	 * 查询票据的类型数据信息.
 	 */
-	private class MyListLoader extends AsyncTask<String, String, String> {
+	private class ActivityTypeLoader extends AsyncTask<String, String, String> {
 
 		private boolean showDialog;
 		private String eventId;
 
-		public MyListLoader(boolean showDialog, String eventId) {
+		public ActivityTypeLoader(boolean showDialog, String eventId) {
 			this.showDialog = showDialog;
 			this.eventId = eventId;
 		}
@@ -306,33 +336,68 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	}
 
 	/**
-	 * 初始化配置界面.
+	 * 屏幕适配.
 	 */
-	private void initConfig() {
-		setContentView(R.layout.check_config);
-		sss = (TextView) findViewById(R.id.shaixuanqi);
+	private void adjustScreen() {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-		head = (ActionBar) findViewById(R.id.ticket_config_head); 
+		head = (ActionBar) findViewById(R.id.ticket_config_head);
 		head.init(getText(R.string.title_config).toString(), true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				adjustTitleFontSize((int) screenWidth));
+		head.setLeftAction(new ActionBar.BackAction(this));
+		head.setRightAction(new ActionBar.RefreshAction(head));
+		head.setRefreshEnabled(new OnRefreshClickListener() {
+			public void onRefreshClick() {
+				xianzhi = mSharedPreferences.getString("xianzhi", "false");
+				if ("false".equals(xianzhi)) {
+					shaixuanqi.setText("筛选器是关闭的");
+				} else {
+					shaixuanqi.setText("筛选器是启用的");
+				}
+			}
+		});
+		name_title.setTextSize(adjusCheckconfigFontSize((int) screenWidth));
+		shaixuanqi.setTextSize(adjusCheckconfigFontSize((int) screenWidth) - 4);
+	}
+
+	/**
+	 * 参数过滤界面配置屏幕适配.
+	 */
+	private void adjustScreen2() {
+		head2.init(getText(R.string.title_filter).toString(), true, true,
+				LinearLayout.LayoutParams.FILL_PARENT,
+				(int) (screenHeight * barH),
+				adjustTitleFontSize((int) screenWidth));
+		
+		filter_title.setTextSize(adjusCheckconfigFontSize((int) screenWidth)+2);
+		filter_msg.setTextSize(adjusCheckconfigFontSize((int) screenWidth)+2);
+	}
+
+	/**
+	 * 初始化配置界面.
+	 */
+	private void initConfig() {
+		setContentView(R.layout.check_config);
+		name_title = (TextView) findViewById(R.id.name_title);
+		shaixuanqi = (TextView) findViewById(R.id.shaixuanqi);
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
 				.getApplication());
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
 				.getApplication());
 		xianzhi = mSharedPreferences.getString("xianzhi", "false");
 		if ("false".equals(xianzhi)) {
-			sss.setText("筛选器是关闭的");
+			shaixuanqi.setText("筛选器是关闭的");
 		} else {
-			sss.setText("筛选器是启用的");
+			shaixuanqi.setText("筛选器是启用的");
 		}
 		Intent intent = getIntent();
 		token = intent.getStringExtra("token");
 		eventid = intent.getStringExtra("eventid");
 		temp = token + ";" + eventid + ";";
+		adjustScreen();
 	}
 
 	@Override
