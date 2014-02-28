@@ -48,8 +48,7 @@ import com.ericssonlabs.util.PingYinUtil;
  * 订票列表界面.
  * 
  */
-public class TicketsList extends BaseActivity {
-
+public class TicketsList extends BaseActivity { 
 	private ListView list;
 	private String token;
 	private TextView search;
@@ -96,7 +95,7 @@ public class TicketsList extends BaseActivity {
 			} else {
 				adapter.search("");
 			}
-			list.setAdapter(adapter);
+			//list.setAdapter(adapter);
 		}
 	};
 
@@ -337,6 +336,8 @@ public class TicketsList extends BaseActivity {
 						}
 					}
 				}
+				
+				notifyDataSetInvalidated();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

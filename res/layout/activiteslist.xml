@@ -5,15 +5,6 @@
     android:background="@color/background"
     android:orientation="vertical" >
 
-    <!--
-    <include
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/bottom_height"
-        android:layout_gravity="bottom"
-        layout="@layout/activity_title" />
-    <com.ericssonlabs.util.RefreshableListView
-    -->
-
     <com.ericssonlabs.util.ActionBar
         android:id="@+id/list_head"
         android:layout_width="fill_parent"
@@ -30,13 +21,6 @@
         android:drawSelectorOnTop="false"
         android:fadingEdgeLength="0.0sp"
         android:scrollbars="none" />
-    <!--
-    <include
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/bottom_height"
-        android:layout_gravity="bottom"
-        layout="@layout/bottom" />
-    -->
 
     <com.ericssonlabs.util.BottomBar
         android:id="@+id/list_bottom"

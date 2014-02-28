@@ -27,7 +27,7 @@
         android:layout_gravity="left"
         android:background="@drawable/i5_top_btn_bg2"
         android:orientation="horizontal"
-        android:padding="2dp" >
+        android:padding="5dp" >
 
         <ImageView
             android:id="@+id/left_btn1"
@@ -45,7 +45,7 @@
         android:layout_gravity="right"
         android:background="@drawable/i5_top_btn_bg2"
         android:orientation="horizontal"
-        android:padding="2dp" >
+        android:padding="5dp" >
 
         <ImageView
             android:id="@+id/right_btn1"

@@ -122,9 +122,7 @@ public class ActivitesStatus extends BaseActivity {
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
-//		head.setLeftWidthHeight((int) (screenHeight * AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
-//		head.setRightWidthHeight((int) (screenHeight * AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
-	
+ 
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));

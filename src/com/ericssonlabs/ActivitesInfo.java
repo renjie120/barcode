@@ -131,9 +131,7 @@ public class ActivitesInfo extends BaseActivity {
 				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));
-//		head.setLeftWidthHeight((int) (screenHeight * AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
-//		head.setRightWidthHeight((int) (screenHeight * AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
-	
+ 
 		head.setRefreshEnabled(new OnRefreshClickListener() {
 			public void onRefreshClick() {
 				new ActivityInfoLoader(eventId).execute(""); 

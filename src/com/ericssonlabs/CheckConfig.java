@@ -62,9 +62,7 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	private ActionBar head;
 	private ActionBar head2;
 	private float screenHeight = 0;
-	private float screenWidth = 0;
-
-
+	private float screenWidth = 0; 
 
 	protected void onResume() {
 		super.onResume();

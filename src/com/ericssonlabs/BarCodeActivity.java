@@ -36,8 +36,6 @@ public class BarCodeActivity extends BaseActivity {
 	private float screenWidth = 0;
 	private Button scanBarCodeButton;
 
-	
-
 	private boolean qiandao(String tickid) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
@@ -79,10 +77,10 @@ public class BarCodeActivity extends BaseActivity {
 		head.init(getText(R.string.title_huodong).toString(), true, false,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
-//		head.setLeftWidthHeight((int) (screenHeight * AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
-	 
-		scanBarCodeButton.setTextSize(AdjustScreenUtil.adjustBarcodeTextFontSize((int)screenWidth));
+				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth)); 
+		head.setLeftAction(new ActionBar.BackAction(this));
+		scanBarCodeButton.setTextSize(AdjustScreenUtil
+				.adjustBarcodeTextFontSize((int) screenWidth));
 	}
 
 	/**

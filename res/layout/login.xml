@@ -55,7 +55,7 @@
                     <TextView
                         android:id="@+id/name_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" 
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/name_title"
                         android:textColor="@color/gray2"
@@ -65,6 +65,7 @@
                         android:id="@+id/inputName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
                         android:layout_weight="1"
                         android:singleLine="true"
                         android:text="test140103114242328"
@@ -81,7 +82,7 @@
                     <TextView
                         android:id="@+id/pass_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" 
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/pass_title"
                         android:textColor="@color/gray2"
@@ -91,6 +92,7 @@
                         android:id="@+id/inputPass"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
                         android:layout_weight="1"
                         android:inputType="textPassword"
                         android:text="123123"
@@ -120,7 +122,7 @@
                         android:layout_marginLeft="@dimen/login_check_mrg_l"
                         android:layout_weight="1"
                         android:singleLine="false"
-                        android:textColor="@color/orange" 
+                        android:textColor="@color/orange"
                         android:visibility="gone" />
                 </LinearLayout>
 

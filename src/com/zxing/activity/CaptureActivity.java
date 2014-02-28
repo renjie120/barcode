@@ -3,7 +3,6 @@ package com.zxing.activity;
 import java.io.IOException;
 import java.util.Vector;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
@@ -18,9 +17,11 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.ericssonlabs.BaseActivity;
 import com.ericssonlabs.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
@@ -28,11 +29,13 @@ import com.zxing.camera.CameraManager;
 import com.zxing.decoding.CaptureActivityHandler;
 import com.zxing.decoding.InactivityTimer;
 import com.zxing.view.ViewfinderView;
+
 /**
  * Initial the camera
+ * 
  * @author Ryan.Tang
  */
-public class CaptureActivity extends Activity implements Callback {
+public class CaptureActivity extends BaseActivity implements Callback {
 
 	private CaptureActivityHandler handler;
 	private ViewfinderView viewfinderView;
@@ -45,15 +48,18 @@ public class CaptureActivity extends Activity implements Callback {
 	private static final float BEEP_VOLUME = 0.10f;
 	private boolean vibrate;
 	private Button cancelScanButton;
+	private float screenHeight = 0;
+	private float screenWidth = 0;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera);
-		//ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
+		// ViewUtil.addTopView(getApplicationContext(), this,
+		// R.string.scan_card);
 		CameraManager.init(getApplication());
-		viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
+		viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view); 
 		cancelScanButton = (Button) this.findViewById(R.id.btn_cancel_scan);
 		hasSurface = false;
 		inactivityTimer = new InactivityTimer(this);
@@ -68,24 +74,24 @@ public class CaptureActivity extends Activity implements Callback {
 			initCamera(surfaceHolder);
 		} else {
 			surfaceHolder.addCallback(this);
-			////为了可以播放视频或者使用Camera预览，我们需要指定其Buffer类型     
+			// //为了可以播放视频或者使用Camera预览，我们需要指定其Buffer类型
 			surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		}
 		decodeFormats = null;
 		characterSet = null;
 
 		playBeep = true;
-		////声音模式 
+		// //声音模式
 		AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);
 		if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
 			playBeep = false;
 		}
 		initBeepSound();
 		vibrate = true;
-		
-		//quit the scan view
+
+		// quit the scan view
 		cancelScanButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				CaptureActivity.this.finish();
@@ -108,9 +114,10 @@ public class CaptureActivity extends Activity implements Callback {
 		inactivityTimer.shutdown();
 		super.onDestroy();
 	}
-	
+
 	/**
 	 * 处理扫描之后的结果条形码.
+	 * 
 	 * @param result
 	 * @param barcode
 	 */
@@ -118,11 +125,12 @@ public class CaptureActivity extends Activity implements Callback {
 		inactivityTimer.onActivity();
 		playBeepSoundAndVibrate();
 		String resultString = result.getText();
-		//FIXME
+		// FIXME
 		if (resultString.equals("")) {
-			Toast.makeText(CaptureActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
-		}else {
-//			System.out.println("Result:"+resultString);
+			Toast.makeText(CaptureActivity.this, "Scan failed!",
+					Toast.LENGTH_SHORT).show();
+		} else {
+			// System.out.println("Result:"+resultString);
 			Intent resultIntent = new Intent();
 			Bundle bundle = new Bundle();
 			bundle.putString("result", resultString);
@@ -131,8 +139,8 @@ public class CaptureActivity extends Activity implements Callback {
 		}
 		CaptureActivity.this.finish();
 	}
-	
-	//打开照相机.
+
+	// 打开照相机.
 	private void initCamera(SurfaceHolder surfaceHolder) {
 		try {
 			CameraManager.get().openDriver(surfaceHolder);
@@ -142,9 +150,9 @@ public class CaptureActivity extends Activity implements Callback {
 			return;
 		}
 		if (handler == null) {
-			//CaptureActivityHandler:对象启动相机，实现自动聚焦，创建DecodeThread线程，DecodeThread创建Decodehandler，
-			//这个对象就获取从相机得到的原始byte数据，开始解码的第一步工作，从获取的byte中解析
-			//qr图来，并解析出qr图中的字符，将这块没有分析的字符抛送到CaptureActivityHandler中handle
+			// CaptureActivityHandler:对象启动相机，实现自动聚焦，创建DecodeThread线程，DecodeThread创建Decodehandler，
+			// 这个对象就获取从相机得到的原始byte数据，开始解码的第一步工作，从获取的byte中解析
+			// qr图来，并解析出qr图中的字符，将这块没有分析的字符抛送到CaptureActivityHandler中handle
 			handler = new CaptureActivityHandler(this, decodeFormats,
 					characterSet);
 		}

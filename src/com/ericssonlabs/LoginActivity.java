@@ -3,7 +3,6 @@ package com.ericssonlabs;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
-import java.security.MessageDigest;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -12,11 +11,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -154,7 +150,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	/**
 	 * 绑定事件.
 	 */
-	private void prepareListener() {// 勾选是否记住密码调用.
+	private void prepareListener() {
+		// 勾选是否记住密码调用.
 		remeberPassword
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					public void onCheckedChanged(CompoundButton arg0,
@@ -170,6 +167,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	 * 登陆控制.
 	 */
 	private void autoLogin() {
+		//网络不通
 		if (!isNetworkConnected(this)) {
 			myHandler.sendEmptyMessage(2);
 		} else {
@@ -215,29 +213,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			mEditor.commit();
 		}
 	}
-
-	/**
-	 * 判断网络状况.
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public boolean isNetworkConnected(Context context) {
-		try {
-			if (context != null) {
-				ConnectivityManager mConnectivityManager = (ConnectivityManager) context
-						.getSystemService(Context.CONNECTIVITY_SERVICE);
-				NetworkInfo mNetworkInfo = mConnectivityManager
-						.getActiveNetworkInfo();
-				if (mNetworkInfo != null) {
-					return mNetworkInfo.isAvailable();
-				}
-			}
-		} catch (Exception e) {
-			return false;
-		}
-		return false;
-	}
+ 
 
 	/**
 	 * 开启异步任务登陆.
@@ -308,12 +284,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			switch (msg.what) {
 			case 1:
 				mess_title.setVisibility(View.VISIBLE);
-				mess_title.setText("您输入的账号或密码有误!请重新输入!");
+				mess_title.setText("您输入的账号或密码有误,请重新输入!");
 				break;
 			case 2:
 				mess_title.setVisibility(View.VISIBLE);
 				mess_title.setText("请检查网络连接状况!");
 				break;
+			//跳转到活动列表页面.
 			case 3:
 				mess_title.setVisibility(View.GONE);
 				Intent intent = new Intent(LoginActivity.this,
@@ -329,7 +306,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				break;
 			case 6:
 				mess_title.setVisibility(View.VISIBLE);
-				mess_title.setText("您输入的账号或密码有误!请重新输入!");
+				mess_title.setText("您输入的账号或密码有误,请重新输入!");
 				break;
 			default:
 				super.hasMessages(msg.what);
@@ -338,18 +315,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		}
 	};
 
-	/**
-	 * md5加密方法.
-	 * 
-	 * @param data
-	 * @return
-	 * @throws Exception
-	 */
-	public static byte[] encryptMD5(byte[] data) throws Exception {
-		MessageDigest md5 = MessageDigest.getInstance("MD5");
-		md5.update(data);
-		return md5.digest();
-	}
+	
 
 	/**
 	 * 登陆请求服务器数据
@@ -366,8 +332,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			HttpPost httpost = new HttpPost(Constant.HOST
 					+ "?do=login&username=" + userName + "&password="
 					+ md5.toString(16));
-			System.out.println("登陆：" + Constant.HOST + "?do=login&username="
-					+ userName + "&password=" + md5.toString(16));
 			HttpResponse response = httpclient.execute(httpost);
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(

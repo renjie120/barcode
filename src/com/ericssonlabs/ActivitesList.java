@@ -81,6 +81,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	private final static float statusBtnH = 24 / 321f;
 	private final static float statusBtnW = 121 / 321f;
 	private LinearLayout.LayoutParams p;
+	private boolean showMorePage = true;
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
@@ -89,6 +90,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
 		// 所有的条目已经和最大条数相等，则移除底部的View
 		if (totalItemCount == MaxDateNum + 1) {
+			showMorePage = true;
 			list.removeFooterView(moreView);
 			Toast.makeText(this, "数据全部加载完成，没有更多数据！", Toast.LENGTH_SHORT).show();
 		}
@@ -131,10 +133,6 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
-		// head.setLeftWidthHeight((int) (screenHeight *
-		// AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
-		// head.setRightWidthHeight((int) (screenHeight *
-		// AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
 
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
@@ -161,6 +159,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		head.setRightAction(new ActionBar.RefreshAction(head));
 		head.setRefreshEnabled(new OnRefreshClickListener() {
 			public void onRefreshClick() {
+				currentPage = 1;
 				new MyListLoader(true).execute("");
 			}
 		});
@@ -222,7 +221,10 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 				// 进行订票列表的展示.
 				adapter = new ActivitesListAdapter(listItem, ActivitesList.this);
 				// 添加上最后的一个底部视图.
-				list.addFooterView(moreView);
+				if (showMorePage) {
+					list.addFooterView(moreView);
+					showMorePage = false;
+				}
 				list.setAdapter(adapter);
 				break;
 			case 3:
@@ -336,8 +338,10 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 			}
 			// 否则就进行文件解析处理.
 			else {
+				// 如果是第一页
 				if (page == 1)
 					myHandler.sendEmptyMessage(2);
+				// 如果不是第一页
 				else
 					myHandler.sendEmptyMessage(3);
 			}
@@ -406,10 +410,13 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 						.findViewById(R.id.end_time);
 				viewHolder.img = (ImageView) convertView
 						.findViewById(R.id.activity_pic);
+				//下面进行屏幕适配。
 				viewHolder.status.setTextSize(AdjustScreenUtil
-						.adjusDescTextFontSize((int) screenWidth));
+						.adjusDescTextFontSize((int) screenWidth) - 2);
+//				viewHolder.statusbar.setLayoutParams(AdjustScreenUtil
+//						.adjusActivityLayout((int) screenWidth));
 				viewHolder.name.setTextSize(AdjustScreenUtil
-						.adjusDescTextFontSize((int) screenWidth));
+						.adjusDescTextFontSize((int) screenWidth) - 2);
 				viewHolder.end_time.setTextSize(AdjustScreenUtil
 						.adjusDescTextFontSize((int) screenWidth) - 3);
 				viewHolder.start_time.setTextSize(AdjustScreenUtil
@@ -451,25 +458,6 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		// 滑到底部后自动加载，判断listview已经停止滚动并且最后可视的条目等于adapter的条目
-		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
-				&& lastVisibleIndex == adapter.getCount()) {
-			// // 当滑到底部时自动加载
-			// pg.setVisibility(View.VISIBLE);
-			// bt.setVisibility(View.GONE);
-			// handler.postDelayed(new Runnable() {
-			//
-			// @Override
-			// public void run() {
-			// loadMoreDate();
-			// bt.setVisibility(View.VISIBLE);
-			// pg.setVisibility(View.GONE);
-			// adapter.notifyDataSetChanged();
-			// }
-			//
-			// });
-
-		}
 	}
 
 }

@@ -59,7 +59,8 @@ public class BottomBar extends LinearLayout implements OnClickListener {
 
 		@Override
 		public void performAction(final View view) {
-			Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:15000516416"));
+			Intent intent = new Intent(Intent.ACTION_CALL,
+					Uri.parse("tel:15000516416"));
 			this.context.startActivity(intent);
 		}
 
@@ -82,6 +83,7 @@ public class BottomBar extends LinearLayout implements OnClickListener {
 		setLeftVisible(left);
 		setRightVisible(right);
 		setWidthHeight(width, height);
+		//setLeftImgWidthAndHeight(height);
 		if (titleSize > 0)
 			setTitleSize(titleSize);
 	}
@@ -144,6 +146,13 @@ public class BottomBar extends LinearLayout implements OnClickListener {
 	public BottomBar(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		initViews(context);
+	}
+
+	private void setLeftImgWidthAndHeight(int height) {
+		ViewGroup.LayoutParams params = this.mLeftButton.getLayoutParams();
+		params.height = height - 2;
+		params.width = (int) (height * 1.2);
+		this.mLeftButton.setLayoutParams(params);
 	}
 
 	private void initViews(final Context context) {
