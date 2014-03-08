@@ -155,14 +155,14 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		bt = (Button) moreView.findViewById(R.id.bt_load);
 		pg = (ProgressBar) moreView.findViewById(R.id.pg);
 		head = (ActionBar) findViewById(R.id.list_head);
-//		head.setLeftAction(new ActionBar.BackAction(this));
-//		head.setRightAction(new ActionBar.RefreshAction(head));
-//		head.setRefreshEnabled(new OnRefreshClickListener() {
-//			public void onRefreshClick() {
-//				currentPage = 1;
-//				new MyListLoader(true).execute("");
-//			}
-//		});
+		head.setLeftAction(new ActionBar.BackAction(this));
+		head.setRightAction(new ActionBar.RefreshAction(head));
+		head.setRefreshEnabled(new OnRefreshClickListener() {
+			public void onRefreshClick() {
+				currentPage = 1;
+				new MyListLoader(true).execute("");
+			}
+		});
 
 		bottom = (BottomBar) findViewById(R.id.list_bottom);
 		bottom.setRightAction(new BottomBar.CallAction(this));

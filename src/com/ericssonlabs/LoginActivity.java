@@ -75,7 +75,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private LinearLayout table;
 	private ImageView logo_img;
 	// 登陆框提示文本的宽度.
-	private float textViewW = 45 / 200f;
+	private float textViewW = 57 / 265f;
+	private float textEditW = 150 / 265f;
+	private float textViewH = 27 / 471f;
+	private float btnW = 75/268f;
+	private float btnH = 20/471f;
 
 	/**
 	 * 屏幕适配.
@@ -104,22 +108,27 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		// 设置底部标题栏的右边操作
 		login_bottom.setRightAction(new BottomBar.CallAction(this));
 		//name_title.setTextSize(((int) (12)));
-		name_title.setHeight((int) (0.065 * screenHeight));
-		name_title.setWidth((int) (textViewW * screenWidth));
-		pass_title.setWidth((int) (textViewW * screenWidth));
-		nameText.setTextSize(AdjustScreenUtil
-				.adjusLoginTextFontSize((int) screenWidth) - 1);
-		passwordText.setTextSize(AdjustScreenUtil
-				.adjusLoginTextFontSize((int) screenWidth) - 1);
-		pass_title.setTextSize(AdjustScreenUtil
-				.adjusLoginTextFontSize((int) screenWidth));
-		mess_title.setTextSize(AdjustScreenUtil
-				.adjusLoginTextFontSize((int) screenWidth) - 4);
-		mess_title.setHeight((int) (screenHeight * 30 / 323));
-		buttonLogin.setTextSize(AdjustScreenUtil
-				.adjusLoginTextFontSize((int) screenWidth));
-		remeberPassword.setTextSize(AdjustScreenUtil
-				.adjusLoginTextFontSize((int) screenWidth) - 3);
+		int textHeight = (int) (textViewH * screenHeight); 
+		int textWidth = (int) (textViewW * screenWidth);
+		int textWidth2 = (int) (textEditW * screenWidth);
+		
+		double rate = (float)screenWidth/480;
+		name_title.setTextSize((float)(name_title.getTextSize()*rate));
+		pass_title.setTextSize((float)(pass_title.getTextSize()*rate));
+		remeberPassword.setTextSize((float)(remeberPassword.getTextSize()*rate));
+		buttonLogin.setTextSize((float)(buttonLogin.getTextSize()*rate));
+		nameText.setTextSize((float)(nameText.getTextSize()*rate));
+		passwordText.setTextSize((float)(passwordText.getTextSize()*rate));  
+		nameText.setHeight(textHeight);
+		nameText.setWidth(textWidth2);
+		passwordText.setHeight(textHeight);
+		passwordText.setWidth(textWidth2);
+		name_title.setHeight(textHeight);
+		name_title.setWidth(textWidth);
+		pass_title.setWidth(textWidth);
+		pass_title.setHeight(textHeight);
+		buttonLogin.setHeight((int)(btnH*screenHeight));
+		buttonLogin.setWidth((int)(btnW*screenWidth)); 
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);

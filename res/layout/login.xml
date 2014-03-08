@@ -35,7 +35,6 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/main_bg"
             android:gravity="center"
             android:orientation="horizontal" >
 
@@ -58,7 +57,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/name_title"
-                        android:textColor="@color/gray2" />
+                        android:textColor="@color/gray2"
+                        android:textSize="13sp" />
 
                     <EditText
                         android:id="@+id/inputName"
@@ -66,9 +66,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
                         android:layout_weight="1"
-                        android:background="@drawable/text"
                         android:singleLine="true"
-                        android:text="test140103114242328" >
+                        android:text="test140103114242328"
+                        android:textSize="13sp" >
                     </EditText>
                 </LinearLayout>
 
@@ -84,7 +84,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/pass_title"
-                        android:textColor="@color/gray2" />
+                        android:textColor="@color/gray2"
+                        android:textSize="13sp" />
 
                     <EditText
                         android:id="@+id/inputPass"
@@ -92,9 +93,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
                         android:layout_weight="1"
-                        android:background="@drawable/text"
                         android:inputType="textPassword"
-                        android:text="123123" >
+                        android:singleLine="true"
+                        android:text="123123"
+                        android:textSize="13sp" >
                     </EditText>
                 </LinearLayout>
 
@@ -110,7 +112,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/login_check_mrg_l"
                         android:text="@string/remember_password"
-                        android:textColor="@color/gray2" />
+                        android:textColor="@color/gray2"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/mess_title"
@@ -120,6 +123,7 @@
                         android:layout_weight="1"
                         android:singleLine="false"
                         android:textColor="@color/orange"
+                        android:textSize="12sp"
                         android:visibility="gone" />
                 </LinearLayout>
 
