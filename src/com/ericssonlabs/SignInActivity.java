@@ -88,11 +88,11 @@ public class SignInActivity extends TabActivity {
 			// 设置高度、宽度，不过宽度由于设置为fill_parent，在此对它没效果
 			tabWidget.getChildAt(i).getLayoutParams().height = height;
 			View v = tabWidget.getChildAt(i);
-			if (tabHost.getCurrentTab() == i) {
+			if (tabHost.getCurrentTab() == i) { 
+				v.setBackgroundColor(Color.GRAY);
+			} else {
 				v.setBackgroundDrawable(getResources().getDrawable(
 						R.drawable.selected));
-			} else {
-				v.setBackgroundColor(Color.GRAY);
 			}
 		}
 
@@ -103,10 +103,10 @@ public class SignInActivity extends TabActivity {
 				for (int i = 0; i < tabWidget.getChildCount(); i++) {
 					View v = tabWidget.getChildAt(i);
 					if (tabHost.getCurrentTab() == i) {
-						v.setBackgroundDrawable(getResources().getDrawable(
-								R.drawable.selected));
-					} else {
 						v.setBackgroundColor(Color.GRAY);
+					} else {
+						v.setBackgroundDrawable(getResources().getDrawable(
+								R.drawable.selected));						
 					}
 				}
 			}

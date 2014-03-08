@@ -64,15 +64,15 @@ public class RefreshableListView extends ListView {
 		initialize();
 	}
 
-	// ÏÂÀ­Ë¢ĞÂ¼àÌı
+	// ä¸‹æ‹‰åˆ·æ–°ç›‘å¬
 	public void setOnRefreshListener(final OnRefreshListener l) {
-		System.out.println("setOnRefreshListenerÏÂÀ­Ë¢ĞÂ¼àÌı");
+		System.out.println("setOnRefreshListenerä¸‹æ‹‰åˆ·æ–°ç›‘å¬");
 		mListener = l;
 	}
 
-	// Íê³ÉË¢ĞÂ
+	// å®Œæˆåˆ·æ–°
 	public void completeRefreshing() {
-		System.out.println("completeRefreshingÍê³ÉË¢ĞÂ");
+		System.out.println("completeRefreshingå®Œæˆåˆ·æ–°");
 		mProgress.setVisibility(View.INVISIBLE);
 		mArrow.setVisibility(View.VISIBLE);
 		mHandler.sendMessage(mHandler.obtainMessage(NORMAL, mHeaderHeight, 0));
@@ -99,11 +99,11 @@ public class RefreshableListView extends ListView {
 	public boolean onTouchEvent(final MotionEvent ev) {
 		switch (ev.getAction()) {
 		case MotionEvent.ACTION_MOVE:
-			System.out.println("onTouchEventÒÆ¶¯");
+			System.out.println("onTouchEventç§»åŠ¨");
 			mHistoricalTop = getChildAt(0).getTop();
 			break;
 		case MotionEvent.ACTION_UP:
-			System.out.println("onTouchEventÌ§Æğ");
+			System.out.println("onTouchEventæŠ¬èµ·");
 			System.out.println("mIsRefreshing=" + mIsRefreshing + ",mArrowUp="
 					+ mArrowUp);
 			if (!mIsRefreshing) {
@@ -205,7 +205,7 @@ public class RefreshableListView extends ListView {
 		}
 	}
 
-	// ³õÊ¼»¯ÊÓÍ¼
+	// åˆå§‹åŒ–è§†å›¾
 	private void initialize() {
 		System.out.println("initialize");
 		LayoutInflater inflater = (LayoutInflater) getContext()
@@ -258,13 +258,13 @@ public class RefreshableListView extends ListView {
 			if (height > mHeaderHeight && !mArrowUp) {
 				mArrow.startAnimation(AnimationUtils.loadAnimation(
 						getContext(), R.anim.rotate));
-				mText.setText("Ë¢ĞÂÊı¾İ");
+				mText.setText("åˆ·æ–°æ•°æ®");
 				rotateArrow();
 				mArrowUp = true;
 			} else if (height < mHeaderHeight && mArrowUp) {
 				mArrow.startAnimation(AnimationUtils.loadAnimation(
 						getContext(), R.anim.rotate));
-				mText.setText("ÏÂÀ­Ë¢ĞÂ");
+				mText.setText("ä¸‹æ‹‰åˆ·æ–°");
 				rotateArrow();
 				mArrowUp = false;
 			}
@@ -272,7 +272,7 @@ public class RefreshableListView extends ListView {
 	}
 
 	private void rotateArrow() {
-		System.out.println("rotateArrowĞı×ª¼ıÍ·");
+		System.out.println("rotateArrowæ—‹è½¬ç®­å¤´");
 		Drawable drawable = mArrow.getDrawable();
 		Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
 				drawable.getIntrinsicHeight(), Config.ARGB_8888);
@@ -287,12 +287,12 @@ public class RefreshableListView extends ListView {
 		mArrow.setImageBitmap(bitmap);
 	}
 
-	// ÏÂÀ­ËÉ¿ªºó¿ªÊ¼Ë¢ĞÂÊı¾İ
+	// ä¸‹æ‹‰æ¾å¼€åå¼€å§‹åˆ·æ–°æ•°æ®
 	private void startRefreshing() {
-		System.out.println("startRefreshingÏÂÀ­ºóË¢ĞÂÊı¾İ");
+		System.out.println("startRefreshingä¸‹æ‹‰ååˆ·æ–°æ•°æ®");
 		mArrow.setVisibility(View.INVISIBLE);
 		mProgress.setVisibility(View.VISIBLE);
-		mText.setText("¼ÓÔØ...");
+		mText.setText("åŠ è½½...");
 		mIsRefreshing = true;
 
 		if (mListener != null) {

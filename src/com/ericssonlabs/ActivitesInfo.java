@@ -13,7 +13,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,9 +51,10 @@ public class ActivitesInfo extends BaseActivity {
 	private BottomBar bottom;
 	private float screenHeight = 0;
 	private float screenWidth = 0;
+	private float w = 0.83f;
+	private float h = 0.1f;
 
-	
-
+		
 	private EventInfo activitiDetail(String eventId) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
@@ -140,6 +143,13 @@ public class ActivitesInfo extends BaseActivity {
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+		LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams((int)(screenWidth*w),(int)(screenHeight*h));
+		p1.gravity = Gravity.CENTER_HORIZONTAL;
+		status.setLayoutParams(p1);
+		p1.topMargin = 20;
+		qiandao.setLayoutParams(p1);
+		qiandao_btn.setWidth((int)(screenWidth*w));
+		qiandao_btn.setHeight((int)(screenHeight*h));
 		bottom.setRightAction(new BottomBar.CallAction(this));
 		title.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth));
 		beginTime.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) - 2);

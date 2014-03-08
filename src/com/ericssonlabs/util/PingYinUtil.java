@@ -1,4 +1,4 @@
-﻿package com.ericssonlabs.util;
+package com.ericssonlabs.util;
 
 import java.util.HashSet;
 import java.util.Set;

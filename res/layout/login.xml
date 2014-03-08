@@ -35,6 +35,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/main_bg"
             android:gravity="center"
             android:orientation="horizontal" >
 
@@ -42,7 +43,6 @@
                 android:id="@+id/login_table"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:gravity="center"
                 android:orientation="vertical" >
 
@@ -58,8 +58,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/name_title"
-                        android:textColor="@color/gray2"
-                        android:textSize="@dimen/login_textsize3" />
+                        android:textColor="@color/gray2" />
 
                     <EditText
                         android:id="@+id/inputName"
@@ -67,9 +66,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
                         android:layout_weight="1"
+                        android:background="@drawable/text"
                         android:singleLine="true"
-                        android:text="test140103114242328"
-                        android:textSize="@dimen/login_textsize2" >
+                        android:text="test140103114242328" >
                     </EditText>
                 </LinearLayout>
 
@@ -85,8 +84,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/pass_title"
-                        android:textColor="@color/gray2"
-                        android:textSize="@dimen/login_textsize3" />
+                        android:textColor="@color/gray2" />
 
                     <EditText
                         android:id="@+id/inputPass"
@@ -94,9 +92,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
                         android:layout_weight="1"
+                        android:background="@drawable/text"
                         android:inputType="textPassword"
-                        android:text="123123"
-                        android:textSize="@dimen/login_textsize2" >
+                        android:text="123123" >
                     </EditText>
                 </LinearLayout>
 
@@ -112,8 +110,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/login_check_mrg_l"
                         android:text="@string/remember_password"
-                        android:textColor="@color/gray2"
-                        android:textSize="@dimen/login_textsize1" />
+                        android:textColor="@color/gray2" />
 
                     <TextView
                         android:id="@+id/mess_title"
@@ -137,14 +134,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:background="@drawable/shape_corner_btn"
+                        android:background="@drawable/butto_login"
                         android:paddingBottom="5dp"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:paddingTop="5dp"
                         android:text="@string/message_login"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/login_textsize3" >
+                        android:textColor="@color/white" >
                     </Button>
                 </LinearLayout>
             </LinearLayout>

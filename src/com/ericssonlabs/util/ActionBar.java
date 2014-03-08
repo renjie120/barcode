@@ -98,7 +98,7 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 		private final Activity context;
 
 		public BackAction(final Activity mContext) {
-			super(R.drawable.logo);
+			super(R.drawable.back);
 			this.context = mContext;
 		}
 

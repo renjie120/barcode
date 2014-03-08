@@ -85,22 +85,26 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
+		System.out.println("screenHeight=" + screenHeight + ",screenWidth="
+				+ screenWidth);
 		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
 				(int) (screenWidth * tabW), (int) (screenHeight * tabH));
 		// 设置table的高度和宽度.
 		table.setLayoutParams(p);
-		alert(screenHeight + ",," + screenWidth);
+		// 设置首页标题栏显示的情况
 		head.init(getText(R.string.title1).toString(), false, false,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+		// 设置底部标题栏
 		login_bottom.init(null, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+		// 设置底部标题栏的右边操作
 		login_bottom.setRightAction(new BottomBar.CallAction(this));
-		name_title.setTextSize(AdjustScreenUtil
-				.adjusLoginTextFontSize((int) screenWidth));
+		//name_title.setTextSize(((int) (12)));
+		name_title.setHeight((int) (0.065 * screenHeight));
 		name_title.setWidth((int) (textViewW * screenWidth));
 		pass_title.setWidth((int) (textViewW * screenWidth));
 		nameText.setTextSize(AdjustScreenUtil
@@ -167,7 +171,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	 * 登陆控制.
 	 */
 	private void autoLogin() {
-		//网络不通
+		// 网络不通
 		if (!isNetworkConnected(this)) {
 			myHandler.sendEmptyMessage(2);
 		} else {
@@ -181,6 +185,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 
+	/**
+	 * 界面初始化函数.
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -213,7 +220,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			mEditor.commit();
 		}
 	}
- 
 
 	/**
 	 * 开启异步任务登陆.
@@ -290,7 +296,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				mess_title.setVisibility(View.VISIBLE);
 				mess_title.setText("请检查网络连接状况!");
 				break;
-			//跳转到活动列表页面.
+			// 跳转到活动列表页面.
 			case 3:
 				mess_title.setVisibility(View.GONE);
 				Intent intent = new Intent(LoginActivity.this,
@@ -314,8 +320,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			}
 		}
 	};
-
-	
 
 	/**
 	 * 登陆请求服务器数据

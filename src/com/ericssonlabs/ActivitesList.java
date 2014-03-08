@@ -129,7 +129,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-		head.init(getText(R.string.title_huodong).toString(), true, true,
+		head.init(getText(R.string.title_huodong).toString(), true, false,
 				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH),
 				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
@@ -155,14 +155,14 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		bt = (Button) moreView.findViewById(R.id.bt_load);
 		pg = (ProgressBar) moreView.findViewById(R.id.pg);
 		head = (ActionBar) findViewById(R.id.list_head);
-		head.setLeftAction(new ActionBar.BackAction(this));
-		head.setRightAction(new ActionBar.RefreshAction(head));
-		head.setRefreshEnabled(new OnRefreshClickListener() {
-			public void onRefreshClick() {
-				currentPage = 1;
-				new MyListLoader(true).execute("");
-			}
-		});
+//		head.setLeftAction(new ActionBar.BackAction(this));
+//		head.setRightAction(new ActionBar.RefreshAction(head));
+//		head.setRefreshEnabled(new OnRefreshClickListener() {
+//			public void onRefreshClick() {
+//				currentPage = 1;
+//				new MyListLoader(true).execute("");
+//			}
+//		});
 
 		bottom = (BottomBar) findViewById(R.id.list_bottom);
 		bottom.setRightAction(new BottomBar.CallAction(this));
@@ -396,18 +396,14 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 				viewHolder.name = (TextView) convertView
 						.findViewById(R.id.act_name);
 				viewHolder.act_time_title = (TextView) convertView
-						.findViewById(R.id.act_time_title);
-				viewHolder.end_time_title = (TextView) convertView
-						.findViewById(R.id.end_time_title);
+						.findViewById(R.id.act_time_title); 
 				viewHolder.statusbar = (LinearLayout) convertView
 						.findViewById(R.id.status_bar);
 				viewHolder.status = (TextView) convertView
 						.findViewById(R.id.status);
 				// viewHolder.statusbar.setLayoutParams(p);
 				viewHolder.start_time = (TextView) convertView
-						.findViewById(R.id.act_time);
-				viewHolder.end_time = (TextView) convertView
-						.findViewById(R.id.end_time);
+						.findViewById(R.id.act_time); 
 				viewHolder.img = (ImageView) convertView
 						.findViewById(R.id.activity_pic);
 				//下面进行屏幕适配。
@@ -416,13 +412,9 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 //				viewHolder.statusbar.setLayoutParams(AdjustScreenUtil
 //						.adjusActivityLayout((int) screenWidth));
 				viewHolder.name.setTextSize(AdjustScreenUtil
-						.adjusDescTextFontSize((int) screenWidth) - 2);
-				viewHolder.end_time.setTextSize(AdjustScreenUtil
-						.adjusDescTextFontSize((int) screenWidth) - 3);
+						.adjusDescTextFontSize((int) screenWidth) - 2); 
 				viewHolder.start_time.setTextSize(AdjustScreenUtil
-						.adjusDescTextFontSize((int) screenWidth) - 3);
-				viewHolder.end_time_title.setTextSize(AdjustScreenUtil
-						.adjusDescTextFontSize((int) screenWidth) - 3);
+						.adjusDescTextFontSize((int) screenWidth) - 3); 
 				viewHolder.act_time_title.setTextSize(AdjustScreenUtil
 						.adjusDescTextFontSize((int) screenWidth) - 3);
 				convertView.setTag(viewHolder);
@@ -435,8 +427,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 				String[] str = ("" + markerItem.get("starttime")).split(" ");
 				String[] str2 = ("" + markerItem.get("endtime")).split(" ");
 				viewHolder.statusbar.setTag(markerItem.get("eventid"));
-				viewHolder.start_time.setText(str[0]);
-				viewHolder.end_time.setText(str2[0]);
+				viewHolder.start_time.setText(str[0]+" - "+str2[0]); 
 				viewHolder.name.setText("" + markerItem.get("name"));
 				new Thread(new LoadImage("" + markerItem.get("url"),
 						viewHolder.img, R.drawable.huodong_paper)).start();
@@ -448,11 +439,9 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	public final static class ViewHolder {
 		public TextView start_time;
 		public ImageView img;
-		public LinearLayout statusbar;
-		public TextView end_time;
+		public LinearLayout statusbar; 
 		public TextView status;
-		public TextView act_time_title;
-		public TextView end_time_title;
+		public TextView act_time_title; 
 		public TextView name;
 	}
 

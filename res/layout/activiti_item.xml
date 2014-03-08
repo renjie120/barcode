@@ -42,29 +42,7 @@
         android:layout_toRightOf="@id/act_time_title"
         android:textColor="@color/black"
         android:textSize="@dimen/activity_infosize_1" >
-    </TextView>
-
-    <TextView
-        android:id="@+id/end_time_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/act_name"
-        android:layout_below="@id/act_time_title"
-        android:layout_toRightOf="@id/activity_pic"
-        android:text="@string/endtime"
-        android:textColor="@color/black"
-        android:textSize="@dimen/activity_infosize_2" >
-    </TextView>
-
-    <TextView
-        android:id="@+id/end_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/act_time"
-        android:layout_toRightOf="@id/end_time_title"
-        android:textColor="@color/black"
-        android:textSize="@dimen/activity_infosize_1" >
-    </TextView>
+    </TextView> 
 
     <LinearLayout
         android:id="@+id/status_bar"
@@ -72,7 +50,7 @@
         android:layout_height="@dimen/statusBarHeight"
         android:layout_alignBottom="@id/activity_pic"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/end_time_title"
+        android:layout_below="@id/act_time_title"
         android:layout_gravity="right"
         android:background="@drawable/detail_bg"
         android:gravity="center_vertical"

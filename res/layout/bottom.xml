@@ -24,9 +24,9 @@
         <ImageView
             android:id="@+id/bottom_left"
             android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="6dp" 
+            android:layout_height="wrap_content" 
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="left|center_vertical" 
             android:src="@drawable/logo" />
 
         <ImageView
