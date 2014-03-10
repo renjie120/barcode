@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,7 +41,9 @@ public class ActivitesInfo extends BaseActivity {
 	private LinearLayout qiandao;
 	private LinearLayout status;
 	private TextView title;
-	private TextView end_time, qiandao_btn, status_btn;
+	private TextView end_time;
+	private ImageView qiandao_btn, status_btn, jiantou1, jiantou2, status_img,
+			qiandao_img;
 	private TextView begin_time;
 	private ImageView imge;
 	private String token;
@@ -53,8 +54,22 @@ public class ActivitesInfo extends BaseActivity {
 	private float screenWidth = 0;
 	private float w = 0.83f;
 	private float h = 0.1f;
+	private float fontH1 = 9 / 470f;
+	private float fontH2 = 10 / 470f;
+	private float fontH3 = 26 / 470f;
+	private float statusW = 60 / 270f;
+	private float btnTmargin = 13 / 470f;
+	private float qiandaoW = 116 / 270f;
+	private float jiantouW = 15 / 270f;
+	private float jiantouH = 20 / 470f;
+	private float jiantouTmargin = 19 / 470f;
+	private float imgTmargin = 19 / 470f;
+	private float imgLmargin = 13 / 470f;
+	private float btnLmargin = 14 / 270f;
+	private float jiantouRmargin = 10 / 470f;
+	private float imgH = 24 / 470f;
+	private float imgW = 24 / 270f;
 
-		
 	private EventInfo activitiDetail(String eventId) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
@@ -128,37 +143,62 @@ public class ActivitesInfo extends BaseActivity {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-		head.init(getText(R.string.title_huodong).toString(), true, true,
+		head.init(R.drawable.i5_top_my_activity, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+				(int) (screenHeight * barH));
+		head.setTitleSize((int) (screenWidth * titleW4),
+				(int) (screenHeight * titleH));
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));
- 
+
 		head.setRefreshEnabled(new OnRefreshClickListener() {
 			public void onRefreshClick() {
-				new ActivityInfoLoader(eventId).execute(""); 
+				new ActivityInfoLoader(eventId).execute("");
 			}
 		});
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
-		LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams((int)(screenWidth*w),(int)(screenHeight*h));
+				(int) (screenHeight * barH));
+		LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(
+				(int) (screenWidth * w), (int) (screenHeight * h));
 		p1.gravity = Gravity.CENTER_HORIZONTAL;
 		status.setLayoutParams(p1);
 		p1.topMargin = 20;
 		qiandao.setLayoutParams(p1);
-		qiandao_btn.setWidth((int)(screenWidth*w));
-		qiandao_btn.setHeight((int)(screenHeight*h));
 		bottom.setRightAction(new BottomBar.CallAction(this));
-		title.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth));
-		beginTime.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) - 2);
-		endTime.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) - 2);
-		begin_time.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) - 1);
-		end_time.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) - 1);
-		status_btn.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) + 1);
-		qiandao_btn.setTextSize(AdjustScreenUtil.adjusActivityTextFontSize((int) screenWidth) + 1);
-		
+		title.setHeight((int) (fontH1 * screenHeight));
+		beginTime.setHeight((int) (fontH2 * screenHeight));
+		endTime.setHeight((int) (fontH1 * screenHeight));
+		begin_time.setHeight((int) (fontH1 * screenHeight));
+		end_time.setHeight((int) (fontH1 * screenHeight));
+
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+				(int) (statusW * screenWidth), (int) (fontH3 * screenHeight));
+		lp.leftMargin = (int) (btnLmargin * screenWidth);
+		lp.topMargin = (int) (btnTmargin * screenHeight);
+		// 设置logo的位置布局.
+		status_btn.setLayoutParams(lp);
+
+		LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(
+				(int) (qiandaoW * screenWidth), (int) (fontH3 * screenHeight));
+		lp2.leftMargin = (int) (btnLmargin * screenWidth);
+		lp2.topMargin = (int) (btnTmargin * screenHeight);
+		qiandao_btn.setLayoutParams(lp2);
+
+		LinearLayout.LayoutParams lp3 = new LinearLayout.LayoutParams(
+				(int) (jiantouW * screenWidth), (int) (jiantouH * screenHeight)); 
+		lp3.rightMargin = (int) (jiantouRmargin * screenWidth);
+		lp3.topMargin = (int) (jiantouTmargin * screenHeight);
+		// 设置logo的位置布局.
+		jiantou1.setLayoutParams(lp3);
+		jiantou2.setLayoutParams(lp3);
+
+		LinearLayout.LayoutParams lp4 = new LinearLayout.LayoutParams(
+				(int) (imgW * screenWidth), (int) (imgH * screenHeight));
+		lp4.leftMargin = (int) (imgLmargin * screenWidth);
+		lp4.topMargin = (int) (imgTmargin * screenHeight);
+		// 设置logo的位置布局.
+		qiandao_img.setLayoutParams(lp4);
+		status_img.setLayoutParams(lp4);
 	}
 
 	/**
@@ -177,8 +217,12 @@ public class ActivitesInfo extends BaseActivity {
 		bottom = (BottomBar) findViewById(R.id.info_bottom);
 		begin_time = (TextView) findViewById(R.id.begin_time);
 		end_time = (TextView) findViewById(R.id.end_time);
-		status_btn = (TextView) findViewById(R.id.status_btn);
-		qiandao_btn = (TextView) findViewById(R.id.qiandao_btn);
+		status_btn = (ImageView) findViewById(R.id.status_btn);
+		jiantou1 = (ImageView) findViewById(R.id.jiantou1);
+		status_img = (ImageView) findViewById(R.id.status_img);
+		qiandao_img = (ImageView) findViewById(R.id.qiandao_img);
+		jiantou2 = (ImageView) findViewById(R.id.jiantou2);
+		qiandao_btn = (ImageView) findViewById(R.id.qiandao_btn);
 		adjustScreen();
 	}
 
@@ -202,7 +246,7 @@ public class ActivitesInfo extends BaseActivity {
 		initListeners();
 
 		// 加载列表
-		new ActivityInfoLoader(eventId).execute(""); 
+		new ActivityInfoLoader(eventId).execute("");
 	}
 
 	/**

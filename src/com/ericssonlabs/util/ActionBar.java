@@ -17,15 +17,15 @@ package com.ericssonlabs.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.ericssonlabs.R;
 
@@ -77,7 +77,8 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 
 	private ImageView mRightButton;// 右边的动作图标
 
-	private TextView mTitle;// 居中标题
+	// private TextView mTitle;// 居中标题
+	private ImageView mTitle;// 居中标题
 
 	private OnRefreshClickListener mOnRefreshClickListener = null;
 
@@ -162,15 +163,14 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 	 * @param titleSize
 	 *            标题字体大小
 	 */
-	public void init(String title, boolean left, boolean right, int width,
-			int height, int titleSize) {
-		if (title != null)
-			setTitle(title);
+	public void init(int title, boolean left, boolean right, int width,
+			int height) {
+		setTitle(title);
 		setLeftVisible(left);
 		setRightVisible(right);
 		setWidthHeight(width, height);
-		if (titleSize > 0)
-			setTitleSize(titleSize);
+		// if (titleSize > 0)
+		// setTitleSize(titleSize);
 	}
 
 	private void initViews(final Context context) {
@@ -188,7 +188,7 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 				.findViewById(R.id.left_btn1);
 		this.mRightButton = (ImageView) this.mActionBar
 				.findViewById(R.id.right_btn1);
-		this.mTitle = (TextView) this.mActionBar
+		this.mTitle = (ImageView) this.mActionBar
 				.findViewById(R.id.titile_gre_ym);
 
 		this.mLeftButton.setOnClickListener(this);
@@ -214,7 +214,6 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 				height);
 		this.mActionBar.setLayoutParams(lp);
 	}
-	 
 
 	public void removeRightIcon() {
 		this.mRightButton.setVisibility(View.GONE);
@@ -248,6 +247,20 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 		this.mLeftButton.setImageResource(resId);
 	}
 
+	public void setLeftSize(final int width, final int height) {
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width,
+				height);
+		lp.gravity = Gravity.CENTER_VERTICAL;
+		mLeftButton.setLayoutParams(lp);
+	}
+
+	public void setRightSize(final int width, final int height) {
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width,
+				height);
+		lp.gravity = Gravity.CENTER_VERTICAL;
+		mRightButton.setLayoutParams(lp);
+	}
+
 	public void setRightAction(final Action action) {
 		this.mRightButton.setImageResource(action.getDrawable());
 		this.mRightButton.setTag(action);
@@ -261,16 +274,18 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 		this.mRightButton.setImageResource(resId);
 	}
 
-	public void setTitle(final CharSequence text) {
-		this.mTitle.setText(text);
+	public void setTitle(final Drawable background) {
+		this.mTitle.setBackgroundDrawable(background);
 	}
 
 	public void setTitle(final int resId) {
-		this.mTitle.setText(resId);
+		this.mTitle.setBackgroundResource(resId);
 	}
 
-	public void setTitleSize(final int resId) {
-		this.mTitle.setTextSize(resId);
+	public void setTitleSize(final int width, final int height) {
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width,
+				height);
+		this.mTitle.setLayoutParams(lp);
 	}
 
 	public void setTitleClickListener(final OnClickListener li) {

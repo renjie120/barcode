@@ -37,10 +37,9 @@
 
                 <TextView
                     android:id="@+id/title"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/activity_infosize_2" >
+                    android:textColor="@color/black" >
                 </TextView>
 
                 <TableLayout
@@ -54,21 +53,15 @@
                             android:id="@+id/begin_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
                             android:text="@string/begintime"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/activity_infosize_2" >
+                            android:textColor="@color/black" >
                         </TextView>
 
                         <TextView
                             android:id="@+id/act_begin_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="1dp"
-                            android:layout_marginTop="2dp"
-                            android:singleLine="false"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/activity_infosize_1" >
+                            android:singleLine="false" >
                         </TextView>
                     </TableRow>
 
@@ -78,21 +71,16 @@
                             android:id="@+id/end_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
                             android:text="@string/endtime"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/activity_infosize_2" >
+                            android:textColor="@color/black" >
                         </TextView>
 
                         <TextView
                             android:id="@+id/act_end_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="1dp"
-                            android:layout_marginTop="2dp"
                             android:singleLine="false"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/activity_infosize_1" >
+                            android:textColor="@color/black" >
                         </TextView>
                     </TableRow>
                 </TableLayout>
@@ -101,44 +89,60 @@
 
         <LinearLayout
             android:id="@+id/status"
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/qiandaoHeight"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:background="@drawable/huodong_button1"
+            android:background="@drawable/button3"
             android:onClick="status"
             android:orientation="horizontal" >
 
-            <TextView
+            <ImageView
+                android:id="@+id/status_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/button_icon1" />
+
+            <ImageView
                 android:id="@+id/status_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="45dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/status"
-                android:textColor="@color/white"
-                android:textSize="@dimen/qiandao_button" />
+                android:src="@drawable/i5_activity_detail_status_txt" />
+
+            <ImageView
+                android:id="@+id/jiantou1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:src="@drawable/button_arrow" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/qiandao"
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/qiandaoHeight"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:background="@drawable/huodong_button2"
+            android:background="@drawable/button3"
             android:onClick="qiandao"
             android:orientation="horizontal" >
 
-            <TextView
+            <ImageView
+                android:id="@+id/qiandao_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/button_icon2" />
+
+            <ImageView
                 android:id="@+id/qiandao_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="45dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/qiandao"
-                android:textColor="@color/white"
-                android:textSize="@dimen/qiandao_button" />
+                android:src="@drawable/i5_activity_detail_checkin_txt" />
+
+            <ImageView
+                android:id="@+id/jiantou2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:src="@drawable/button_arrow" />
         </LinearLayout>
     </LinearLayout>
 

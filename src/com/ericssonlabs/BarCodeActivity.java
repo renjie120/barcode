@@ -74,10 +74,11 @@ public class BarCodeActivity extends BaseActivity {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-		head.init(getText(R.string.title_huodong).toString(), true, false,
+		head.init(R.drawable.i5_top_checkin, true, false,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth)); 
+				(int) (screenHeight * barH) );
+		head.setTitleSize((int) (screenWidth * titleW4),
+				(int) (screenHeight * titleH));
 		head.setLeftAction(new ActionBar.BackAction(this));
 		scanBarCodeButton.setTextSize(AdjustScreenUtil
 				.adjustBarcodeTextFontSize((int) screenWidth));

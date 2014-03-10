@@ -48,7 +48,7 @@ import com.ericssonlabs.util.PingYinUtil;
  * 订票列表界面.
  * 
  */
-public class TicketsList extends BaseActivity { 
+public class TicketsList extends BaseActivity {
 	private ListView list;
 	private String token;
 	private TextView search;
@@ -95,7 +95,7 @@ public class TicketsList extends BaseActivity {
 			} else {
 				adapter.search("");
 			}
-			//list.setAdapter(adapter);
+			// list.setAdapter(adapter);
 		}
 	};
 
@@ -108,13 +108,20 @@ public class TicketsList extends BaseActivity {
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
 		head = (ActionBar) findViewById(R.id.ticket_list_head);
-		head.init(getText(R.string.qiandao).toString(), true, true,
+		head.init(R.drawable.i5_activity_detail_checkin_txt, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
-//		head.setLeftWidthHeight((int) (screenHeight * AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
-//		head.setRightWidthHeight((int) (screenHeight * AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
-	
+				(int) (screenHeight * barH) );
+		head.setTitleSize((int) (screenWidth * titleW4), (int) (screenHeight
+				* titleH * 0.7));
+		head.setLeftSize((int) (screenWidth * lftBtnW),
+				(int) (screenHeight * titleH));
+		head.setRightSize((int) (screenWidth * rgtBtnW),
+				(int) (screenHeight * titleH));
+		// head.setLeftWidthHeight((int) (screenHeight *
+		// AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
+		// head.setRightWidthHeight((int) (screenHeight *
+		// AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
+
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));
 		head.setRefreshEnabled(new OnRefreshClickListener() {
@@ -127,7 +134,7 @@ public class TicketsList extends BaseActivity {
 		list = (ListView) findViewById(R.id.ListView);
 		totalcountText = (TextView) findViewById(R.id.totalcount);
 		Intent intent = getIntent();
-		search = (TextView) findViewById(R.id.searchText); 
+		search = (TextView) findViewById(R.id.searchText);
 		// 设置文本框的搜索事件.
 		search.addTextChangedListener(searchWatcher);
 
@@ -336,7 +343,7 @@ public class TicketsList extends BaseActivity {
 						}
 					}
 				}
-				
+
 				notifyDataSetInvalidated();
 			} catch (Exception e) {
 				e.printStackTrace();

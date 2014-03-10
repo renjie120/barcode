@@ -25,7 +25,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,9 +34,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.ericssonlabs.bean.AccessToken;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
-import com.ericssonlabs.util.AdjustScreenUtil;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
+import com.ericssonlabs.util.LoginEdittext;
 
 /**
  * 首页登录界面.
@@ -51,8 +50,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private Button buttonLogin;
 	private CheckBox remeberPassword;
 	private static final int DIALOG_KEY = 0;
-	private EditText nameText;
-	private EditText passwordText;
+	private LoginEdittext nameText;
+	private LoginEdittext passwordText;
 	private SharedPreferences mSharedPreferences;
 	private ProgressDialog dialog;
 	private TextView mess_title;
@@ -72,14 +71,20 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	// 中间table的左边框距离.
 	// private float tabMrgL = 17 / 257f;
 	private LinearLayout center_table;
+	private LinearLayout buttonWrap;
+	private LinearLayout row1;
+	private LinearLayout row2;
+	private LinearLayout row3;
+
 	private LinearLayout table;
 	private ImageView logo_img;
 	// 登陆框提示文本的宽度.
 	private float textViewW = 57 / 265f;
 	private float textEditW = 150 / 265f;
 	private float textViewH = 27 / 471f;
-	private float btnW = 75/268f;
-	private float btnH = 20/471f;
+	private float btnW = 75 / 268f;
+	private float btnH = 20 / 471f;
+	private float rowH = 32 / 469f;
 
 	/**
 	 * 屏幕适配.
@@ -96,39 +101,39 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		// 设置table的高度和宽度.
 		table.setLayoutParams(p);
 		// 设置首页标题栏显示的情况
-		head.init(getText(R.string.title1).toString(), false, false,
+		head.init(R.drawable.i5_top_user_logon, false, false,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+				(int) (screenHeight * barH) );
+		head.setTitleSize((int) (screenWidth * titleW4),
+				(int) (screenHeight * titleH));
+
 		// 设置底部标题栏
 		login_bottom.init(null, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+				(int) (screenHeight * barH) );
 		// 设置底部标题栏的右边操作
 		login_bottom.setRightAction(new BottomBar.CallAction(this));
-		//name_title.setTextSize(((int) (12)));
-		int textHeight = (int) (textViewH * screenHeight); 
+//		login_bottom.setTileWidthHeight((int) (screenWidth * bottomW),
+//				(int) (screenHeight * bottomH));
+		// name_title.setTextSize(((int) (12)));
+		int textHeight = (int) (textViewH * screenHeight);
 		int textWidth = (int) (textViewW * screenWidth);
-		int textWidth2 = (int) (textEditW * screenWidth);
-		
-		double rate = (float)screenWidth/480;
-		name_title.setTextSize((float)(name_title.getTextSize()*rate));
-		pass_title.setTextSize((float)(pass_title.getTextSize()*rate));
-		remeberPassword.setTextSize((float)(remeberPassword.getTextSize()*rate));
-		buttonLogin.setTextSize((float)(buttonLogin.getTextSize()*rate));
-		nameText.setTextSize((float)(nameText.getTextSize()*rate));
-		passwordText.setTextSize((float)(passwordText.getTextSize()*rate));  
-		nameText.setHeight(textHeight);
-		nameText.setWidth(textWidth2);
-		passwordText.setHeight(textHeight);
-		passwordText.setWidth(textWidth2);
+		int editWidth = (int) (textEditW * screenWidth);
+		int editHeight = (int) (textViewH * 1.1 * screenHeight);
+
+		name_title.setWidth(textWidth);
+		name_title.setHeight(textHeight);
+		pass_title.setWidth(textWidth);
+		pass_title.setHeight(textHeight);
+		remeberPassword.setWidth(textWidth);
+		remeberPassword.setHeight(textHeight);
+
 		name_title.setHeight(textHeight);
 		name_title.setWidth(textWidth);
 		pass_title.setWidth(textWidth);
 		pass_title.setHeight(textHeight);
-		buttonLogin.setHeight((int)(btnH*screenHeight));
-		buttonLogin.setWidth((int)(btnW*screenWidth)); 
+		buttonLogin.setHeight((int) (btnH * screenHeight * 0.6));
+		buttonLogin.setWidth((int) (btnW * screenWidth * 0.2));
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -136,12 +141,31 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				(int) (screenHeight * imgMrg));
 		// 设置logo的位置布局.
 		logo_img.setLayoutParams(lp);
+
+		LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(
+				(int) (btnW * screenWidth), (int) (btnH * screenHeight));
+		buttonWrap.setLayoutParams(lp2);
+		LinearLayout.LayoutParams r1 = new LinearLayout.LayoutParams(
+				(int) (screenWidth * tabW), (int) (rowH * screenHeight));
+		row1.setLayoutParams(r1);
+		row2.setLayoutParams(r1);
+		row3.setLayoutParams(r1);
+
+		nameText.setSize(editWidth, editHeight);
+		nameText.setText("test140103114242328");
+		passwordText.setPassword();
+		passwordText.setSize(editWidth, editHeight);
+		passwordText.setText("123123");
 	}
 
 	/**
 	 * 初始化控件.
 	 */
 	private void init() {
+		buttonWrap = (LinearLayout) findViewById(R.id.row4);
+		row1 = (LinearLayout) findViewById(R.id.row1);
+		row2 = (LinearLayout) findViewById(R.id.row2);
+		row3 = (LinearLayout) findViewById(R.id.row3);
 		name_title = (TextView) findViewById(R.id.name_title);
 		pass_title = (TextView) findViewById(R.id.pass_title);
 		logo_img = (ImageView) findViewById(R.id.logo_img);
@@ -151,8 +175,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		table = (LinearLayout) findViewById(R.id.login_table);
 		mess_title = (TextView) findViewById(R.id.mess_title);
 		remeberPassword = (CheckBox) findViewById(R.id.remember_password);
-		nameText = (EditText) findViewById(R.id.inputName);
-		passwordText = (EditText) findViewById(R.id.inputPass);
+		nameText = (LoginEdittext) findViewById(R.id.inputName);
+		passwordText = (LoginEdittext) findViewById(R.id.inputPass);
 		mSharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		login_bottom = (BottomBar) findViewById(R.id.login_bottom);
@@ -219,7 +243,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			SharedPreferences.Editor mEditor = mSharedPreferences.edit();
 			mEditor.putString("remeber", "true");
 			mEditor.putString("pass", passwordText.getText().toString());
-			mEditor.putString("userId", nameText.getText().toString());
+			mEditor.putString("userId", nameText.getText());
 			mEditor.commit();
 		} else {
 			SharedPreferences.Editor mEditor = mSharedPreferences.edit();

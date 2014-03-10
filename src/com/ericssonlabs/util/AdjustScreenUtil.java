@@ -6,28 +6,7 @@ import android.widget.LinearLayout;
 public class AdjustScreenUtil {
 	public final static double LEFT_W = 0.2;
 	public final static double RIGHT_W = 0.2;
-
-	/**
-	 * 设置活动详情文本框字体大小.
-	 * 
-	 * @param screenWidth
-	 * @return
-	 */
-	public static int adjusActivityTextFontSize(int screenWidth) {
-		if (screenWidth <= 240) { // 240X320 屏幕
-			return 9;
-		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 15;
-		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
-			return 17;
-		} else if (screenWidth <= 540) { // 540X960 屏幕
-			return 20;
-		} else if (screenWidth <= 800) { // 800X1280 屏幕
-			return 21;
-		} else { // 大于 800X1280
-			return 21;
-		}
-	}
+ 
 
 	/**
 	 * 设置下面的tab的适配情况
@@ -197,29 +176,7 @@ public class AdjustScreenUtil {
 			return 21;
 		}
 	}
-
-	/**
-	 * 动态设置标题的字体.
-	 * 
-	 * @param screenWidth
-	 * @param screenHeight
-	 * @return
-	 */
-	public static int adjustTitleFontSize(int screenWidth) {
-		if (screenWidth <= 240) { // 240X320 屏幕
-			return 13;
-		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 16;
-		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
-			return 18;
-		} else if (screenWidth <= 540) { // 540X960 屏幕
-			return 22;
-		} else if (screenWidth <= 800) { // 800X1280 屏幕
-			return 23;
-		} else { // 大于 800X1280
-			return 23;
-		}
-	}
+ 
 
 	/**
 	 * 设置按钮的字体大小.

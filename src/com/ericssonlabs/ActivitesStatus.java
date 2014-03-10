@@ -47,8 +47,6 @@ public class ActivitesStatus extends BaseActivity {
 	private float screenHeight = 0;
 	private float screenWidth = 0;
 
-	
-
 	/**
 	 * 调用远程数据请求数据.
 	 * 
@@ -118,19 +116,26 @@ public class ActivitesStatus extends BaseActivity {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-		head.init(getText(R.string.title_huodong).toString(), true, true,
+		head.init(R.drawable.i5_top_my_activity, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
- 
+				(int) (screenHeight * barH));
+		head.setTitleSize((int) (screenWidth * titleW4),
+				(int) (screenHeight * titleH));
+		head.setLeftSize((int) (screenWidth * lftBtnW),
+				(int) (screenHeight * titleH));
+		head.setRightSize((int) (screenWidth * rgtBtnW),
+				(int) (screenHeight * titleH));
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+				(int) (screenHeight * barH));
 		bottom.setRightAction(new BottomBar.CallAction(this));
-		yishouchu.setTextSize(AdjustScreenUtil.adjusStatusFontSize((int) screenWidth));
-		yiqiandao.setTextSize(AdjustScreenUtil.adjusStatusFontSize((int) screenWidth));
-		yishouchuLabel.setTextSize(AdjustScreenUtil.adjusStatusFontSize((int) screenWidth));
-		yiqiandaoLabel.setTextSize(AdjustScreenUtil.adjusStatusFontSize((int) screenWidth));
+		yishouchu.setTextSize(AdjustScreenUtil
+				.adjusStatusFontSize((int) screenWidth));
+		yiqiandao.setTextSize(AdjustScreenUtil
+				.adjusStatusFontSize((int) screenWidth));
+		yishouchuLabel.setTextSize(AdjustScreenUtil
+				.adjusStatusFontSize((int) screenWidth));
+		yiqiandaoLabel.setTextSize(AdjustScreenUtil
+				.adjusStatusFontSize((int) screenWidth));
 	}
 
 	/**
@@ -173,7 +178,8 @@ public class ActivitesStatus extends BaseActivity {
 	/**
 	 * 显示活动的详情信息.
 	 */
-	private class ActivityStatusLoader extends AsyncTask<String, String, String> {
+	private class ActivityStatusLoader extends
+			AsyncTask<String, String, String> {
 
 		private String eventId;
 

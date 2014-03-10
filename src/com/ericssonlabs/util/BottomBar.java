@@ -77,15 +77,12 @@ public class BottomBar extends LinearLayout implements OnClickListener {
 	 * @param titleSize
 	 */
 	public void init(String title, boolean left, boolean right, int width,
-			int height, int titleSize) {
+			int height ) {
 		if (title != null)
 			setTitle(title);
 		setLeftVisible(left);
 		setRightVisible(right);
-		setWidthHeight(width, height);
-		//setLeftImgWidthAndHeight(height);
-		if (titleSize > 0)
-			setTitleSize(titleSize);
+		setWidthHeight(width, height); 
 	}
 
 	public interface Action {
@@ -171,6 +168,11 @@ public class BottomBar extends LinearLayout implements OnClickListener {
 
 		this.mLeftButton.setOnClickListener(this);
 		this.mRightButton.setOnClickListener(this);
+	}
+
+	public void setTileWidthHeight(int width, int height) {
+		this.mTitle.setHeight(20); 
+		this.mTitle.setWidth(200);
 	}
 
 	public void setWidthHeight(int width, int height) {

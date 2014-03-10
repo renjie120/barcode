@@ -86,6 +86,7 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 				new ActivityTypeLoader(true, eventid).execute("");
 			}
 		});
+		
 		xianzhi = mSharedPreferences.getString("xianzhi", "false");
 		xianzhiImg = (ImageView) findViewById(R.id.xianzhiImg);
 		filter_title = (TextView) findViewById(R.id.filter_title);
@@ -323,10 +324,11 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
 		head = (ActionBar) findViewById(R.id.ticket_config_head);
-		head.init(getText(R.string.title_config).toString(), true, true,
+		head.init(R.drawable.i5_top_checkin_setting, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+				(int) (screenHeight * barH) );
+		head.setTitleSize((int) (screenWidth * titleW4),
+				(int) (screenHeight * titleH));
 //		head.setLeftWidthHeight((int) (screenHeight * AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
 //		head.setRightWidthHeight((int) (screenHeight * AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
 	
@@ -350,11 +352,11 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	 * 参数过滤界面配置屏幕适配.
 	 */
 	private void adjustScreen2() {
-		head2.init(getText(R.string.title_filter).toString(), true, true,
+		head2.init(R.drawable.i5_top_ticket_filter, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
-		
+				(int) (screenHeight * barH) );
+		head2.setTitleSize((int) (screenWidth * titleW4),
+				(int) (screenHeight * titleH));
 		filter_title.setTextSize(AdjustScreenUtil.adjusCheckconfigFontSize((int) screenWidth)+2);
 		filter_msg.setTextSize(AdjustScreenUtil.adjusCheckconfigFontSize((int) screenWidth)+2);
 	}

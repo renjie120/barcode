@@ -129,14 +129,15 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-		head.init(getText(R.string.title_huodong).toString(), true, false,
+		head.init(R.drawable.i5_top_my_activity, true, false,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
-
+				(int) (screenHeight * barH) );
+		head.setTitleSize((int) (screenWidth * titleW4),
+				(int) (screenHeight * titleH));
+		head.setLeftSize((int) (screenWidth * lftBtnW),
+				(int) (screenHeight * titleH));
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH),
-				AdjustScreenUtil.adjustTitleFontSize((int) screenWidth));
+				(int) (screenHeight * barH) );
 		p = new LinearLayout.LayoutParams((int) (screenWidth * statusBtnW),
 				(int) (screenHeight * statusBtnH));
 	}
@@ -215,6 +216,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 						map.put("name", i.getName());
 						map.put("starttime", i.getStarttime());
 						map.put("url", i.getImageurl());
+						System.out.println("i.getImageurl()="+i.getImageurl());
 						listItem.add(map);
 					}
 				}
