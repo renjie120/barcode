@@ -97,28 +97,7 @@ public class AdjustScreenUtil {
 			return 25;
 		}
 	}
-
-	/**
-	 * 活动列表页面匹配文本大小.
-	 * 
-	 * @param screenWidth
-	 * @return
-	 */
-	public static int adjusDescTextFontSize(int screenWidth) {
-		if (screenWidth <= 240) { // 240X320 屏幕
-			return 9;
-		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 14;
-		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
-			return 17;
-		} else if (screenWidth <= 540) { // 540X960 屏幕
-			return 18;
-		} else if (screenWidth <= 800) { // 800X1280 屏幕
-			return 18;
-		} else { // 大于 800X1280
-			return 20;
-		}
-	}
+ 
 
 	public static ViewGroup.LayoutParams adjusActivityLayout(int screenWidth) {
 		if (screenWidth <= 240) { // 240X320 屏幕

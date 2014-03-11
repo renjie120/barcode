@@ -175,8 +175,7 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 
 	private void initViews(final Context context) {
 		this.mContext = context;
-		this.mInflater = LayoutInflater.from(this.mContext);
-
+		this.mInflater = LayoutInflater.from(this.mContext); 
 		this.mActionBar = (ViewGroup) this.mInflater.inflate(R.layout.title,
 				null);
 

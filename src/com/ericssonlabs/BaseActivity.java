@@ -15,18 +15,20 @@ import android.util.DisplayMetrics;
 public class BaseActivity extends Activity {
 	// 上下标题栏的高度比例
 	public static float barH = 0.1f;
-	//底部文字的宽度
-	public static float bottomW = 91/263f;
-	//底部文字的高度
-	public static float bottomH = 40/273f;
-	//首页标题的高度比例
+	// 底部文字的宽度
+	public static float bottomW = 91 / 263f;
+	// 底部文字的高度
+	public static float bottomH = 40 / 273f;
+	// 首页标题的高度比例
 	public static float titleH = 0.06f;
-	//首页左边按钮的比例
-	public static float lftBtnW = 50/265f;
-	//首页右边按钮的比例
-	public static float rgtBtnW = 50/265f;
-	//首页4字标题的宽度
+	// 首页左边按钮的比例
+	public static float lftBtnW = 50 / 265f;
+	// 首页右边按钮的比例
+	public static float rgtBtnW = 50 / 265f;
+	// 首页4字标题的宽度
 	public static float titleW4 = 77 / 267f;
+	public static float titleW6 = 123 / 264f;
+
 	/**
 	 * md5加密方法.
 	 * 

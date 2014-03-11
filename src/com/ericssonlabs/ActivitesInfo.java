@@ -15,9 +15,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -25,7 +27,6 @@ import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
-import com.ericssonlabs.util.AdjustScreenUtil;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
@@ -36,10 +37,10 @@ import com.ericssonlabs.util.LoadImage;
  */
 public class ActivitesInfo extends BaseActivity {
 	private String eventId;
-	private TextView beginTime;
-	private TextView endTime;
 	private LinearLayout qiandao;
 	private LinearLayout status;
+	private LinearLayout temp1;
+	private LinearLayout temp2;
 	private TextView title;
 	private TextView end_time;
 	private ImageView qiandao_btn, status_btn, jiantou1, jiantou2, status_img,
@@ -54,56 +55,70 @@ public class ActivitesInfo extends BaseActivity {
 	private float screenWidth = 0;
 	private float w = 0.83f;
 	private float h = 0.1f;
-	private float fontH1 = 9 / 470f;
-	private float fontH2 = 10 / 470f;
+	private float fontH1 = 10 / 473f;
+	private float fontH2 = 11 / 473f;
+	private float fontW = 157 / 266f;
 	private float fontH3 = 26 / 470f;
 	private float statusW = 60 / 270f;
 	private float btnTmargin = 13 / 470f;
 	private float qiandaoW = 116 / 270f;
+	private float tempW = 124 / 270f;
 	private float jiantouW = 15 / 270f;
 	private float jiantouH = 20 / 470f;
-	private float jiantouTmargin = 19 / 470f;
-	private float imgTmargin = 19 / 470f;
+	private float imgTmargin = 12 / 470f;
 	private float imgLmargin = 13 / 470f;
 	private float btnLmargin = 14 / 270f;
-	private float jiantouRmargin = 10 / 470f;
+	private float jiantouTmargin = 17 / 470f;
+	private float jiantouLmargin = 27 / 264f;
 	private float imgH = 24 / 470f;
 	private float imgW = 24 / 270f;
+	private float contentW = 252 / 264f;
+	private float contentH = 109 / 471f;
+	private float contentLM = 6 / 264f;
+	private float contentTM = 4 / 471f;
+	private RelativeLayout layout;
 
 	private EventInfo activitiDetail(String eventId) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		String encoding = "UTF-8";
-		try {
+		if (Constant.debug) {
+			myHandler.sendEmptyMessage(9);
+			return null;
+		} else {
+			try {
 
-			HttpPost httpost = new HttpPost(Constant.HOST
-					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token);
-			System.out.println("查看活动详情：" + Constant.HOST
-					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token);
-			HttpResponse response = httpclient.execute(httpost);
-			HttpEntity entity = response.getEntity();
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					entity.getContent(), encoding));
-			String sss = br.readLine();
-			// 如果没有登录成功，就弹出提示信息.
-			ServerResult result = (ServerResult) JSON.parseObject(sss,
-					ServerResult.class);
+				HttpPost httpost = new HttpPost(Constant.HOST
+						+ "?do=eventinfo&eventid=" + eventId + "&token="
+						+ token);
+				System.out.println("查看活动详情：" + Constant.HOST
+						+ "?do=eventinfo&eventid=" + eventId + "&token="
+						+ token);
+				HttpResponse response = httpclient.execute(httpost);
+				HttpEntity entity = response.getEntity();
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						entity.getContent(), encoding));
+				String sss = br.readLine();
+				// 如果没有登录成功，就弹出提示信息.
+				ServerResult result = (ServerResult) JSON.parseObject(sss,
+						ServerResult.class);
 
-			EventInfo t = (EventInfo) JSON.parseObject(result.getData()
-					.toJSONString(), EventInfo.class);
-			Message msg = new Message();
-			msg.what = 2;
-			Bundle b = new Bundle();
-			b.putString("starttime", t.getStarttime());
-			b.putString("endtime", t.getEndtime());
-			b.putString("name", t.getName());
-			b.putString("url", t.getImageurl());
-			msg.setData(b);
-			myHandler.sendMessage(msg);
-			return t;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			httpclient.getConnectionManager().shutdown();
+				EventInfo t = (EventInfo) JSON.parseObject(result.getData()
+						.toJSONString(), EventInfo.class);
+				Message msg = new Message();
+				msg.what = 2;
+				Bundle b = new Bundle();
+				b.putString("starttime", t.getStarttime());
+				b.putString("endtime", t.getEndtime());
+				b.putString("name", t.getName());
+				b.putString("url", t.getImageurl());
+				msg.setData(b);
+				myHandler.sendMessage(msg);
+				return t;
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				httpclient.getConnectionManager().shutdown();
+			}
 		}
 		return null;
 	}
@@ -140,6 +155,7 @@ public class ActivitesInfo extends BaseActivity {
 	 * 根据屏幕适配文本大小.
 	 */
 	private void adjustScreen() {
+
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
@@ -150,12 +166,21 @@ public class ActivitesInfo extends BaseActivity {
 				(int) (screenHeight * titleH));
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));
-
+		head.setLeftSize((int) (screenWidth * lftBtnW),
+				(int) (screenHeight * titleH));
 		head.setRefreshEnabled(new OnRefreshClickListener() {
 			public void onRefreshClick() {
 				new ActivityInfoLoader(eventId).execute("");
 			}
 		});
+		LinearLayout.LayoutParams p2 = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		p2.width = (int) (contentW * screenWidth);
+		p2.height = (int) (contentH * screenHeight);
+		p2.leftMargin = (int) (contentLM * screenWidth);
+		p2.topMargin = (int) (contentTM * screenHeight);
+		layout.setLayoutParams(p2);
+
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH));
 		LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(
@@ -165,12 +190,18 @@ public class ActivitesInfo extends BaseActivity {
 		p1.topMargin = 20;
 		qiandao.setLayoutParams(p1);
 		bottom.setRightAction(new BottomBar.CallAction(this));
-		title.setHeight((int) (fontH1 * screenHeight));
-		beginTime.setHeight((int) (fontH2 * screenHeight));
-		endTime.setHeight((int) (fontH1 * screenHeight));
+		title.setHeight((int) (fontH2 * screenHeight));
+		title.setWidth((int) (fontW * screenWidth));
 		begin_time.setHeight((int) (fontH1 * screenHeight));
 		end_time.setHeight((int) (fontH1 * screenHeight));
-
+		begin_time.setWidth((int) (fontW * screenWidth));
+		end_time.setWidth((int) (fontW * screenWidth));
+		LinearLayout.LayoutParams lp_temp = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		lp_temp.width = (int) (tempW * screenWidth);
+		lp_temp.height = (int) (screenHeight * h);
+		temp2.setLayoutParams(lp_temp);
+		temp1.setLayoutParams(lp_temp);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				(int) (statusW * screenWidth), (int) (fontH3 * screenHeight));
 		lp.leftMargin = (int) (btnLmargin * screenWidth);
@@ -185,15 +216,17 @@ public class ActivitesInfo extends BaseActivity {
 		qiandao_btn.setLayoutParams(lp2);
 
 		LinearLayout.LayoutParams lp3 = new LinearLayout.LayoutParams(
-				(int) (jiantouW * screenWidth), (int) (jiantouH * screenHeight)); 
-		lp3.rightMargin = (int) (jiantouRmargin * screenWidth);
+				(int) (jiantouW * screenWidth), (int) (jiantouH * screenHeight));
+		lp3.leftMargin = (int) (jiantouLmargin * screenWidth);
 		lp3.topMargin = (int) (jiantouTmargin * screenHeight);
 		// 设置logo的位置布局.
 		jiantou1.setLayoutParams(lp3);
 		jiantou2.setLayoutParams(lp3);
 
 		LinearLayout.LayoutParams lp4 = new LinearLayout.LayoutParams(
-				(int) (imgW * screenWidth), (int) (imgH * screenHeight));
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		lp4.height = (int) (imgH * screenHeight);
+		lp4.width = (int) (imgW * screenHeight);
 		lp4.leftMargin = (int) (imgLmargin * screenWidth);
 		lp4.topMargin = (int) (imgTmargin * screenHeight);
 		// 设置logo的位置布局.
@@ -207,13 +240,13 @@ public class ActivitesInfo extends BaseActivity {
 	private void initLayout() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activiti_info);
+		temp1 = (LinearLayout) findViewById(R.id.temp1);
+		temp2 = (LinearLayout) findViewById(R.id.temp2);
 		qiandao = (LinearLayout) findViewById(R.id.qiandao);
 		status = (LinearLayout) findViewById(R.id.status);
-		beginTime = (TextView) findViewById(R.id.act_begin_time);
-		endTime = (TextView) findViewById(R.id.act_end_time);
+		head = (ActionBar) findViewById(R.id.info_head);
 		title = (TextView) findViewById(R.id.title);
 		imge = (ImageView) findViewById(R.id.activity_pic);
-		head = (ActionBar) findViewById(R.id.info_head);
 		bottom = (BottomBar) findViewById(R.id.info_bottom);
 		begin_time = (TextView) findViewById(R.id.begin_time);
 		end_time = (TextView) findViewById(R.id.end_time);
@@ -223,6 +256,8 @@ public class ActivitesInfo extends BaseActivity {
 		qiandao_img = (ImageView) findViewById(R.id.qiandao_img);
 		jiantou2 = (ImageView) findViewById(R.id.jiantou2);
 		qiandao_btn = (ImageView) findViewById(R.id.qiandao_btn);
+		layout = (RelativeLayout) findViewById(R.id.activity_content);
+
 		adjustScreen();
 	}
 
@@ -260,12 +295,19 @@ public class ActivitesInfo extends BaseActivity {
 				break;
 			case 2:
 				Bundle info = msg.getData();
-				beginTime.setText(info.getString("starttime"));
-				endTime.setText(info.getString("endtime"));
+				begin_time.setText("活动开始时间：" + info.getString("starttime"));
+				end_time.setText("活动结束时间：" + info.getString("endtime"));
 				title.setText(info.getString("name"));
 				url = info.getString("url");
 				new Thread(new LoadImage(url, imge, R.drawable.huodong_paper))
 						.start();
+				break;
+			// 测试情况
+			case 9:
+				begin_time.setText("活动开始时间：2013-1-1");
+				end_time.setText("活动结束时间：2014-1-1");
+				title.setText("快付款所讲的房价快速的回复将快速的回复即可");
+				imge.setBackgroundResource(R.drawable.huodong_paper);
 				break;
 			default:
 				super.hasMessages(msg.what);

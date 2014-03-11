@@ -19,7 +19,7 @@ import android.os.Message;
 import android.widget.ImageView;
 
 /**
- * 加载网络图片的工具类. 
+ * 加载网络图片的工具类.
  * 
  */
 public class LoadImage implements Runnable {
@@ -58,7 +58,7 @@ public class LoadImage implements Runnable {
 				break;
 			default:
 				break;
-			} 
+			}
 		}
 	};
 
@@ -71,10 +71,10 @@ public class LoadImage implements Runnable {
 		Map m = new HashMap();
 		m.put("imageView", v);
 		if (bitmap == null) {
-//			m.put("resId", resId);
-//			message.obj = m;
-//			message.what = 1;
-//			h2.sendMessage(message);
+			// m.put("resId", resId);
+			// message.obj = m;
+			// message.what = 1;
+			// h2.sendMessage(message);
 
 		} else {
 			m.put("bitmap", bitmap);
@@ -89,7 +89,7 @@ public class LoadImage implements Runnable {
 		// h.sendMessage(message);
 	}
 
-	public Bitmap loadImageAsyn(String path, ImageCallback callback) { 
+	public Bitmap loadImageAsyn(String path, ImageCallback callback) {
 		if (caches.containsKey(path)) {
 			// 取出软引用
 			SoftReference<Bitmap> rf = caches.get(path);
@@ -105,7 +105,7 @@ public class LoadImage implements Runnable {
 			// 如果缓存中不常在该图片，则创建图片下载任务
 			Task task = new Task();
 			task.path = path;
-			task.callback = callback; 
+			task.callback = callback;
 			if (!taskQueue.contains(task)) {
 				taskQueue.add(task);
 				// 唤醒任务下载队列
@@ -122,8 +122,8 @@ public class LoadImage implements Runnable {
 	private Runnable runnable = new Runnable() {
 
 		@Override
-		public void run() { 
-			while (isRunning) { 
+		public void run() {
+			while (isRunning) {
 				// 当队列中还有未处理的任务时，执行下载任务
 				while (taskQueue.size() > 0) {
 					// 获取第一个任务，并将之从任务队列中删除
@@ -157,7 +157,7 @@ public class LoadImage implements Runnable {
 			final int resId) {
 		return new ImageCallback() {
 			@Override
-			public void loadImage(String path, Bitmap bitmap) { 
+			public void loadImage(String path, Bitmap bitmap) {
 				if (path.equals(imageView.getTag().toString())) {
 					imageView.setImageBitmap(bitmap);
 				} else {

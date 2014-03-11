@@ -16,76 +16,50 @@
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <RelativeLayout
+            android:id="@+id/activity_content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:background="@color/white"
             android:orientation="horizontal" >
 
             <ImageView
                 android:id="@+id/activity_pic"
                 android:layout_width="@dimen/qiandao_width"
-                android:layout_height="@dimen/qiandao_height" />
+                android:layout_height="@dimen/qiandao_height"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="3dp" />
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:layout_weight="1"
-                android:orientation="vertical" >
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/activity_pic"
+                android:ellipsize="end"
+                android:textColor="@color/black" >
+            </TextView>
 
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black" >
-                </TextView>
+            <TextView
+                android:id="@+id/begin_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/title"
+                android:layout_below="@id/title"
+                android:layout_toRightOf="@id/activity_pic" 
+                android:textColor="@color/black" >
+            </TextView>
 
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp" >
-
-                    <TableRow>
-
-                        <TextView
-                            android:id="@+id/begin_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/begintime"
-                            android:textColor="@color/black" >
-                        </TextView>
-
-                        <TextView
-                            android:id="@+id/act_begin_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:singleLine="false" >
-                        </TextView>
-                    </TableRow>
-
-                    <TableRow>
-
-                        <TextView
-                            android:id="@+id/end_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/endtime"
-                            android:textColor="@color/black" >
-                        </TextView>
-
-                        <TextView
-                            android:id="@+id/act_end_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:singleLine="false"
-                            android:textColor="@color/black" >
-                        </TextView>
-                    </TableRow>
-                </TableLayout>
-            </LinearLayout>
-        </LinearLayout>
+            <TextView
+                android:id="@+id/end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/title"
+                android:layout_below="@id/begin_time"
+                android:layout_toRightOf="@id/activity_pic" 
+                android:textColor="@color/black" >
+            </TextView> 
+        </RelativeLayout> 
 
         <LinearLayout
             android:id="@+id/status"
@@ -102,11 +76,18 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/button_icon1" />
 
-            <ImageView
-                android:id="@+id/status_btn"
+            <LinearLayout
+                android:id="@+id/temp1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/i5_activity_detail_status_txt" />
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/status_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/i5_activity_detail_status_txt" />
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/jiantou1"
@@ -131,11 +112,18 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/button_icon2" />
 
-            <ImageView
-                android:id="@+id/qiandao_btn"
+            <LinearLayout
+                android:id="@+id/temp2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/i5_activity_detail_checkin_txt" />
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/qiandao_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/i5_activity_detail_checkin_txt" />
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/jiantou2"

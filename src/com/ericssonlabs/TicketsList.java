@@ -40,7 +40,6 @@ import com.ericssonlabs.bean.TicketList;
 import com.ericssonlabs.bean.TicketListItem;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
-import com.ericssonlabs.util.AdjustScreenUtil;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.PingYinUtil;
 
@@ -108,19 +107,15 @@ public class TicketsList extends BaseActivity {
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
 		head = (ActionBar) findViewById(R.id.ticket_list_head);
-		head.init(R.drawable.i5_activity_detail_checkin_txt, true, true,
+		head.init(R.drawable.i5_top_checkin, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH) );
+				(int) (screenHeight * barH));
 		head.setTitleSize((int) (screenWidth * titleW4), (int) (screenHeight
 				* titleH * 0.7));
 		head.setLeftSize((int) (screenWidth * lftBtnW),
 				(int) (screenHeight * titleH));
 		head.setRightSize((int) (screenWidth * rgtBtnW),
 				(int) (screenHeight * titleH));
-		// head.setLeftWidthHeight((int) (screenHeight *
-		// AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
-		// head.setRightWidthHeight((int) (screenHeight *
-		// AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
 
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));

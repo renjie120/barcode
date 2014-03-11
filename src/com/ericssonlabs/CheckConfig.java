@@ -62,7 +62,7 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	private ActionBar head;
 	private ActionBar head2;
 	private float screenHeight = 0;
-	private float screenWidth = 0; 
+	private float screenWidth = 0;
 
 	protected void onResume() {
 		super.onResume();
@@ -86,7 +86,7 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 				new ActivityTypeLoader(true, eventid).execute("");
 			}
 		});
-		
+
 		xianzhi = mSharedPreferences.getString("xianzhi", "false");
 		xianzhiImg = (ImageView) findViewById(R.id.xianzhiImg);
 		filter_title = (TextView) findViewById(R.id.filter_title);
@@ -177,7 +177,8 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 
 				viewHolder.typename = (TextView) convertView
 						.findViewById(R.id.typename);
-				viewHolder.typename.setTextSize(AdjustScreenUtil.adjusCheckconfigFontSize((int)screenWidth));
+				viewHolder.typename.setTextSize(AdjustScreenUtil
+						.adjusCheckconfigFontSize((int) screenWidth));
 				viewHolder.ischeck = (ImageView) convertView
 						.findViewById(R.id.checkimg);
 
@@ -326,12 +327,11 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		head = (ActionBar) findViewById(R.id.ticket_config_head);
 		head.init(R.drawable.i5_top_checkin_setting, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH) );
+				(int) (screenHeight * barH));
 		head.setTitleSize((int) (screenWidth * titleW4),
 				(int) (screenHeight * titleH));
-//		head.setLeftWidthHeight((int) (screenHeight * AdjustScreenUtil.LEFT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
-//		head.setRightWidthHeight((int) (screenHeight * AdjustScreenUtil.RIGHT_W), LinearLayout.LayoutParams.WRAP_CONTENT);
-	
+		head.setLeftSize((int) (screenWidth * lftBtnW),
+				(int) (screenHeight * titleH));
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));
 		head.setRefreshEnabled(new OnRefreshClickListener() {
@@ -344,8 +344,10 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 				}
 			}
 		});
-		name_title.setTextSize(AdjustScreenUtil.adjusCheckconfigFontSize((int) screenWidth));
-		shaixuanqi.setTextSize(AdjustScreenUtil.adjusCheckconfigFontSize((int) screenWidth) - 4);
+		name_title.setTextSize(AdjustScreenUtil
+				.adjusCheckconfigFontSize((int) screenWidth));
+		shaixuanqi.setTextSize(AdjustScreenUtil
+				.adjusCheckconfigFontSize((int) screenWidth) - 4);
 	}
 
 	/**
@@ -354,11 +356,15 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	private void adjustScreen2() {
 		head2.init(R.drawable.i5_top_ticket_filter, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH) );
-		head2.setTitleSize((int) (screenWidth * titleW4),
+				(int) (screenHeight * barH));
+		head2.setTitleSize((int) (screenWidth * titleW6),
 				(int) (screenHeight * titleH));
-		filter_title.setTextSize(AdjustScreenUtil.adjusCheckconfigFontSize((int) screenWidth)+2);
-		filter_msg.setTextSize(AdjustScreenUtil.adjusCheckconfigFontSize((int) screenWidth)+2);
+		head2.setLeftSize((int) (screenWidth * lftBtnW),
+				(int) (screenHeight * titleH));
+		filter_title.setTextSize(AdjustScreenUtil
+				.adjusCheckconfigFontSize((int) screenWidth) + 2);
+		filter_msg.setTextSize(AdjustScreenUtil
+				.adjusCheckconfigFontSize((int) screenWidth) + 2);
 	}
 
 	/**

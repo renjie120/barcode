@@ -75,7 +75,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private LinearLayout row1;
 	private LinearLayout row2;
 	private LinearLayout row3;
-
 	private LinearLayout table;
 	private ImageView logo_img;
 	// 登陆框提示文本的宽度.
@@ -103,18 +102,18 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		// 设置首页标题栏显示的情况
 		head.init(R.drawable.i5_top_user_logon, false, false,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH) );
+				(int) (screenHeight * barH));
 		head.setTitleSize((int) (screenWidth * titleW4),
 				(int) (screenHeight * titleH));
 
 		// 设置底部标题栏
 		login_bottom.init(null, true, true,
 				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH) );
+				(int) (screenHeight * barH));
 		// 设置底部标题栏的右边操作
 		login_bottom.setRightAction(new BottomBar.CallAction(this));
-//		login_bottom.setTileWidthHeight((int) (screenWidth * bottomW),
-//				(int) (screenHeight * bottomH));
+		// login_bottom.setTileWidthHeight((int) (screenWidth * bottomW),
+		// (int) (screenHeight * bottomH));
 		// name_title.setTextSize(((int) (12)));
 		int textHeight = (int) (textViewH * screenHeight);
 		int textWidth = (int) (textViewW * screenWidth);
@@ -132,8 +131,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		name_title.setWidth(textWidth);
 		pass_title.setWidth(textWidth);
 		pass_title.setHeight(textHeight);
-		buttonLogin.setHeight((int) (btnH * screenHeight * 0.6));
-		buttonLogin.setWidth((int) (btnW * screenWidth * 0.2));
+//		buttonLogin.setHeight((int) (btnH * screenHeight));
+//		buttonLogin.setWidth((int) (btnW * screenWidth * 0.2));
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -143,7 +142,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		logo_img.setLayoutParams(lp);
 
 		LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(
-				(int) (btnW * screenWidth), (int) (btnH * screenHeight));
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		lp2.width = (int) (btnW * screenWidth);
+		lp2.height = (int) (btnH * screenHeight);
 		buttonWrap.setLayoutParams(lp2);
 		LinearLayout.LayoutParams r1 = new LinearLayout.LayoutParams(
 				(int) (screenWidth * tabW), (int) (rowH * screenHeight));
@@ -347,6 +349,15 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				mess_title.setVisibility(View.VISIBLE);
 				mess_title.setText("您输入的账号或密码有误,请重新输入!");
 				break;
+			case 9:
+				mess_title.setVisibility(View.GONE);
+				Intent intent2 = new Intent(LoginActivity.this,
+						ActivitesList.class);
+				intent2.putExtra("name", "debug");
+				intent2.putExtra("uid", "debug");
+				intent2.putExtra("token", "debug");
+				startActivity(intent2);
+				break;
 			default:
 				super.hasMessages(msg.what);
 				break;
@@ -363,35 +374,41 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	public void login(final String userName, final String password) {
 		// 得到url请求.
 		DefaultHttpClient httpclient = new DefaultHttpClient();
-		try {
-			// 进行Md5加密数据.
-			BigInteger md5 = new BigInteger(encryptMD5(password.getBytes()));
-			HttpPost httpost = new HttpPost(Constant.HOST
-					+ "?do=login&username=" + userName + "&password="
-					+ md5.toString(16));
-			HttpResponse response = httpclient.execute(httpost);
-			HttpEntity entity = response.getEntity();
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					entity.getContent(), "UTF-8"));
-			// 如果没有登录成功，就弹出提示信息.
-			ServerResult result = (ServerResult) JSON.parseObject(
-					br.readLine(), ServerResult.class);
-			if (1 != result.getErrorcode()) {
-				myHandler.sendEmptyMessage(1);
+		if (Constant.debug) {
+			Message mes = new Message();
+			mes.what = 9;
+			myHandler.sendMessage(mes);
+		} else {
+			try {
+				// 进行Md5加密数据.
+				BigInteger md5 = new BigInteger(encryptMD5(password.getBytes()));
+				HttpPost httpost = new HttpPost(Constant.HOST
+						+ "?do=login&username=" + userName + "&password="
+						+ md5.toString(16));
+				HttpResponse response = httpclient.execute(httpost);
+				HttpEntity entity = response.getEntity();
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						entity.getContent(), "UTF-8"));
+				// 如果没有登录成功，就弹出提示信息.
+				ServerResult result = (ServerResult) JSON.parseObject(
+						br.readLine(), ServerResult.class);
+				if (1 != result.getErrorcode()) {
+					myHandler.sendEmptyMessage(1);
+				}
+				// 成功了就跳转到活动列表页面.
+				else {
+					Message mes = new Message();
+					mes.obj = result.getData();
+					mes.what = 3;
+					myHandler.sendMessage(mes);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				myHandler.sendEmptyMessage(6);
+			} finally {
+				// 关闭连接.
+				httpclient.getConnectionManager().shutdown();
 			}
-			// 成功了就跳转到活动列表页面.
-			else {
-				Message mes = new Message();
-				mes.obj = result.getData();
-				mes.what = 3;
-				myHandler.sendMessage(mes);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			myHandler.sendEmptyMessage(6);
-		} finally {
-			// 关闭连接.
-			httpclient.getConnectionManager().shutdown();
 		}
 	}
 }
