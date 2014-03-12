@@ -248,8 +248,9 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 
 	public void setLeftSize(final int width, final int height) {
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width,
-				height);
+				height);		
 		lp.gravity = Gravity.CENTER_VERTICAL;
+		lp.leftMargin = 10;
 		mLeftButton.setLayoutParams(lp);
 	}
 

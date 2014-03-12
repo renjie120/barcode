@@ -12,11 +12,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.ImageView;
+
+import com.ericssonlabs.R;
 
 /**
  * 加载网络图片的工具类.
@@ -31,9 +37,11 @@ public class LoadImage implements Runnable {
 	private List<Task> taskQueue;
 	private boolean isRunning = false;
 	private int resId;
+	private Resources res;
 
-	public LoadImage(String url, ImageView v, int resId) {
+	public LoadImage(String url, ImageView v, int resId, Resources res) {
 		this.url = url;
+		this.res = res;
 		this.v = v;
 		this.resId = resId;// 初始化变量
 		caches = new ConcurrentHashMap<String, SoftReference<Bitmap>>();
@@ -71,10 +79,10 @@ public class LoadImage implements Runnable {
 		Map m = new HashMap();
 		m.put("imageView", v);
 		if (bitmap == null) {
-			// m.put("resId", resId);
-			// message.obj = m;
-			// message.what = 1;
-			// h2.sendMessage(message);
+			m.put("resId", resId);
+			message.obj = m;
+			message.what = 1;
+			h2.sendMessage(message);
 
 		} else {
 			m.put("bitmap", bitmap);
@@ -84,9 +92,6 @@ public class LoadImage implements Runnable {
 			v.setImageBitmap(bitmap);
 		}
 		new Thread(runnable).start();
-		// Bitmap m = returnBitMap(url);
-		// Message message = h.obtainMessage(0, m);
-		// h.sendMessage(message);
 	}
 
 	public Bitmap loadImageAsyn(String path, ImageCallback callback) {
@@ -186,10 +191,11 @@ public class LoadImage implements Runnable {
 		void loadImage(String path, Bitmap bitmap);
 	}
 
-	static Bitmap returnBitMap(String url) {
+	private Bitmap returnBitMap(String url) {
 		URL myFileUrl = null;
 		Bitmap bitmap = null;
 		try {
+			System.out.println("下载图片：" + url);
 			myFileUrl = new URL(url);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -203,8 +209,22 @@ public class LoadImage implements Runnable {
 			bitmap = BitmapFactory.decodeStream(is);
 			is.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			return drawableToBitmap(res.getDrawable(R.drawable.paper));
 		}
+		return bitmap;
+	}
+
+	public static Bitmap drawableToBitmap(Drawable drawable) {
+		Bitmap bitmap = Bitmap
+				.createBitmap(
+						drawable.getIntrinsicWidth(),
+						drawable.getIntrinsicHeight(),
+						drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+								: Bitmap.Config.RGB_565);
+		Canvas canvas = new Canvas(bitmap);
+		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
+				drawable.getIntrinsicHeight());
+		drawable.draw(canvas);
 		return bitmap;
 	}
 

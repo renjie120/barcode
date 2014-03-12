@@ -55,6 +55,7 @@ public class ActivitesInfo extends BaseActivity {
 	private float screenWidth = 0;
 	private float w = 0.83f;
 	private float h = 0.1f;
+	private float textW = 10 / 17f;
 	private float fontH1 = 10 / 473f;
 	private float fontH2 = 11 / 473f;
 	private float fontW = 157 / 266f;
@@ -190,12 +191,9 @@ public class ActivitesInfo extends BaseActivity {
 		p1.topMargin = 20;
 		qiandao.setLayoutParams(p1);
 		bottom.setRightAction(new BottomBar.CallAction(this));
-		title.setHeight((int) (fontH2 * screenHeight));
-		title.setWidth((int) (fontW * screenWidth));
-		begin_time.setHeight((int) (fontH1 * screenHeight));
-		end_time.setHeight((int) (fontH1 * screenHeight));
-		begin_time.setWidth((int) (fontW * screenWidth));
-		end_time.setWidth((int) (fontW * screenWidth));
+		title.setWidth((int) (textW * screenWidth));
+		begin_time.setWidth((int) (textW * screenWidth));
+		end_time.setWidth((int) (textW * screenWidth));
 		LinearLayout.LayoutParams lp_temp = new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		lp_temp.width = (int) (tempW * screenWidth);
@@ -295,17 +293,17 @@ public class ActivitesInfo extends BaseActivity {
 				break;
 			case 2:
 				Bundle info = msg.getData();
-				begin_time.setText("活动开始时间：" + info.getString("starttime"));
-				end_time.setText("活动结束时间：" + info.getString("endtime"));
+				begin_time.setText("开始时间：" + info.getString("starttime"));
+				end_time.setText("结束时间：" + info.getString("endtime"));
 				title.setText(info.getString("name"));
 				url = info.getString("url");
-				new Thread(new LoadImage(url, imge, R.drawable.huodong_paper))
-						.start();
+				new Thread(new LoadImage(url, imge, R.drawable.huodong_paper,
+						getResources())).start();
 				break;
 			// 测试情况
 			case 9:
-				begin_time.setText("活动开始时间：2013-1-1");
-				end_time.setText("活动结束时间：2014-1-1");
+				begin_time.setText("开始时间：2013-1-1");
+				end_time.setText("结束时间：2014-1-1");
 				title.setText("快付款所讲的房价快速的回复将快速的回复即可");
 				imge.setBackgroundResource(R.drawable.huodong_paper);
 				break;

@@ -16,6 +16,7 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.ericssonlabs.util.AdjustScreenUtil;
+import com.zxing.activity.CaptureActivity;
 
 /**
  * 签到界面.采用tab的布局方式.
@@ -71,8 +72,8 @@ public class SignInActivity extends TabActivity {
 		TabHost.TabSpec tabSpec2 = tabHost.newTabSpec(Tab2);
 		tabSpec2.setIndicator(composeLayout("二维码签到", R.drawable.icon2));
 		tabSpec2.setContent(new Intent(SignInActivity.this,
-				BarCodeActivity.class).putExtra("token", token).putExtra(
-				"eventid", eventId));
+				CaptureActivity.class).putExtra("token", token).putExtra(
+				"eventid", eventId)); 
 		tabHost.addTab(tabSpec2);
 
 		// 设置第三个tab页的对应的intent布局

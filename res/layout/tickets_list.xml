@@ -45,7 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:layout_margin="1dp"
+                android:layout_marginLeft="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape"
                 android:orientation="horizontal"

@@ -22,9 +22,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,13 +45,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private String name;
 	private String pass;
 	private Button buttonLogin;
-	private CheckBox remeberPassword;
+	private ImageView remeberPassword, bottomimg;
 	private static final int DIALOG_KEY = 0;
 	private LoginEdittext nameText;
 	private LoginEdittext passwordText;
 	private SharedPreferences mSharedPreferences;
 	private ProgressDialog dialog;
-	private TextView mess_title;
+	private TextView mess_title, remember_mess;
 	private float screenHeight = 0;
 	private float screenWidth = 0;
 	// private LinearLayout titile_gre_ym;
@@ -81,9 +78,16 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private float textViewW = 57 / 265f;
 	private float textEditW = 150 / 265f;
 	private float textViewH = 27 / 471f;
+	private float checkboxH = 15 / 471f;
+	private float checkboxTM = 10 / 471f;
+	private float checkboxMesTM = 4 / 471f;
+	private float checkboxLM = 8 / 170f;
 	private float btnW = 75 / 268f;
+	private float checkboxMesW = 30 / 360f;
 	private float btnH = 20 / 471f;
+	private float wrapH = 30 / 471f;
 	private float rowH = 32 / 469f;
+	private float checkboxW = 25 / 170f;
 
 	/**
 	 * 屏幕适配.
@@ -93,8 +97,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-		System.out.println("screenHeight=" + screenHeight + ",screenWidth="
-				+ screenWidth);
+		int textHeight = (int) (textViewH * screenHeight);
+		int checkboxHeight = (int) (checkboxH * screenHeight);
+		int checkboxLMar = (int) (checkboxLM * screenWidth);
+		int checkboxTMar = (int) (checkboxTM * screenWidth);
+		int textWidth = (int) (textViewW * screenWidth);
+		int editWidth = (int) (textEditW * screenWidth);
+		int editHeight = (int) (textViewH * 1.1 * screenHeight);
 		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
 				(int) (screenWidth * tabW), (int) (screenHeight * tabH));
 		// 设置table的高度和宽度.
@@ -112,41 +121,55 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				(int) (screenHeight * barH));
 		// 设置底部标题栏的右边操作
 		login_bottom.setRightAction(new BottomBar.CallAction(this));
-		// login_bottom.setTileWidthHeight((int) (screenWidth * bottomW),
-		// (int) (screenHeight * bottomH));
-		// name_title.setTextSize(((int) (12)));
-		int textHeight = (int) (textViewH * screenHeight);
-		int textWidth = (int) (textViewW * screenWidth);
-		int editWidth = (int) (textEditW * screenWidth);
-		int editHeight = (int) (textViewH * 1.1 * screenHeight);
 
 		name_title.setWidth(textWidth);
 		name_title.setHeight(textHeight);
 		pass_title.setWidth(textWidth);
 		pass_title.setHeight(textHeight);
-		remeberPassword.setWidth(textWidth);
-		remeberPassword.setHeight(textHeight);
+		LinearLayout.LayoutParams lp_check = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		lp_check.width = checkboxHeight;
+		lp_check.height = checkboxHeight;
+		lp_check.leftMargin = checkboxLMar;
+		lp_check.topMargin = checkboxTMar;
+		remeberPassword.setLayoutParams(lp_check);
+		LinearLayout.LayoutParams lp_bottom = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		lp_bottom.width = (int) (screenWidth * tabW);
+		lp_bottom.height = (int) (screenHeight * (24/1136));
+		bottomimg.setLayoutParams(lp_bottom);
 
-		name_title.setHeight(textHeight);
-		name_title.setWidth(textWidth);
-		pass_title.setWidth(textWidth);
-		pass_title.setHeight(textHeight);
-//		buttonLogin.setHeight((int) (btnH * screenHeight));
-//		buttonLogin.setWidth((int) (btnW * screenWidth * 0.2));
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		lp.setMargins(0, (int) (screenHeight * imgMrg), 0,
 				(int) (screenHeight * imgMrg));
-		// 设置logo的位置布局.
 		logo_img.setLayoutParams(lp);
 
 		LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		lp2.width = (int) (btnW * screenWidth);
-		lp2.height = (int) (btnH * screenHeight);
+		lp2.height = (int) (wrapH * screenHeight);
 		buttonWrap.setLayoutParams(lp2);
+
+		LinearLayout.LayoutParams lp22 = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		lp22.width = checkboxHeight * 5;
+		lp22.topMargin = (int) (checkboxMesTM * screenHeight);
+		remember_mess.setLayoutParams(lp22);
+
+		LinearLayout.LayoutParams lp23 = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		lp23.width = (int) (textEditW * screenWidth);
+		lp23.height = checkboxHeight;
+		lp23.topMargin = (int) (checkboxMesTM * screenHeight);
+		mess_title.setLayoutParams(lp23);
+
 		LinearLayout.LayoutParams r1 = new LinearLayout.LayoutParams(
 				(int) (screenWidth * tabW), (int) (rowH * screenHeight));
 		row1.setLayoutParams(r1);
@@ -176,13 +199,14 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		head = (ActionBar) findViewById(R.id.login_head);
 		table = (LinearLayout) findViewById(R.id.login_table);
 		mess_title = (TextView) findViewById(R.id.mess_title);
-		remeberPassword = (CheckBox) findViewById(R.id.remember_password);
+		remeberPassword = (ImageView) findViewById(R.id.remember_check);
 		nameText = (LoginEdittext) findViewById(R.id.inputName);
 		passwordText = (LoginEdittext) findViewById(R.id.inputPass);
 		mSharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		login_bottom = (BottomBar) findViewById(R.id.login_bottom);
-
+		remember_mess = (TextView) findViewById(R.id.remember_mess);
+		bottomimg = (ImageView) findViewById(R.id.bottomimg);
 		adjustScreen();
 	}
 
@@ -191,14 +215,22 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	 */
 	private void prepareListener() {
 		// 勾选是否记住密码调用.
-		remeberPassword
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					public void onCheckedChanged(CompoundButton arg0,
-							boolean arg1) {
-						savePass(arg1);
-					}
+		remeberPassword.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				boolean haveSelected = !"true".equals(arg0.getTag());
+				savePass(haveSelected);
+			}
 
-				});
+		});
+		remember_mess.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				boolean haveSelected = !"true".equals(remeberPassword.getTag());
+				savePass(haveSelected);
+			}
+
+		});
 		buttonLogin.setOnClickListener(this);
 	}
 
@@ -214,8 +246,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			if ("true".equals(mSharedPreferences.getString("remeber", "false"))) {
 				nameText.setText(mSharedPreferences.getString("userId", ""));
 				passwordText.setText(mSharedPreferences.getString("pass", ""));
-				remeberPassword.setChecked(true);
+				remeberPassword.setSelected(true);
+				remeberPassword.setTag("true");
 				new MyListLoader(true).execute("");
+			} else {
+				remeberPassword.setSelected(false);
+				remeberPassword.setTag("false");
 			}
 		}
 	}
@@ -247,12 +283,16 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			mEditor.putString("pass", passwordText.getText().toString());
 			mEditor.putString("userId", nameText.getText());
 			mEditor.commit();
+			remeberPassword.setSelected(true);
+			remeberPassword.setTag("true");
 		} else {
 			SharedPreferences.Editor mEditor = mSharedPreferences.edit();
 			mEditor.putString("remeber", "false");
 			mEditor.putString("pass", "");
 			mEditor.putString("userId", "");
 			mEditor.commit();
+			remeberPassword.setSelected(false);
+			remeberPassword.setTag("false");
 		}
 	}
 

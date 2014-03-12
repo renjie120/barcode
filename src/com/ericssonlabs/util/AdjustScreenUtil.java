@@ -133,28 +133,7 @@ public class AdjustScreenUtil {
 			return lp;
 		}
 	}
-
-	/**
-	 * 适配活动状态的字体大小.
-	 * 
-	 * @param screenWidth
-	 * @return
-	 */
-	public static int adjusStatusFontSize(int screenWidth) {
-		if (screenWidth <= 240) { // 240X320 屏幕
-			return 9;
-		} else if (screenWidth <= 320) { // 320X480 屏幕
-			return 15;
-		} else if (screenWidth <= 480) { // 480X800 或 480X854 屏幕
-			return 17;
-		} else if (screenWidth <= 540) { // 540X960 屏幕
-			return 18;
-		} else if (screenWidth <= 800) { // 800X1280 屏幕
-			return 18;
-		} else { // 大于 800X1280
-			return 21;
-		}
-	}
+ 
  
 
 	/**

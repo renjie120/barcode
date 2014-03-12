@@ -41,12 +41,17 @@ public class ActivitesStatus extends BaseActivity {
 	private TextView yishouchuLabel;
 	private TextView yiqiandaoLabel;
 	private String token;
-	private ImageView activity_pic;
+	private ImageView activity_pic,img2,img1;
 	private ActionBar head;
 	private BottomBar bottom;
 	private float screenHeight = 0;
 	private float screenWidth = 0;
-
+	private float imgW = 65/382f;
+	private float imgH = 65/382f;
+	private float txtW = 55/382f;
+	private float txtH = 13/577f;
+	private float txtbW = 72/382f;
+	private float txtbH = 12/577f;
 	/**
 	 * 调用远程数据请求数据.
 	 * 
@@ -128,14 +133,7 @@ public class ActivitesStatus extends BaseActivity {
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH));
 		bottom.setRightAction(new BottomBar.CallAction(this));
-		yishouchu.setTextSize(AdjustScreenUtil
-				.adjusStatusFontSize((int) screenWidth));
-		yiqiandao.setTextSize(AdjustScreenUtil
-				.adjusStatusFontSize((int) screenWidth));
-		yishouchuLabel.setTextSize(AdjustScreenUtil
-				.adjusStatusFontSize((int) screenWidth));
-		yiqiandaoLabel.setTextSize(AdjustScreenUtil
-				.adjusStatusFontSize((int) screenWidth));
+		  
 	}
 
 	/**
@@ -147,6 +145,8 @@ public class ActivitesStatus extends BaseActivity {
 		yishouchuLabel = (TextView) findViewById(R.id.yishouchuLabel);
 		yiqiandaoLabel = (TextView) findViewById(R.id.yiqiandaoLabel);
 		activity_pic = (ImageView) findViewById(R.id.activity_pic);
+		img1 = (ImageView) findViewById(R.id.img1);
+		img2 = (ImageView) findViewById(R.id.img2);
 		head = (ActionBar) findViewById(R.id.status_head);
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));
@@ -162,7 +162,7 @@ public class ActivitesStatus extends BaseActivity {
 		eventId = intent.getStringExtra("eventid");
 		token = intent.getStringExtra("token");
 		new Thread(new LoadImage(intent.getStringExtra("url"), activity_pic,
-				R.drawable.huodong_paper)).start();
+				R.drawable.huodong_paper,getResources())).start();
 		new ActivityStatusLoader(eventId).execute("");
 	}
 

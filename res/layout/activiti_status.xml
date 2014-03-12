@@ -17,16 +17,17 @@
         android:orientation="vertical" >
 
         <TableLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp" >
+            android:layout_margin="3dp"
+            android:background="@color/white" >
 
             <TableRow>
 
                 <ImageView
                     android:id="@+id/activity_pic"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/qiandao_height"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
                 <LinearLayout
@@ -36,24 +37,25 @@
                     android:orientation="vertical" >
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="80dp"
+                        android:id="@+id/img1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:src="@drawable/button1" />
 
                     <TextView
                         android:id="@+id/yishouchu"
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:textColor="@color/orange" />
 
                     <TextView
                         android:id="@+id/yishouchuLabel"
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:singleLine="false"
+                        android:singleLine="true"
                         android:text="@string/yishouchu"
                         android:textColor="@color/black" />
                 </LinearLayout>
@@ -65,24 +67,24 @@
                     android:orientation="vertical" >
 
                     <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="80dp"
-                        android:layout_marginTop="2dp"
+                        android:id="@+id/img2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:src="@drawable/button2" />
 
                     <TextView
                         android:id="@+id/yiqiandao"
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:textColor="@color/orange" />
 
                     <TextView
                         android:id="@+id/yiqiandaoLabel"
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:singleLine="false"
+                        android:singleLine="true"
                         android:text="@string/yiqiandao"
                         android:textColor="@color/black" />
                 </LinearLayout>

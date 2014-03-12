@@ -82,8 +82,9 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	private float screenHeight = 0;
 	private float screenWidth = 0;
 	// 查看详情按钮的高度比例
-	private final static float statusBtnMT = 50 / 470f;
+	private final static float statusBtnMT = 65 / 470f;
 	private final static float statusBtnML = 92 / 266f;
+	private final static float textW = 100 / 170f;
 	private final static float statusBtnH = 24 / 321f;
 	private final static float statusBtnW = 160 / 266f;
 	private final static float contentH = 107 / 470f;
@@ -452,19 +453,18 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 				viewHolder.act_time_title = (TextView) convertView
 						.findViewById(R.id.act_time_title);
 				viewHolder.statusbar = (LinearLayout) convertView
-						.findViewById(R.id.status_bar); 
+						.findViewById(R.id.status_bar);
 				viewHolder.img = (ImageView) convertView
 						.findViewById(R.id.activity_pic);
 
+				viewHolder.name.setWidth((int) (textW * width));
 				RelativeLayout.LayoutParams p1 = new RelativeLayout.LayoutParams(
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				p1.width = (int) (statusBtnW * width);
 				p1.height = (int) (statusBtnH * height);
 				p1.leftMargin = (int) (statusBtnML * width);
 				p1.topMargin = (int) (statusBtnMT * height);
-				System.out.println(p1.leftMargin + "," + p1.topMargin);
-				System.out.println(p1.width + ",,height=" + p1.height); 
-				viewHolder.statusbar.setLayoutParams(p1); 
+				viewHolder.statusbar.setLayoutParams(p1);
 				convertView.setTag(viewHolder);
 			} else {
 				viewHolder = (ViewHolder) convertView.getTag();
@@ -483,7 +483,8 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 					viewHolder.img.setBackgroundResource(R.drawable.paper);
 				} else {
 					new Thread(new LoadImage("" + markerItem.get("url"),
-							viewHolder.img, R.drawable.huodong_paper)).start();
+							viewHolder.img, R.drawable.huodong_paper,
+							getResources())).start();
 				}
 			}
 			return convertView;

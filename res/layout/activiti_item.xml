@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@id/activity_pic"
+            android:singleLine="true"
             android:ellipsize="end"
             android:textColor="@color/black" >
         </TextView>
