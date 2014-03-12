@@ -108,14 +108,13 @@ public class TicketsList extends BaseActivity {
 		screenWidth = screen2[0];
 		head = (ActionBar) findViewById(R.id.ticket_list_head);
 		head.init(R.drawable.i5_top_checkin, true, true,
-				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH));
 		head.setTitleSize((int) (screenWidth * titleW4), (int) (screenHeight
 				* titleH * 0.7));
 		head.setLeftSize((int) (screenWidth * lftBtnW),
-				(int) (screenHeight * titleH));
+				(int) (screenHeight * lftBtnH),(int) (screenHeight * lftBtnT));
 		head.setRightSize((int) (screenWidth * rgtBtnW),
-				(int) (screenHeight * titleH));
+				(int) (screenHeight * rgtBtnH));
 
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));

@@ -64,10 +64,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	// 图标的上下空白
 	private float imgMrg = 0.05f;
 	private TextView name_title;
-	private TextView pass_title;
-	// 中间table的左边框距离.
-	// private float tabMrgL = 17 / 257f;
-	private LinearLayout center_table;
+	private TextView pass_title; 
 	private LinearLayout buttonWrap;
 	private LinearLayout row1;
 	private LinearLayout row2;
@@ -82,12 +79,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private float checkboxTM = 10 / 471f;
 	private float checkboxMesTM = 4 / 471f;
 	private float checkboxLM = 8 / 170f;
-	private float btnW = 75 / 268f;
-	private float checkboxMesW = 30 / 360f;
-	private float btnH = 20 / 471f;
+	private float btnW = 75 / 268f; 
 	private float wrapH = 30 / 471f;
-	private float rowH = 32 / 469f;
-	private float checkboxW = 25 / 170f;
+	private float rowH = 32 / 469f; 
 
 	/**
 	 * 屏幕适配.
@@ -110,7 +104,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		table.setLayoutParams(p);
 		// 设置首页标题栏显示的情况
 		head.init(R.drawable.i5_top_user_logon, false, false,
-				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH));
 		head.setTitleSize((int) (screenWidth * titleW4),
 				(int) (screenHeight * titleH));
@@ -138,7 +131,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		lp_bottom.width = (int) (screenWidth * tabW);
-		lp_bottom.height = (int) (screenHeight * (24/1136));
+		lp_bottom.height = (int) (screenHeight * (24 / 1136));
 		bottomimg.setLayoutParams(lp_bottom);
 
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -193,8 +186,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		row3 = (LinearLayout) findViewById(R.id.row3);
 		name_title = (TextView) findViewById(R.id.name_title);
 		pass_title = (TextView) findViewById(R.id.pass_title);
-		logo_img = (ImageView) findViewById(R.id.logo_img);
-		center_table = (LinearLayout) findViewById(R.id.center_table);
+		logo_img = (ImageView) findViewById(R.id.logo_img); 
 		buttonLogin = (Button) findViewById(R.id.buttonLogin);
 		head = (ActionBar) findViewById(R.id.login_head);
 		table = (LinearLayout) findViewById(R.id.login_table);

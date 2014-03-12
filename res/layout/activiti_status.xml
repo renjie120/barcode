@@ -14,82 +14,87 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical" >
+        android:orientation="horizontal" >
 
-        <TableLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/all"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:background="@color/white" >
+            android:background="@color/white"
+            android:orientation="horizontal" >
 
-            <TableRow>
+            <LinearLayout
+                android:id="@+id/left"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
 
                 <ImageView
                     android:id="@+id/activity_pic"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mid"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/img1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/button1" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/yishouchu"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical" >
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/orange" />
 
-                    <ImageView
-                        android:id="@+id/img1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:src="@drawable/button1" />
-
-                    <TextView
-                        android:id="@+id/yishouchu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/orange" />
-
-                    <TextView
-                        android:id="@+id/yishouchuLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:singleLine="true"
-                        android:text="@string/yishouchu"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/yishouchuLabel"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical" >
+                    android:layout_gravity="center_horizontal" 
+                    android:text="@string/yishouchu"
+                    android:textColor="@color/black" />
+            </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/img2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/button2" />
+            <LinearLayout
+                android:id="@+id/right"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
 
-                    <TextView
-                        android:id="@+id/yiqiandao"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/orange" />
+                <ImageView
+                    android:id="@+id/img2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/button2" />
 
-                    <TextView
-                        android:id="@+id/yiqiandaoLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:singleLine="true"
-                        android:text="@string/yiqiandao"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-            </TableRow>
-        </TableLayout>
+                <TextView
+                    android:id="@+id/yiqiandao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/orange" />
+
+                <TextView
+                    android:id="@+id/yiqiandaoLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal" 
+                    android:text="@string/yiqiandao"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <com.ericssonlabs.util.BottomBar

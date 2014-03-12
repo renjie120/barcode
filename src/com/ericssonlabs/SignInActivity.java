@@ -90,7 +90,9 @@ public class SignInActivity extends TabActivity {
 			tabWidget.getChildAt(i).getLayoutParams().height = height;
 			View v = tabWidget.getChildAt(i);
 			if (tabHost.getCurrentTab() == i) { 
-				v.setBackgroundColor(Color.GRAY);
+//				v.setBackgroundColor(Color.GRAY);
+				v.setBackgroundDrawable(getResources().getDrawable(
+						R.drawable.i5_foot_selected_bg));	
 			} else {
 				v.setBackgroundDrawable(getResources().getDrawable(
 						R.drawable.selected));
@@ -104,7 +106,9 @@ public class SignInActivity extends TabActivity {
 				for (int i = 0; i < tabWidget.getChildCount(); i++) {
 					View v = tabWidget.getChildAt(i);
 					if (tabHost.getCurrentTab() == i) {
-						v.setBackgroundColor(Color.GRAY);
+//						v.setBackgroundColor(Color.GRAY);
+						v.setBackgroundDrawable(getResources().getDrawable(
+								R.drawable.i5_foot_selected_bg));		
 					} else {
 						v.setBackgroundDrawable(getResources().getDrawable(
 								R.drawable.selected));						

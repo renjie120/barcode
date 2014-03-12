@@ -23,7 +23,6 @@ import com.ericssonlabs.bean.EventInfo;
 import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
-import com.ericssonlabs.util.AdjustScreenUtil;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
 import com.ericssonlabs.util.LoadImage;
@@ -38,20 +37,14 @@ public class ActivitesStatus extends BaseActivity {
 	private String eventId;
 	private TextView yishouchu;
 	private TextView yiqiandao;
-	private TextView yishouchuLabel;
-	private TextView yiqiandaoLabel;
 	private String token;
-	private ImageView activity_pic,img2,img1;
+	private ImageView activity_pic, img2, img1;
+	private LinearLayout all;
 	private ActionBar head;
 	private BottomBar bottom;
 	private float screenHeight = 0;
 	private float screenWidth = 0;
-	private float imgW = 65/382f;
-	private float imgH = 65/382f;
-	private float txtW = 55/382f;
-	private float txtH = 13/577f;
-	private float txtbW = 72/382f;
-	private float txtbH = 12/577f;
+
 	/**
 	 * 调用远程数据请求数据.
 	 * 
@@ -122,18 +115,22 @@ public class ActivitesStatus extends BaseActivity {
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
 		head.init(R.drawable.i5_top_my_activity, true, true,
-				LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH));
 		head.setTitleSize((int) (screenWidth * titleW4),
 				(int) (screenHeight * titleH));
 		head.setLeftSize((int) (screenWidth * lftBtnW),
-				(int) (screenHeight * titleH));
+				(int) (screenHeight * lftBtnH), (int) (screenHeight * lftBtnT));
 		head.setRightSize((int) (screenWidth * rgtBtnW),
-				(int) (screenHeight * titleH));
+				(int) (screenHeight * rgtBtnH));
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH));
 		bottom.setRightAction(new BottomBar.CallAction(this));
-		  
+
+		setWidthHeight(all, 366 / 378f, 160 / 670f);
+		setWidthHeight(activity_pic, 114 / 378f, 152 / 670f, 4 / 670f,
+				10 / 378f);
+		setWidthHeight(img1, 75 / 378f, 75 / 670f, 20 / 670f, 20 / 378f);
+		setWidthHeight(img2, 75 / 378f, 75 / 670f, 20 / 670f, 20 / 378f);
 	}
 
 	/**
@@ -142,11 +139,13 @@ public class ActivitesStatus extends BaseActivity {
 	private void initLayout() {
 		yishouchu = (TextView) findViewById(R.id.yishouchu);
 		yiqiandao = (TextView) findViewById(R.id.yiqiandao);
-		yishouchuLabel = (TextView) findViewById(R.id.yishouchuLabel);
-		yiqiandaoLabel = (TextView) findViewById(R.id.yiqiandaoLabel);
+
 		activity_pic = (ImageView) findViewById(R.id.activity_pic);
 		img1 = (ImageView) findViewById(R.id.img1);
 		img2 = (ImageView) findViewById(R.id.img2);
+
+		all = (LinearLayout) findViewById(R.id.all);
+
 		head = (ActionBar) findViewById(R.id.status_head);
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));
@@ -162,7 +161,7 @@ public class ActivitesStatus extends BaseActivity {
 		eventId = intent.getStringExtra("eventid");
 		token = intent.getStringExtra("token");
 		new Thread(new LoadImage(intent.getStringExtra("url"), activity_pic,
-				R.drawable.huodong_paper,getResources())).start();
+				R.drawable.huodong_paper, getResources())).start();
 		new ActivityStatusLoader(eventId).execute("");
 	}
 

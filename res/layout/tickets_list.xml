@@ -60,7 +60,7 @@
                 </EditText>
             </LinearLayout>
 
-            <TextView
+            <TextView android:id="@+id/searchBtn"
                 android:layout_width="40dp"
                 android:layout_height="30dp"
                 android:background="@color/orange"
@@ -71,14 +71,17 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/cancelBtn"
             android:layout_width="40dp"
             android:layout_height="30dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="4dp"
             android:background="@color/white"
             android:gravity="center"
             android:onClick="cancel"
             android:text="@string/cancel"
             android:textColor="@color/black"
-            android:textSize="@dimen/tick_search_btn" /> 
+            android:textSize="@dimen/tick_search_btn" />
     </LinearLayout>
 
     <ListView

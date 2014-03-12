@@ -73,11 +73,19 @@
             android:onClick="status"
             android:orientation="horizontal" >
 
-            <ImageView
-                android:id="@+id/status_img"
+            <LinearLayout
+                android:id="@+id/img_temp1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/button_icon1" />
+                android:background="@drawable/button_icon_bg"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/status_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/button_icon1" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/temp1"
@@ -109,11 +117,19 @@
             android:onClick="qiandao"
             android:orientation="horizontal" >
 
-            <ImageView
-                android:id="@+id/qiandao_img"
+            <LinearLayout
+                android:id="@+id/img_temp2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/button_icon2" />
+                android:background="@drawable/button_icon_bg"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/qiandao_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/button_icon2" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/temp2"

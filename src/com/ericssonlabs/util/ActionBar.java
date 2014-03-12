@@ -23,6 +23,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -163,19 +164,18 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 	 * @param titleSize
 	 *            标题字体大小
 	 */
-	public void init(int title, boolean left, boolean right, int width,
-			int height) {
+	public void init(int title, boolean left, boolean right,int height) {
 		setTitle(title);
 		setLeftVisible(left);
 		setRightVisible(right);
-		setWidthHeight(width, height);
+		setWidthHeight(LayoutParams.FILL_PARENT, height);
 		// if (titleSize > 0)
 		// setTitleSize(titleSize);
 	}
 
 	private void initViews(final Context context) {
 		this.mContext = context;
-		this.mInflater = LayoutInflater.from(this.mContext); 
+		this.mInflater = LayoutInflater.from(this.mContext);
 		this.mActionBar = (ViewGroup) this.mInflater.inflate(R.layout.title,
 				null);
 
@@ -246,11 +246,12 @@ public class ActionBar extends LinearLayout implements OnClickListener {
 		this.mLeftButton.setImageResource(resId);
 	}
 
-	public void setLeftSize(final int width, final int height) {
+	public void setLeftSize(final int width, final int height,final int marginTop) {
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width,
-				height);		
+				height);
 		lp.gravity = Gravity.CENTER_VERTICAL;
-		lp.leftMargin = 10;
+		lp.leftMargin = 10; 
+		lp.topMargin = marginTop;
 		mLeftButton.setLayoutParams(lp);
 	}
 

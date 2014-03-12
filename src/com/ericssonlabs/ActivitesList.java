@@ -2,10 +2,7 @@ package com.ericssonlabs;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -84,15 +81,13 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	// 查看详情按钮的高度比例
 	private final static float statusBtnMT = 65 / 470f;
 	private final static float statusBtnML = 92 / 266f;
-	private final static float textW = 100 / 170f;
+	private final static float textW = 100 / 170f; 
 	private final static float statusBtnH = 24 / 321f;
 	private final static float statusBtnW = 160 / 266f;
 	private final static float contentH = 107 / 470f;
 	private final static float contentW = 254 / 266f;
 	private LinearLayout.LayoutParams p;
-	private boolean showMorePage = true;
-	private final static float statusTextH = 16 / 471f;
-	private final static float statusTextW = 106 / 266f;
+	private boolean showMorePage = true; 
 	private final static float contentLM = 4 / 266f;
 
 	@Override
@@ -141,13 +136,14 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-		head.init(R.drawable.i5_top_my_activity, true, false,
-				LinearLayout.LayoutParams.FILL_PARENT,
+		head.init(R.drawable.i5_top_my_activity, true, true,
 				(int) (screenHeight * barH));
 		head.setTitleSize((int) (screenWidth * titleW4),
 				(int) (screenHeight * titleH));
 		head.setLeftSize((int) (screenWidth * lftBtnW),
-				(int) (screenHeight * titleH));
+				(int) (screenHeight * lftBtnH),(int) (screenHeight * lftBtnT));
+		head.setRightSize((int) (screenWidth * rgtBtnW),
+				(int) (screenHeight * rgtBtnH));
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
 				(int) (screenHeight * barH));
 		p = new LinearLayout.LayoutParams((int) (screenWidth * statusBtnW),
@@ -458,6 +454,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 						.findViewById(R.id.activity_pic);
 
 				viewHolder.name.setWidth((int) (textW * width));
+				// viewHolder.act_time_title.setHeight((int) (textH2 * height));
 				RelativeLayout.LayoutParams p1 = new RelativeLayout.LayoutParams(
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				p1.width = (int) (statusBtnW * width);
@@ -489,22 +486,6 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 			}
 			return convertView;
 		}
-	}
-
-	public static String toDateString(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
-		return sdf.format(date);
-	}
-
-	public static Date getDate(String dateStr) {
-		SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-		try {
-			date = formatter2.parse(dateStr);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return date;
 	}
 
 	public final static class ViewHolder {

@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -75,8 +74,7 @@ public class BarCodeActivity extends BaseActivity {
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
 		head.init(R.drawable.i5_top_checkin, true, false,
-				LinearLayout.LayoutParams.FILL_PARENT,
-				(int) (screenHeight * barH) );
+				 (int) (screenHeight * barH) );
 		head.setTitleSize((int) (screenWidth * titleW4),
 				(int) (screenHeight * titleH));
 		head.setLeftAction(new ActionBar.BackAction(this));
