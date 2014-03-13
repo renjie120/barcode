@@ -114,7 +114,7 @@ public class ActivitesStatus extends BaseActivity {
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
-		head.init(R.drawable.i5_top_my_activity, true, true,
+		head.init(R.drawable.i5_top_activity_detail, true, true,
 				(int) (screenHeight * barH));
 		head.setTitleSize((int) (screenWidth * titleW4),
 				(int) (screenHeight * titleH));

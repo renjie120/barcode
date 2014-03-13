@@ -64,7 +64,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	// 图标的上下空白
 	private float imgMrg = 0.05f;
 	private TextView name_title;
-	private TextView pass_title; 
+	private TextView pass_title;
 	private LinearLayout buttonWrap;
 	private LinearLayout row1;
 	private LinearLayout row2;
@@ -79,9 +79,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	private float checkboxTM = 10 / 471f;
 	private float checkboxMesTM = 4 / 471f;
 	private float checkboxLM = 8 / 170f;
-	private float btnW = 75 / 268f; 
+	private float mestitleLM = 4 / 170f;
+	private float btnW = 75 / 268f;
 	private float wrapH = 30 / 471f;
-	private float rowH = 32 / 469f; 
+	private float rowH = 32 / 469f;
 
 	/**
 	 * 屏幕适配.
@@ -151,29 +152,27 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		LinearLayout.LayoutParams lp22 = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
-		lp22.width = checkboxHeight * 5;
+		lp22.width = (int) (checkboxHeight * 3.3);
 		lp22.topMargin = (int) (checkboxMesTM * screenHeight);
+		lp22.leftMargin = (int) (mestitleLM * screenWidth);
 		remember_mess.setLayoutParams(lp22);
 
 		LinearLayout.LayoutParams lp23 = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		lp23.width = (int) (textEditW * screenWidth);
-		lp23.height = checkboxHeight;
+		lp23.height = (int) (checkboxHeight * 2.2);
 		lp23.topMargin = (int) (checkboxMesTM * screenHeight);
 		mess_title.setLayoutParams(lp23);
-
-		LinearLayout.LayoutParams r1 = new LinearLayout.LayoutParams(
-				(int) (screenWidth * tabW), (int) (rowH * screenHeight));
-		row1.setLayoutParams(r1);
-		row2.setLayoutParams(r1);
-		row3.setLayoutParams(r1);
-
+		setWidthHeight(mess_title, textEditW, checkboxH * 2, checkboxMesTM, 0);
+		setWidthHeight(row1, tabW, rowH);
+		setWidthHeight(row2, tabW, rowH);
+		setWidthHeight(row3, tabW, rowH * 1.2f);
 		nameText.setSize(editWidth, editHeight);
-		nameText.setText("test140103114242328");
 		passwordText.setPassword();
 		passwordText.setSize(editWidth, editHeight);
-		passwordText.setText("123123");
+//		nameText.setText("test140103114242328");
+//		passwordText.setText("123123");
 	}
 
 	/**
@@ -186,7 +185,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		row3 = (LinearLayout) findViewById(R.id.row3);
 		name_title = (TextView) findViewById(R.id.name_title);
 		pass_title = (TextView) findViewById(R.id.pass_title);
-		logo_img = (ImageView) findViewById(R.id.logo_img); 
+		logo_img = (ImageView) findViewById(R.id.logo_img);
 		buttonLogin = (Button) findViewById(R.id.buttonLogin);
 		head = (ActionBar) findViewById(R.id.login_head);
 		table = (LinearLayout) findViewById(R.id.login_table);
@@ -240,7 +239,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				passwordText.setText(mSharedPreferences.getString("pass", ""));
 				remeberPassword.setSelected(true);
 				remeberPassword.setTag("true");
-				new MyListLoader(true).execute("");
+				new MyListLoader(false).execute("");
 			} else {
 				remeberPassword.setSelected(false);
 				remeberPassword.setTag("false");
@@ -334,7 +333,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.buttonLogin) {
-			new MyListLoader(true).execute("");
+			new MyListLoader(false).execute("");
 		}
 	}
 

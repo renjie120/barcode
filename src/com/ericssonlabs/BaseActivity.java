@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -35,8 +36,8 @@ public class BaseActivity extends Activity {
 	public static float lftBtnH = 27 / 670f;
 	public static float lftBtnT = -6 / 695f;
 	// 首页右边按钮的比例
-	public static float rgtBtnW = 56 / 378f;
-	public static float rgtBtnH = 51 / 674f;
+	public static float rgtBtnW = 44 / 378f;
+	public static float rgtBtnH = 40 / 674f;
 	// 首页4字标题的宽度
 	public static float titleW4 = 70 / 267f;
 	public static float titleW6 = 123 / 264f;
@@ -67,6 +68,28 @@ public class BaseActivity extends Activity {
 		l.setLayoutParams(ll);
 	}
 
+	public void setWidthHeight(RelativeLayout l, final float width,
+			final float height) {
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		ll.height = (int) (height * dm.heightPixels);
+		ll.width = (int) (width * dm.widthPixels);
+		l.setLayoutParams(ll);
+	}
+
+	public void setWidthHeight(RelativeLayout l, final float width,
+			final float height, final float top, final float left) {
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		ll.height = (int) (height * dm.heightPixels);
+		ll.width = (int) (width * dm.widthPixels);
+		ll.topMargin = (int) (top * dm.heightPixels);
+		ll.leftMargin = (int) (left * dm.widthPixels);
+		l.setLayoutParams(ll);
+	}
+
 	public void setWidthHeight(ImageView l, final float width,
 			final float height) {
 		DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -81,6 +104,17 @@ public class BaseActivity extends Activity {
 			final float height, final float top, final float left) {
 		DisplayMetrics dm = getResources().getDisplayMetrics();
 		LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		ll.height = (int) (height * dm.heightPixels);
+		ll.leftMargin = (int) (left * dm.widthPixels);
+		ll.topMargin = (int) (top * dm.heightPixels);
+		ll.width = (int) (width * dm.widthPixels);
+		l.setLayoutParams(ll);
+	}
+	public void setWidthHeight2(ImageView l, final float width,
+			final float height, final float top, final float left) {
+		DisplayMetrics dm = getResources().getDisplayMetrics();
+		RelativeLayout.LayoutParams ll = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		ll.height = (int) (height * dm.heightPixels);
 		ll.leftMargin = (int) (left * dm.widthPixels);

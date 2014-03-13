@@ -95,7 +95,7 @@ public class SignInActivity extends TabActivity {
 						R.drawable.i5_foot_selected_bg));	
 			} else {
 				v.setBackgroundDrawable(getResources().getDrawable(
-						R.drawable.selected));
+						R.drawable.bottom_background));
 			}
 		}
 
@@ -111,7 +111,7 @@ public class SignInActivity extends TabActivity {
 								R.drawable.i5_foot_selected_bg));		
 					} else {
 						v.setBackgroundDrawable(getResources().getDrawable(
-								R.drawable.selected));						
+								R.drawable.bottom_background));						
 					}
 				}
 			}

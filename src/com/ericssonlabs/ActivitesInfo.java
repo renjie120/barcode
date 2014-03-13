@@ -163,7 +163,7 @@ public class ActivitesInfo extends BaseActivity {
 		screenHeight = screen2[1];
 		screenWidth = screen2[0];
 		// 设置标题布局
-		head.init(R.drawable.i5_top_my_activity, true, true,
+		head.init(R.drawable.i5_top_activity_detail, true, true,
 				(int) (screenHeight * barH));
 		head.setTitleSize((int) (screenWidth * titleW4),
 				(int) (screenHeight * titleH));

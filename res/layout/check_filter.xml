@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
         android:layout_margin="10dp"
-        android:background="@drawable/shape_corner_gridview"
+        android:background="@drawable/shape_corner_gridview2"
         android:orientation="horizontal"
         android:padding="5dip" >
 
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" 
+            android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:text="@string/xianzhi"
             android:textColor="@color/black" />
@@ -51,14 +51,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
         android:layout_margin="10dp"
-        android:background="@drawable/shape_corner_gridview"
+        android:background="@drawable/shape_corner_gridview2"
         android:padding="5dip" >
 
         <ListView
             android:id="@+id/ListView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:divider="#C4C4C4"
+            android:dividerHeight="1dp" />
     </RelativeLayout>
 
 </LinearLayout>

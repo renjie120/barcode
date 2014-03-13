@@ -109,10 +109,10 @@ public class TicketsList extends BaseActivity {
 		head = (ActionBar) findViewById(R.id.ticket_list_head);
 		head.init(R.drawable.i5_top_checkin, true, true,
 				(int) (screenHeight * barH));
-		head.setTitleSize((int) (screenWidth * titleW4), (int) (screenHeight
-				* titleH * 0.7));
+		head.setTitleSize((int) (screenWidth * titleW4),
+				(int) (screenHeight * titleH));
 		head.setLeftSize((int) (screenWidth * lftBtnW),
-				(int) (screenHeight * lftBtnH),(int) (screenHeight * lftBtnT));
+				(int) (screenHeight * lftBtnH), (int) (screenHeight * lftBtnT));
 		head.setRightSize((int) (screenWidth * rgtBtnW),
 				(int) (screenHeight * rgtBtnH));
 
@@ -126,6 +126,7 @@ public class TicketsList extends BaseActivity {
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
 				.getApplication());
 		list = (ListView) findViewById(R.id.ListView);
+		// list.setDivider(R.drawable.);
 		totalcountText = (TextView) findViewById(R.id.totalcount);
 		Intent intent = getIntent();
 		search = (TextView) findViewById(R.id.searchText);

@@ -31,6 +31,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -58,13 +59,15 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	private String temp;
 	private TextView shaixuanqi, name_title, filter_msg, filter_title;
 	private ActionBar head;
+	private ImageView arr;
+	private RelativeLayout wrap;
 	private ActionBar head2;
 	private float screenHeight = 0;
 	private float screenWidth = 0;
 	private static float bigW = 238 / 378f;
-	private static float bigH = 25 / 671f;
+	private static float bigH = 28 / 671f;
 	private static float smallW = 238 / 378f;
-	private static float smallH = 18 / 671f;
+	private static float smallH = 25 / 671f;
 
 	protected void onResume() {
 		super.onResume();
@@ -332,7 +335,7 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		head.setTitleSize((int) (screenWidth * titleW4),
 				(int) (screenHeight * titleH));
 		head.setLeftSize((int) (screenWidth * lftBtnW),
-				(int) (screenHeight * lftBtnH),(int) (screenHeight * lftBtnT));
+				(int) (screenHeight * lftBtnH), (int) (screenHeight * lftBtnT));
 		head.setRightSize((int) (screenWidth * rgtBtnW),
 				(int) (screenHeight * rgtBtnH));
 		head.setLeftAction(new ActionBar.BackAction(this));
@@ -351,6 +354,8 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		name_title.setWidth((int) (bigW * screenWidth));
 		shaixuanqi.setHeight((int) (smallH * screenHeight));
 		shaixuanqi.setWidth((int) (smallW * screenWidth));
+		setWidthHeight(wrap, 275 / 326f, 60 / 576f, 10 / 576f, 27 / 326f);
+		setWidthHeight2(arr, 17 / 327f, 25 / 577f, 10 / 577f, 267 / 362f);
 	}
 
 	/**
@@ -362,13 +367,9 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		head2.setTitleSize((int) (screenWidth * titleW6),
 				(int) (screenHeight * titleH));
 		head2.setLeftSize((int) (screenWidth * lftBtnW),
-				(int) (screenHeight * lftBtnH),(int) (screenHeight * lftBtnT));
+				(int) (screenHeight * lftBtnH), (int) (screenHeight * lftBtnT));
 		head2.setRightSize((int) (screenWidth * rgtBtnW),
 				(int) (screenHeight * rgtBtnH));
-		// filter_title.setTextSize(AdjustScreenUtil
-		// .adjusCheckconfigFontSize((int) screenWidth) + 2);
-		// filter_msg.setTextSize(AdjustScreenUtil
-		// .adjusCheckconfigFontSize((int) screenWidth) + 2);
 	}
 
 	/**
@@ -376,8 +377,10 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	 */
 	private void initConfig() {
 		setContentView(R.layout.check_config);
+		arr = (ImageView) findViewById(R.id.arr);
 		name_title = (TextView) findViewById(R.id.name_title);
 		shaixuanqi = (TextView) findViewById(R.id.shaixuanqi);
+		wrap = (RelativeLayout) findViewById(R.id.wrap);
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this
 				.getApplication());
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this

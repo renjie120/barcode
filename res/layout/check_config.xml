@@ -11,11 +11,12 @@
         android:layout_height="wrap_content" />
 
     <RelativeLayout
+        android:id="@+id/wrap"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
         android:layout_margin="10dp"
-        android:background="@drawable/shape_corner_gridview"
+        android:background="@drawable/shape_corner_gridview2"
         android:onClick="gofilter"
         android:padding="2dip" >
 
@@ -30,14 +31,14 @@
         <TextView
             android:id="@+id/shaixuanqi"
             android:layout_width="wrap_content"
-            android:layout_marginTop="3dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/name_title"
             android:layout_below="@id/name_title"
+            android:layout_marginTop="2dp"
             android:textColor="@color/black" />
 
         <ImageView
-            android:id="@+id/inputName"
+            android:id="@+id/arr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/name_title"
