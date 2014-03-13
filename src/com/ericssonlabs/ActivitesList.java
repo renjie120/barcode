@@ -1,15 +1,8 @@
 package com.ericssonlabs;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -46,6 +39,7 @@ import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
+import com.ericssonlabs.util.HttpRequire;
 import com.ericssonlabs.util.LoadImage;
 
 /**
@@ -56,7 +50,7 @@ import com.ericssonlabs.util.LoadImage;
  */
 public class ActivitesList extends BaseActivity implements OnScrollListener {
 	private ListView list;
-	private String token;
+	private String token, auth;
 	private static final int DIALOG_KEY = 0;
 	private ProgressDialog dialog;
 	private ServerResult result;
@@ -81,13 +75,13 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	// 查看详情按钮的高度比例
 	private final static float statusBtnMT = 65 / 470f;
 	private final static float statusBtnML = 92 / 266f;
-	private final static float textW = 100 / 170f; 
+	private final static float textW = 100 / 170f;
 	private final static float statusBtnH = 24 / 321f;
 	private final static float statusBtnW = 160 / 266f;
 	private final static float contentH = 107 / 470f;
 	private final static float contentW = 254 / 266f;
 	private LinearLayout.LayoutParams p;
-	private boolean showMorePage = true; 
+	private boolean showMorePage = true;
 	private final static float contentLM = 4 / 266f;
 
 	@Override
@@ -113,6 +107,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		Intent intent = new Intent(ActivitesList.this, ActivitesInfo.class);
 		intent.putExtra("eventid", layout.getTag().toString());
 		intent.putExtra("token", token);
+		intent.putExtra("auth", auth);
 		this.startActivity(intent);
 	}
 
@@ -126,6 +121,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		Intent intent = new Intent(ActivitesList.this, ActivitesInfo.class);
 		intent.putExtra("eventid", layout.getTag().toString());
 		intent.putExtra("token", token);
+		intent.putExtra("auth", auth);
 		this.startActivity(intent);
 	}
 
@@ -141,7 +137,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		head.setTitleSize((int) (screenWidth * titleW4),
 				(int) (screenHeight * titleH));
 		head.setLeftSize((int) (screenWidth * lftBtnW),
-				(int) (screenHeight * lftBtnH),(int) (screenHeight * lftBtnT));
+				(int) (screenHeight * lftBtnH), (int) (screenHeight * lftBtnT));
 		head.setRightSize((int) (screenWidth * rgtBtnW),
 				(int) (screenHeight * rgtBtnH));
 		bottom.init(null, true, true, LinearLayout.LayoutParams.FILL_PARENT,
@@ -159,6 +155,7 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 		list.setOnScrollListener(this);
 		Intent intent = getIntent();
 		token = intent.getStringExtra("token");
+		auth = intent.getStringExtra("auth");
 		// 查询全部的订到的票的信息.
 		// 实例化底部布局
 		moreView = getLayoutInflater().inflate(R.drawable.moredata, null);
@@ -225,8 +222,6 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 						map.put("name", i.getName());
 						map.put("starttime", i.getStarttime());
 						map.put("url", i.getImageurl());
-						System.out
-								.println("i.getImageurl()=" + i.getImageurl());
 						listItem.add(map);
 					}
 				}
@@ -352,24 +347,11 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 	 * 调用远程请求查询结果数据.
 	 */
 	private void userActities(int page, int size) {
-		DefaultHttpClient httpclient = new DefaultHttpClient();
-		String encoding = "UTF-8";
 		if (Constant.debug) {
 			myHandler.sendEmptyMessage(9);
 		} else {
 			try {
-				HttpPost httpost = new HttpPost(Constant.HOST
-						+ "?do=myevents&token=" + token + "&page=" + page
-						+ "&size=" + size);
-				System.out.println("查看全部的活动：" + Constant.HOST
-						+ "?do=myevents&token=" + token + "&page=" + page
-						+ "&size=" + size);
-				HttpResponse response = httpclient.execute(httpost);
-				HttpEntity entity = response.getEntity();
-				BufferedReader br = new BufferedReader(new InputStreamReader(
-						entity.getContent(), encoding));
-				result = (ServerResult) JSON.parseObject(br.readLine(),
-						ServerResult.class);
+				result = HttpRequire.userActities(page, size, auth);
 				// 如果返回数据不是1，就说明出现异常.
 				if (1 != result.getErrorcode()) {
 					myHandler.sendEmptyMessage(1);
@@ -385,8 +367,6 @@ public class ActivitesList extends BaseActivity implements OnScrollListener {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				httpclient.getConnectionManager().shutdown();
 			}
 		}
 	}

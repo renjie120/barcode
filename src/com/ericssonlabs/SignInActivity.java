@@ -27,7 +27,7 @@ public class SignInActivity extends TabActivity {
 	private static final String Tab1 = "Tab1";
 	private static final String Tab2 = "Tab2";
 	private static final String Tab3 = "Tab3";
-	private String token;
+	private String token, auth;
 	private String eventId;
 	private float screenHeight = 0;
 	private float screenWidth = 0;
@@ -53,6 +53,7 @@ public class SignInActivity extends TabActivity {
 		Intent intent = getIntent();
 		eventId = intent.getStringExtra("eventid");
 		token = intent.getStringExtra("token");
+		auth = intent.getStringExtra("auth");
 
 		float[] screen2 = getScreen2();
 		screenHeight = screen2[1];
@@ -65,22 +66,24 @@ public class SignInActivity extends TabActivity {
 		TabHost.TabSpec tabSpec = tabHost.newTabSpec(Tab1);
 		tabSpec.setIndicator(composeLayout("搜索", R.drawable.icon1));
 		tabSpec.setContent(new Intent(SignInActivity.this, TicketsList.class)
-				.putExtra("token", token).putExtra("eventid", eventId));
+				.putExtra("token", token).putExtra("eventid", eventId)
+				.putExtra("auth", auth));
 		tabHost.addTab(tabSpec);
 
 		// 设置第二个tab页的对应的intent布局
 		TabHost.TabSpec tabSpec2 = tabHost.newTabSpec(Tab2);
 		tabSpec2.setIndicator(composeLayout("二维码签到", R.drawable.icon2));
 		tabSpec2.setContent(new Intent(SignInActivity.this,
-				CaptureActivity.class).putExtra("token", token).putExtra(
-				"eventid", eventId)); 
+				CaptureActivity.class).putExtra("token", token)
+				.putExtra("auth", auth).putExtra("eventid", eventId));
 		tabHost.addTab(tabSpec2);
 
 		// 设置第三个tab页的对应的intent布局
 		TabHost.TabSpec tabSpec3 = tabHost.newTabSpec(Tab3);
 		tabSpec3.setIndicator(composeLayout("设置", R.drawable.icon3));
 		tabSpec3.setContent(new Intent(SignInActivity.this, CheckConfig.class)
-				.putExtra("token", token).putExtra("eventid", eventId));
+				.putExtra("token", token).putExtra("auth", auth)
+				.putExtra("eventid", eventId));
 		tabHost.addTab(tabSpec3);
 
 		// 这是对Tab标签本身的设置
@@ -89,10 +92,10 @@ public class SignInActivity extends TabActivity {
 			// 设置高度、宽度，不过宽度由于设置为fill_parent，在此对它没效果
 			tabWidget.getChildAt(i).getLayoutParams().height = height;
 			View v = tabWidget.getChildAt(i);
-			if (tabHost.getCurrentTab() == i) { 
-//				v.setBackgroundColor(Color.GRAY);
+			if (tabHost.getCurrentTab() == i) {
+				// v.setBackgroundColor(Color.GRAY);
 				v.setBackgroundDrawable(getResources().getDrawable(
-						R.drawable.i5_foot_selected_bg));	
+						R.drawable.i5_foot_selected_bg));
 			} else {
 				v.setBackgroundDrawable(getResources().getDrawable(
 						R.drawable.bottom_background));
@@ -106,12 +109,12 @@ public class SignInActivity extends TabActivity {
 				for (int i = 0; i < tabWidget.getChildCount(); i++) {
 					View v = tabWidget.getChildAt(i);
 					if (tabHost.getCurrentTab() == i) {
-//						v.setBackgroundColor(Color.GRAY);
+						// v.setBackgroundColor(Color.GRAY);
 						v.setBackgroundDrawable(getResources().getDrawable(
-								R.drawable.i5_foot_selected_bg));		
+								R.drawable.i5_foot_selected_bg));
 					} else {
 						v.setBackgroundDrawable(getResources().getDrawable(
-								R.drawable.bottom_background));						
+								R.drawable.bottom_background));
 					}
 				}
 			}

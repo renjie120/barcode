@@ -1,6 +1,5 @@
 package com.ericssonlabs;
 
-import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -138,18 +137,7 @@ public class BaseActivity extends Activity {
 				0, 0);
 	}
 
-	/**
-	 * md5加密方法.
-	 * 
-	 * @param data
-	 * @return
-	 * @throws Exception
-	 */
-	public static byte[] encryptMD5(byte[] data) throws Exception {
-		MessageDigest md5 = MessageDigest.getInstance("MD5");
-		md5.update(data);
-		return md5.digest();
-	}
+	
 
 	/**
 	 * 判断网络状况.
@@ -199,8 +187,7 @@ public class BaseActivity extends Activity {
 	 * @return
 	 */
 	public float[] getScreen2() {
-		DisplayMetrics dm = new DisplayMetrics();
-		System.out.println("屏幕密度1" + dm.density + ",屏幕密度2" + dm.densityDpi);
+		DisplayMetrics dm = new DisplayMetrics(); 
 		dm = getResources().getDisplayMetrics();
 		return new float[] { dm.widthPixels, dm.heightPixels };
 	}

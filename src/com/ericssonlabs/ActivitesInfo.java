@@ -1,13 +1,5 @@
 package com.ericssonlabs;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +21,7 @@ import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
+import com.ericssonlabs.util.HttpRequire;
 import com.ericssonlabs.util.LoadImage;
 
 /**
@@ -47,7 +40,7 @@ public class ActivitesInfo extends BaseActivity {
 			qiandao_img;
 	private TextView begin_time;
 	private ImageView imge;
-	private String token;
+	private String token, auth;
 	private String url;
 	private ActionBar head;
 	private BottomBar bottom;
@@ -55,14 +48,14 @@ public class ActivitesInfo extends BaseActivity {
 	private float screenWidth = 0;
 	private float w = 0.83f;
 	private float h = 0.1f;
-	private float textW = 10 / 17f; 
+	private float textW = 10 / 17f;
 	private float fontH3 = 26 / 470f;
 	private float statusW = 60 / 270f;
 	private float btnTmargin = 13 / 470f;
 	private float qiandaoW = 116 / 270f;
 	private float tempW = 130 / 270f;
 	private float jiantouW = 15 / 270f;
-	private float jiantouH = 20 / 470f; 
+	private float jiantouH = 20 / 470f;
 	private float imgLmargin = -13 / 413f;
 	private float btnLmargin = 14 / 270f;
 	private float jiantouTmargin = 17 / 470f;
@@ -79,28 +72,12 @@ public class ActivitesInfo extends BaseActivity {
 	private RelativeLayout layout;
 
 	private EventInfo activitiDetail(String eventId) {
-		DefaultHttpClient httpclient = new DefaultHttpClient();
-		String encoding = "UTF-8";
 		if (Constant.debug) {
 			myHandler.sendEmptyMessage(9);
 			return null;
 		} else {
 			try {
-
-				HttpPost httpost = new HttpPost(Constant.HOST
-						+ "?do=eventinfo&eventid=" + eventId + "&token="
-						+ token);
-				System.out.println("查看活动详情：" + Constant.HOST
-						+ "?do=eventinfo&eventid=" + eventId + "&token="
-						+ token);
-				HttpResponse response = httpclient.execute(httpost);
-				HttpEntity entity = response.getEntity();
-				BufferedReader br = new BufferedReader(new InputStreamReader(
-						entity.getContent(), encoding));
-				String sss = br.readLine();
-				// 如果没有登录成功，就弹出提示信息.
-				ServerResult result = (ServerResult) JSON.parseObject(sss,
-						ServerResult.class);
+				ServerResult result = HttpRequire.activitiDetail(eventId, auth);
 
 				EventInfo t = (EventInfo) JSON.parseObject(result.getData()
 						.toJSONString(), EventInfo.class);
@@ -119,9 +96,7 @@ public class ActivitesInfo extends BaseActivity {
 				return t;
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				httpclient.getConnectionManager().shutdown();
-			}
+			}  
 		}
 		return null;
 	}
@@ -170,7 +145,7 @@ public class ActivitesInfo extends BaseActivity {
 		head.setLeftAction(new ActionBar.BackAction(this));
 		head.setRightAction(new ActionBar.RefreshAction(head));
 		head.setLeftSize((int) (screenWidth * lftBtnW),
-				(int) (screenHeight * lftBtnH),(int) (screenHeight * lftBtnT));
+				(int) (screenHeight * lftBtnH), (int) (screenHeight * lftBtnT));
 		head.setRightSize((int) (screenWidth * rgtBtnW),
 				(int) (screenHeight * rgtBtnH));
 		head.setRefreshEnabled(new OnRefreshClickListener() {
@@ -297,7 +272,7 @@ public class ActivitesInfo extends BaseActivity {
 		qiandao.setTag(eventId);
 		status.setTag(eventId);
 		token = intent.getStringExtra("token");
-
+		auth = intent.getStringExtra("auth");
 	}
 
 	@Override

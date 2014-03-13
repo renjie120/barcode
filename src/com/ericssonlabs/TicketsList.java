@@ -41,6 +41,7 @@ import com.ericssonlabs.bean.TicketListItem;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
 import com.ericssonlabs.util.Constant;
+import com.ericssonlabs.util.HttpRequire;
 import com.ericssonlabs.util.PingYinUtil;
 
 /**
@@ -49,7 +50,7 @@ import com.ericssonlabs.util.PingYinUtil;
  */
 public class TicketsList extends BaseActivity {
 	private ListView list;
-	private String token;
+	private String token, auth;
 	private TextView search;
 	private TextView totalcountText;
 	private String eventId;
@@ -135,7 +136,8 @@ public class TicketsList extends BaseActivity {
 
 		token = intent.getStringExtra("token");
 		eventId = intent.getStringExtra("eventid");
-		temp = token + ";" + eventId + ";";
+		auth = intent.getStringExtra("auth");
+		temp = auth + ";" + eventId + ";";
 		// 加载票据列表页面.
 		new TicketsLoader(true, eventId).execute("");
 	}
@@ -246,19 +248,8 @@ public class TicketsList extends BaseActivity {
 	 * @param eventId
 	 */
 	private void tickeslist(String eventId) {
-		DefaultHttpClient httpclient = new DefaultHttpClient();
-		String encoding = "UTF-8";
 		try {
-			HttpPost httpost = new HttpPost(Constant.HOST
-					+ "?do=mytickets&eventid=" + eventId + "&token=" + token);
-			System.out.println("查看全部的订票信息:" + Constant.HOST
-					+ "?do=mytickets&eventid=" + eventId + "&token=" + token);
-			HttpResponse response = httpclient.execute(httpost);
-			HttpEntity entity = response.getEntity();
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					entity.getContent(), encoding));
-			result = (ServerResult) JSON.parseObject(br.readLine(),
-					ServerResult.class);
+			result = HttpRequire.tickeslist(eventId, auth); 
 			if (1 != result.getErrorcode()) {
 				myHandler.sendEmptyMessage(1);
 			}
@@ -268,9 +259,7 @@ public class TicketsList extends BaseActivity {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			httpclient.getConnectionManager().shutdown();
-		}
+		}  
 	}
 
 	/**

@@ -1,13 +1,5 @@
 package com.ericssonlabs;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,11 +8,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.AdjustScreenUtil;
-import com.ericssonlabs.util.Constant;
+import com.ericssonlabs.util.HttpRequire;
 import com.zxing.activity.CaptureActivity;
 
 /**
@@ -28,7 +18,7 @@ import com.zxing.activity.CaptureActivity;
  */
 public class BarCodeActivity extends BaseActivity {
 	private TextView resultTextView;
-	private String token;
+	private String token,auth;
 	private String eventid;
 	private ActionBar head;
 	private float screenHeight = 0;
@@ -36,33 +26,11 @@ public class BarCodeActivity extends BaseActivity {
 	private Button scanBarCodeButton;
 
 	private boolean qiandao(String tickid) {
-		DefaultHttpClient httpclient = new DefaultHttpClient();
-		String encoding = "UTF-8";
-		try {
-
-			HttpPost httpost = new HttpPost(Constant.HOST
-					+ "?do=checkticket&ticketid=" + tickid
-					+ "&check=true&token=" + token);
-			System.out.println("签到：" + Constant.HOST
-					+ "?do=checkticket&ticketid=" + tickid
-					+ "&check=true&token=" + token);
-			HttpResponse response = httpclient.execute(httpost);
-			HttpEntity entity = response.getEntity();
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					entity.getContent(), encoding));
-			String sss = br.readLine();
-			System.out.println("返回结果" + sss);
-			// 如果没有登录成功，就弹出提示信息.
-			ServerResult result = (ServerResult) JSON.parseObject(sss,
-					ServerResult.class);
-
-			System.out.println(tickid + "签到结果：" + result.getData());
-			return "true".equals(result.getData());
+		 try { 
+			return HttpRequire.qiandao(tickid, auth);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			httpclient.getConnectionManager().shutdown();
-		}
+		}  
 		return false;
 	}
 
@@ -92,6 +60,7 @@ public class BarCodeActivity extends BaseActivity {
 		head = (ActionBar) findViewById(R.id.barcode_head);
 
 		token = intent.getStringExtra("token");
+		auth = intent.getStringExtra("auth");
 		eventid = intent.getStringExtra("eventid");
 		scanBarCodeButton.setOnClickListener(new OnClickListener() {
 

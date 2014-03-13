@@ -1,15 +1,8 @@
 package com.ericssonlabs;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -40,7 +33,7 @@ import com.ericssonlabs.bean.ServerResults;
 import com.ericssonlabs.bean.TicketTypeItem;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
-import com.ericssonlabs.util.Constant;
+import com.ericssonlabs.util.HttpRequire;
 
 /**
  * 配置界面
@@ -48,7 +41,7 @@ import com.ericssonlabs.util.Constant;
  */
 public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	private ListView list;
-	private String token;
+	private String token, auth;
 	private String eventid;
 	private static final int DIALOG_KEY = 0;
 	private ServerResults result;
@@ -220,20 +213,8 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 	 * @param eventId
 	 */
 	private void typelist(String eventId) {
-		DefaultHttpClient httpclient = new DefaultHttpClient();
-		String encoding = "UTF-8";
 		try {
-
-			HttpPost httpost = new HttpPost(Constant.HOST
-					+ "?do=listtype&token=" + token + "&eventid=" + eventId);
-			System.out.println("查看全部票的类型：" + Constant.HOST
-					+ "?do=listtype&token=" + token + "&eventid=" + eventId);
-			HttpResponse response = httpclient.execute(httpost);
-			HttpEntity entity = response.getEntity();
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					entity.getContent(), encoding));
-			result = (ServerResults) JSON.parseObject(br.readLine(),
-					ServerResults.class);
+			result = HttpRequire.typelist(eventId, auth);
 			if (1 != result.getErrorcode()) {
 				myHandler.sendEmptyMessage(1);
 			}
@@ -243,8 +224,6 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			httpclient.getConnectionManager().shutdown();
 		}
 	}
 
@@ -393,8 +372,9 @@ public class CheckConfig extends BaseActivity implements OnItemClickListener {
 		}
 		Intent intent = getIntent();
 		token = intent.getStringExtra("token");
+		auth = intent.getStringExtra("auth");
 		eventid = intent.getStringExtra("eventid");
-		temp = token + ";" + eventid + ";";
+		temp = auth + ";" + eventid + ";";
 		adjustScreen();
 	}
 

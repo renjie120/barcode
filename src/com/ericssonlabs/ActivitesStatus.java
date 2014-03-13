@@ -1,13 +1,5 @@
 package com.ericssonlabs;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,7 +16,7 @@ import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.ActionBar.OnRefreshClickListener;
 import com.ericssonlabs.util.BottomBar;
-import com.ericssonlabs.util.Constant;
+import com.ericssonlabs.util.HttpRequire;
 import com.ericssonlabs.util.LoadImage;
 
 /**
@@ -37,7 +29,7 @@ public class ActivitesStatus extends BaseActivity {
 	private String eventId;
 	private TextView yishouchu;
 	private TextView yiqiandao;
-	private String token;
+	private String auth;
 	private ImageView activity_pic, img2, img1;
 	private LinearLayout all;
 	private ActionBar head;
@@ -52,21 +44,8 @@ public class ActivitesStatus extends BaseActivity {
 	 * @return
 	 */
 	private EventInfo activitiDetail(String eventId) {
-		DefaultHttpClient httpclient = new DefaultHttpClient();
-		String encoding = "UTF-8";
 		try {
-
-			HttpPost httpost = new HttpPost(Constant.HOST
-					+ "?do=eventinfo&eventid=" + eventId + "&token=" + token);
-			HttpResponse response = httpclient.execute(httpost);
-			HttpEntity entity = response.getEntity();
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					entity.getContent(), encoding));
-			String sss = br.readLine();
-			// 如果没有登录成功，就弹出提示信息.
-			ServerResult result = (ServerResult) JSON.parseObject(sss,
-					ServerResult.class);
-
+			ServerResult result = HttpRequire.activitiDetail(eventId, auth);
 			EventInfo t = (EventInfo) JSON.parseObject(result.getData()
 					.toJSONString(), EventInfo.class);
 			Message msg = new Message();
@@ -80,8 +59,6 @@ public class ActivitesStatus extends BaseActivity {
 			return t;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			httpclient.getConnectionManager().shutdown();
 		}
 		return null;
 	}
@@ -159,7 +136,7 @@ public class ActivitesStatus extends BaseActivity {
 
 		Intent intent = getIntent();
 		eventId = intent.getStringExtra("eventid");
-		token = intent.getStringExtra("token");
+		auth = intent.getStringExtra("auth");
 		new Thread(new LoadImage(intent.getStringExtra("url"), activity_pic,
 				R.drawable.huodong_paper, getResources())).start();
 		new ActivityStatusLoader(eventId).execute("");

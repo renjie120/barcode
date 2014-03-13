@@ -1,12 +1,5 @@
 package com.ericssonlabs;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Dialog;
@@ -33,6 +26,7 @@ import com.ericssonlabs.bean.ServerResult;
 import com.ericssonlabs.util.ActionBar;
 import com.ericssonlabs.util.BottomBar;
 import com.ericssonlabs.util.Constant;
+import com.ericssonlabs.util.HttpRequire;
 import com.ericssonlabs.util.LoginEdittext;
 
 /**
@@ -171,8 +165,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		nameText.setSize(editWidth, editHeight);
 		passwordText.setPassword();
 		passwordText.setSize(editWidth, editHeight);
-//		nameText.setText("test140103114242328");
-//		passwordText.setText("123123");
+		nameText.setText("test140103114242328");
+		passwordText.setText("123123");
 	}
 
 	/**
@@ -374,6 +368,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				intent.putExtra("name", token.getUsername());
 				intent.putExtra("uid", token.getUid());
 				intent.putExtra("token", token.getToken());
+				intent.putExtra("auth",
+						token.getUid() + "," + token.getUsername() + ","
+								+ token.getToken());
 				startActivity(intent);
 				break;
 			case 6:
@@ -411,19 +408,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			myHandler.sendMessage(mes);
 		} else {
 			try {
-				// 进行Md5加密数据.
-				BigInteger md5 = new BigInteger(encryptMD5(password.getBytes()));
-				HttpPost httpost = new HttpPost(Constant.HOST
-						+ "?do=login&username=" + userName + "&password="
-						+ md5.toString(16));
-				HttpResponse response = httpclient.execute(httpost);
-				HttpEntity entity = response.getEntity();
-				BufferedReader br = new BufferedReader(new InputStreamReader(
-						entity.getContent(), "UTF-8"));
-				// 如果没有登录成功，就弹出提示信息.
-				ServerResult result = (ServerResult) JSON.parseObject(
-						br.readLine(), ServerResult.class);
-				if (1 != result.getErrorcode()) {
+				ServerResult result = HttpRequire.login(userName, password);
+				if (result != null && 1 != result.getErrorcode()) {
 					myHandler.sendEmptyMessage(1);
 				}
 				// 成功了就跳转到活动列表页面.
@@ -436,9 +422,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			} catch (Exception e) {
 				e.printStackTrace();
 				myHandler.sendEmptyMessage(6);
-			} finally {
-				// 关闭连接.
-				httpclient.getConnectionManager().shutdown();
 			}
 		}
 	}
