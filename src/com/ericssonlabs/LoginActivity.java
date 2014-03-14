@@ -165,8 +165,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		nameText.setSize(editWidth, editHeight);
 		passwordText.setPassword();
 		passwordText.setSize(editWidth, editHeight);
-		nameText.setText("test140103114242328");
-		passwordText.setText("123123");
+//		nameText.setText("netflu04");
+//		passwordText.setText("123123");
 	}
 
 	/**
