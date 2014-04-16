@@ -5,7 +5,7 @@
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <com.ericssonlabs.util.ActionBar
+    <com.juban.util.ActionBar
         android:id="@+id/barcode_head"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

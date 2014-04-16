@@ -16,11 +16,6 @@
 
 package com.zxing.decoding;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Vector;
 
 import android.app.Activity;
@@ -28,14 +23,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.ericssonlabs.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.juban.R;
 import com.zxing.activity.CaptureActivity;
 import com.zxing.camera.CameraManager;
 import com.zxing.view.ViewfinderResultPointCallback;

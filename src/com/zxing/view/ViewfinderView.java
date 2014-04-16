@@ -29,8 +29,8 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import com.ericssonlabs.R;
 import com.google.zxing.ResultPoint;
+import com.juban.R;
 import com.zxing.camera.CameraManager;
 
 /**

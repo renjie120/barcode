@@ -5,7 +5,7 @@
     android:background="@color/background"
     android:orientation="vertical" >
 
-    <com.ericssonlabs.util.ActionBar
+    <com.juban.util.ActionBar
         android:id="@+id/login_head"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
@@ -76,7 +76,7 @@
                                 android:textColor="@color/gray2"
                                 android:textSize="13sp" />
 
-                            <com.ericssonlabs.util.LoginEdittext
+                            <com.juban.util.LoginEdittext
                                 android:id="@+id/inputName"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                                 android:textColor="@color/gray2"
                                 android:textSize="13sp" />
 
-                            <com.ericssonlabs.util.LoginEdittext
+                            <com.juban.util.LoginEdittext
                                 android:id="@+id/inputPass"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.ericssonlabs.util.BottomBar
+    <com.juban.util.BottomBar
         android:id="@+id/login_bottom"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />

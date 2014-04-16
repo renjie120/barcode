@@ -17,14 +17,13 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.ericssonlabs.BaseActivity;
-import com.ericssonlabs.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.juban.BaseActivity;
+import com.juban.R;
 import com.zxing.camera.CameraManager;
 import com.zxing.decoding.CaptureActivityHandler;
 import com.zxing.decoding.InactivityTimer;

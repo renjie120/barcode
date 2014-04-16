@@ -125,7 +125,7 @@ public class CheckNet {
 	}
 
 	public static void main(String[] args) {
-		login("test140103114242328","123123");
+		login("taobaotmall","123123");
 
 		userActities();
 

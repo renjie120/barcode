@@ -5,7 +5,7 @@
     android:background="@color/background"
     android:orientation="vertical" >
 
-    <com.ericssonlabs.util.ActionBar
+    <com.juban.util.ActionBar
         android:id="@+id/list_head"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         android:fadingEdgeLength="0.0sp"
         android:scrollbars="none" />
 
-    <com.ericssonlabs.util.BottomBar
+    <com.juban.util.BottomBar
         android:id="@+id/list_bottom"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
