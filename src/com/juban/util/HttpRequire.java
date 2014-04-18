@@ -2,40 +2,24 @@ package com.juban.util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClients;
 
 import com.alibaba.fastjson.JSON;
 import com.juban.bean.ServerResult;
 import com.juban.bean.ServerResults;
 
 public class HttpRequire {
-	/**
-	 * md5加密方法.
-	 * 
-	 * @param data
-	 * @return
-	 * @throws Exception
-	 */
-	public static byte[] encryptMD5(byte[] data) throws Exception {
-		MessageDigest md5 = MessageDigest.getInstance("MD5");
-		md5.update(data);
-		return md5.digest();
-	}
 
 	private static ServerResult request(String url, String auth)
 			throws Exception {
 		// 得到url请求.
-		System.out.println("请求的url" + url); 
+		System.out.println("请求的url" + url);
 
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		try {
@@ -46,7 +30,7 @@ public class HttpRequire {
 			HttpEntity entity = response.getEntity();
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					entity.getContent(), "UTF-8"));
-			String str = br.readLine(); 
+			String str = br.readLine();
 			// 如果没有登录成功，就弹出提示信息.
 			ServerResult result = (ServerResult) JSON.parseObject(str,
 					ServerResult.class);
@@ -86,11 +70,43 @@ public class HttpRequire {
 
 	public static ServerResult login(String userName, String password)
 			throws Exception {
-		// 进行Md5加密数据.
-		BigInteger md5 = new BigInteger(encryptMD5(password.getBytes()));
+		System.out.println("登陆地址：" + Constant.HOST + ",,11password="
+				+ getMD5(password));
 		String url = Constant.HOST + "?do=login&username=" + userName
-				+ "&password=" + md5.toString(16);
+				+ "&password=" + getMD5(password);// md5.toString(16);
 		return request(url, null);
+	}
+
+	private static final char HEX_DIGITS[] = { '0', '1', '2', '3', '4', '5',
+			'6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
+	public static String toHexString(byte[] b) { // String to byte
+		StringBuilder sb = new StringBuilder(b.length * 2);
+		for (int i = 0; i < b.length; i++) {
+			sb.append(HEX_DIGITS[(b[i] & 0xf0) >>> 4]);
+			sb.append(HEX_DIGITS[b[i] & 0x0f]);
+		}
+		return sb.toString();
+	}
+
+	public static String md5(String s) {
+		try {
+			// Create MD5 Hash
+			MessageDigest digest = java.security.MessageDigest
+					.getInstance("MD5");
+			digest.update(s.getBytes());
+			byte messageDigest[] = digest.digest();
+
+			return toHexString(messageDigest);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+
+	public static String getMD5(String val) throws NoSuchAlgorithmException {
+		return md5(val);
 	}
 
 	public static ServerResult userActities(int page, int size, String auth)
